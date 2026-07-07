@@ -1,0 +1,176 @@
+{
+  "input": "abox.ttl",
+  "summary": {
+    "total": 18,
+    "runnable": 6,
+    "blocked": 12
+  },
+  "queries": [
+    {
+      "query_id": "A1",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "A2",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "A3",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "A4",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "A5",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "A6",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "B1",
+      "status": "blocked",
+      "missing_terms": [
+        "hasActualREI"
+      ],
+      "suggestions": [
+        "Add element REI records so hasActualREI can be produced."
+      ]
+    },
+    {
+      "query_id": "B2",
+      "status": "blocked",
+      "missing_terms": [
+        "hasActualREI"
+      ],
+      "suggestions": [
+        "Add element REI records so hasActualREI can be produced."
+      ]
+    },
+    {
+      "query_id": "B3",
+      "status": "blocked",
+      "missing_terms": [
+        "hasActualREI"
+      ],
+      "suggestions": [
+        "Add element REI records so hasActualREI can be produced."
+      ]
+    },
+    {
+      "query_id": "B4",
+      "status": "blocked",
+      "missing_terms": [
+        "hasActualREI"
+      ],
+      "suggestions": [
+        "Add element REI records so hasActualREI can be produced."
+      ]
+    },
+    {
+      "query_id": "C1",
+      "status": "blocked",
+      "missing_terms": [
+        "RiskUnit",
+        "coversSpatialZone"
+      ],
+      "suggestions": [
+        "Add risk_units records."
+      ]
+    },
+    {
+      "query_id": "C2",
+      "status": "blocked",
+      "missing_terms": [
+        "BoundaryAssumption",
+        "appliesToRiskUnit",
+        "hasConditionState"
+      ],
+      "suggestions": [
+        "Add boundary_assumptions records with risk-unit references and condition states."
+      ]
+    },
+    {
+      "query_id": "C3",
+      "status": "blocked",
+      "missing_terms": [
+        "BoundaryAssumption",
+        "hasConditionState"
+      ],
+      "suggestions": [
+        "Add boundary_assumptions records with risk-unit references and condition states."
+      ]
+    },
+    {
+      "query_id": "C4",
+      "status": "blocked",
+      "missing_terms": [
+        "BoundaryAssumption",
+        "appliesToRiskUnit",
+        "hasConditionState"
+      ],
+      "suggestions": [
+        "Add boundary_assumptions records with risk-unit references and condition states."
+      ]
+    },
+    {
+      "query_id": "C5",
+      "status": "blocked",
+      "missing_terms": [
+        "BoundaryAssumption",
+        "hasEvidenceStatus"
+      ],
+      "suggestions": [
+        "Add boundary_assumptions records with risk-unit references and condition states."
+      ]
+    },
+    {
+      "query_id": "C6",
+      "status": "blocked",
+      "missing_terms": [
+        "dependsOnBoundaryCondition",
+        "hasConditionState",
+        "hasEvidenceStatus"
+      ],
+      "suggestions": [
+        "Add boundary_assumptions records with risk-unit references and condition states."
+      ]
+    },
+    {
+      "query_id": "D1",
+      "status": "blocked",
+      "missing_terms": [
+        "triggersTask"
+      ],
+      "suggestions": [
+        "Add events and tasks so workflow CQs can be run."
+      ]
+    },
+    {
+      "query_id": "D2",
+      "status": "blocked",
+      "missing_terms": [
+        "ComplianceChecking",
+        "producesFinding"
+      ],
+      "suggestions": [
+        "Add assessment records linked to compliance outputs."
+      ]
+    }
+  ]
+}

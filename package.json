@@ -1,0 +1,14 @@
+{
+  "name": "ficr-site",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prebuild": "node scripts/build-data.mjs",
+    "build": "vite build",
+    "dev": "vite --host 127.0.0.1",
+    "verify": "node scripts/verify-site.mjs"
+  },
+  "devDependencies": {
+    "vite": "^8.1.3"
+  }
+}

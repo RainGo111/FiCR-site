@@ -1,0 +1,432 @@
+{
+  "graph": "tests\\session_artifacts\\m4\\abox.ttl",
+  "queries": {
+    "A1": {
+      "file": "A1_building_overview.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 1,
+      "rows": [
+        {
+          "building": "BLD-DA",
+          "storeys": 3,
+          "spaces": 13
+        }
+      ]
+    },
+    "A2": {
+      "file": "A2_storey_inventory.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 3,
+      "rows": [
+        {
+          "storey": "S-GF",
+          "label": "Ground Floor",
+          "kind": "GroundAndAboveStorey",
+          "elevation": "None",
+          "spaces": 7
+        },
+        {
+          "storey": "S-L2",
+          "label": "Level 2",
+          "kind": "GroundAndAboveStorey",
+          "elevation": "None",
+          "spaces": 5
+        },
+        {
+          "storey": "S-ROOF",
+          "label": "Flat Roof",
+          "kind": "GroundAndAboveStorey",
+          "elevation": "None",
+          "spaces": 1
+        }
+      ]
+    },
+    "A3": {
+      "file": "A3_space_ledger.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 13,
+      "rows": [
+        {
+          "space": "SP-A101",
+          "label": "A101 Living Room",
+          "storey": "S-GF",
+          "usage": "HabitableRoom",
+          "area": "None"
+        },
+        {
+          "space": "SP-A102",
+          "label": "A102 Dining Room",
+          "storey": "S-GF",
+          "usage": "HabitableRoom",
+          "area": "None"
+        },
+        {
+          "space": "SP-A103",
+          "label": "A103 Kitchen",
+          "storey": "S-GF",
+          "usage": "Kitchen",
+          "area": "None"
+        },
+        {
+          "space": "SP-A104",
+          "label": "A104 Bathroom",
+          "storey": "S-GF",
+          "usage": "Bathroom",
+          "area": "None"
+        },
+        {
+          "space": "SP-A105",
+          "label": "A105 Entrance Hall",
+          "storey": "S-GF",
+          "usage": "EntranceHall",
+          "area": "None"
+        },
+        {
+          "space": "SP-A201",
+          "label": "A201 Bedroom",
+          "storey": "S-L2",
+          "usage": "HabitableRoom",
+          "area": "None"
+        },
+        {
+          "space": "SP-A202",
+          "label": "A202 Bedroom",
+          "storey": "S-L2",
+          "usage": "HabitableRoom",
+          "area": "None"
+        },
+        {
+          "space": "SP-A203",
+          "label": "A203 Bedroom",
+          "storey": "S-L2",
+          "usage": "HabitableRoom",
+          "area": "None"
+        },
+        {
+          "space": "SP-A204",
+          "label": "A204 Bathroom",
+          "storey": "S-L2",
+          "usage": "Bathroom",
+          "area": "None"
+        },
+        {
+          "space": "SP-A205",
+          "label": "A205 Utility Room",
+          "storey": "S-L2",
+          "usage": "ServiceUsage",
+          "area": "None"
+        },
+        {
+          "space": "SP-B101",
+          "label": "B101 Ground Floor Room",
+          "storey": "S-GF",
+          "usage": "None",
+          "area": "None"
+        },
+        {
+          "space": "SP-B102",
+          "label": "B102 Ground Floor Room",
+          "storey": "S-GF",
+          "usage": "None",
+          "area": "None"
+        },
+        {
+          "space": "SP-ROOF",
+          "label": "Flat Roof",
+          "storey": "S-ROOF",
+          "usage": "None",
+          "area": "None"
+        }
+      ]
+    },
+    "A4": {
+      "file": "A4_space_usage_distribution.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 5,
+      "rows": [
+        {
+          "usage": "HabitableRoom",
+          "count": 5
+        },
+        {
+          "usage": "Bathroom",
+          "count": 2
+        },
+        {
+          "usage": "EntranceHall",
+          "count": 1
+        },
+        {
+          "usage": "Kitchen",
+          "count": 1
+        },
+        {
+          "usage": "ServiceUsage",
+          "count": 1
+        }
+      ]
+    },
+    "A5": {
+      "file": "A5_element_inventory.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 4,
+      "rows": [
+        {
+          "elementType": "Wall",
+          "count": 2
+        },
+        {
+          "elementType": "Alarm",
+          "count": 1
+        },
+        {
+          "elementType": "Doorset",
+          "count": 1
+        },
+        {
+          "elementType": "RoofSlab",
+          "count": 1
+        }
+      ]
+    },
+    "A6": {
+      "file": "A6_per_space_fire_protection.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 1,
+      "rows": [
+        {
+          "space": "SP-A105",
+          "spaceLabel": "A105 Entrance Hall",
+          "item": "ALM-A105",
+          "itemKind": "equipment"
+        }
+      ]
+    },
+    "B1": {
+      "file": "B1_compliance_health_score.rq",
+      "inference": "yes",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "B2": {
+      "file": "B2_element_rei_detail.rq",
+      "inference": "yes",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "B3": {
+      "file": "B3_owl_inferred_classification.rq",
+      "inference": "yes",
+      "status": "ok",
+      "row_count": 1,
+      "rows": [
+        {
+          "definedClass": "Wall",
+          "count": 2
+        }
+      ]
+    },
+    "B4": {
+      "file": "B4_finding_traceability.rq",
+      "inference": "yes",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "C1": {
+      "file": "C1_risk_unit_inventory.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 2,
+      "rows": [
+        {
+          "unit": "riskunit_A",
+          "label": "Unit A",
+          "installation": "None",
+          "coveredSpaces": 10
+        },
+        {
+          "unit": "riskunit_B",
+          "label": "Unit B",
+          "installation": "None",
+          "coveredSpaces": 2
+        }
+      ]
+    },
+    "C2": {
+      "file": "C2_boundary_condition_distribution.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 4,
+      "rows": [
+        {
+          "unit": "riskunit_A",
+          "conditionState": "Compromised",
+          "count": 1
+        },
+        {
+          "unit": "riskunit_A",
+          "conditionState": "Unknown",
+          "count": 3
+        },
+        {
+          "unit": "riskunit_B",
+          "conditionState": "Compromised",
+          "count": 1
+        },
+        {
+          "unit": "riskunit_B",
+          "conditionState": "Unknown",
+          "count": 3
+        }
+      ]
+    },
+    "C3": {
+      "file": "C3_evidence_completeness.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 8,
+      "rows": [
+        {
+          "ba": "boundary_assumption_001",
+          "unit": "riskunit_A",
+          "conditionState": "Unknown",
+          "evidence": "None",
+          "evidenceType": "None",
+          "title": "None",
+          "gap": "EVIDENCE GAP"
+        },
+        {
+          "ba": "boundary_assumption_002",
+          "unit": "riskunit_A",
+          "conditionState": "Compromised",
+          "evidence": "EV-PIPE-PENETRATION",
+          "evidenceType": "ObservedEvidence",
+          "title": "None",
+          "gap": "--"
+        },
+        {
+          "ba": "boundary_assumption_003",
+          "unit": "riskunit_A",
+          "conditionState": "Unknown",
+          "evidence": "None",
+          "evidenceType": "None",
+          "title": "None",
+          "gap": "EVIDENCE GAP"
+        },
+        {
+          "ba": "boundary_assumption_004",
+          "unit": "riskunit_A",
+          "conditionState": "Unknown",
+          "evidence": "None",
+          "evidenceType": "None",
+          "title": "None",
+          "gap": "EVIDENCE GAP"
+        },
+        {
+          "ba": "boundary_assumption_005",
+          "unit": "riskunit_B",
+          "conditionState": "Unknown",
+          "evidence": "None",
+          "evidenceType": "None",
+          "title": "None",
+          "gap": "EVIDENCE GAP"
+        },
+        {
+          "ba": "boundary_assumption_006",
+          "unit": "riskunit_B",
+          "conditionState": "Compromised",
+          "evidence": "EV-PIPE-PENETRATION",
+          "evidenceType": "ObservedEvidence",
+          "title": "None",
+          "gap": "--"
+        },
+        {
+          "ba": "boundary_assumption_007",
+          "unit": "riskunit_B",
+          "conditionState": "Unknown",
+          "evidence": "None",
+          "evidenceType": "None",
+          "title": "None",
+          "gap": "EVIDENCE GAP"
+        },
+        {
+          "ba": "boundary_assumption_008",
+          "unit": "riskunit_B",
+          "conditionState": "Unknown",
+          "evidence": "None",
+          "evidenceType": "None",
+          "title": "None",
+          "gap": "EVIDENCE GAP"
+        }
+      ]
+    },
+    "C4": {
+      "file": "C4_risk_unit_confidence.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 2,
+      "rows": [
+        {
+          "unit": "riskunit_A",
+          "unknownCount": 3,
+          "compromisedCount": 1,
+          "evidenceGapCount": 3,
+          "priorityScore": 7
+        },
+        {
+          "unit": "riskunit_B",
+          "unknownCount": 3,
+          "compromisedCount": 1,
+          "evidenceGapCount": 3,
+          "priorityScore": 7
+        }
+      ]
+    },
+    "C5": {
+      "file": "C5_gap_consistency.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "C6": {
+      "file": "C6_risk_finding_traceability.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "D1": {
+      "file": "D1_inspection_workflow.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 1,
+      "rows": [
+        {
+          "event": "EVT-WALKTHROUGH",
+          "task": "TASK-FIRESTOPPING-FOLLOWUP",
+          "taskLabel": "Arrange firestopping contractor follow-up next week",
+          "start": "None",
+          "end": "None",
+          "assessment": "None"
+        }
+      ]
+    },
+    "D2": {
+      "file": "D2_assessment_results.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    }
+  }
+}

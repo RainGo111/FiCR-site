@@ -1,0 +1,123 @@
+{
+  "input": "extracted_survey.json",
+  "summary": {
+    "total": 18,
+    "runnable": 17,
+    "blocked": 1
+  },
+  "queries": [
+    {
+      "query_id": "A1",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "A2",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "A3",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "A4",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "A5",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "A6",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "B1",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "B2",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "B3",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "B4",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "C1",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "C2",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "C3",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "C4",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "C5",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "C6",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "D1",
+      "status": "runnable",
+      "missing_terms": [],
+      "suggestions": []
+    },
+    {
+      "query_id": "D2",
+      "status": "blocked",
+      "missing_terms": [
+        "ComplianceChecking",
+        "producesFinding"
+      ],
+      "suggestions": [
+        "Add assessment records linked to compliance outputs."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "input": "tests\\session_artifacts\\m5\\frozen_fixture\\abox.ttl",
+  "rdf_parse": "ok",
+  "triple_count": 2606,
+  "term_closure": "ok",
+  "unknown_ficr_terms": [],
+  "tbox_fingerprint": "ok",
+  "tbox_sha256": "509daee0884e7a6175c3aeab4fb75962cc4a714927fb1244350ef2c45e8ae30f"
+}

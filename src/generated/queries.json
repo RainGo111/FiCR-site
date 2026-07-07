@@ -1,0 +1,200 @@
+[
+  {
+    "id": "A1",
+    "title": "Building Overview",
+    "group": "A",
+    "module": "A",
+    "type": "aggregation",
+    "file": "A1_building_overview.rq",
+    "inference": "no",
+    "description": "Building overview: purpose group, storey and space counts.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?building (COUNT(DISTINCT ?storey) AS ?storeys) (COUNT(DISTINCT ?space) AS ?spaces)\r\nWHERE {\r\n  ?building a ficr:MultiStoreyBuilding .\r\n  OPTIONAL { ?building bot:hasStorey ?storey . }\r\n  OPTIONAL { ?building bot:hasStorey/bot:hasSpace ?space . }\r\n}\r\nGROUP BY ?building\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "A2",
+    "title": "Storey Inventory",
+    "group": "A",
+    "module": "A",
+    "type": "retrieval",
+    "file": "A2_storey_inventory.rq",
+    "inference": "no",
+    "description": "Storey inventory and typology (basement vs ground-and-above).",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?storey ?label ?kind ?elevation (COUNT(DISTINCT ?space) AS ?spaces)\r\nWHERE {\r\n  ?building a ficr:MultiStoreyBuilding ; bot:hasStorey ?storey .\r\n  ?storey a ?kind .\r\n  FILTER(?kind IN (ficr:BasementStorey, ficr:GroundAndAboveStorey))\r\n  OPTIONAL { ?storey rdfs:label ?label . }\r\n  OPTIONAL { ?storey ficr:hasElevation ?elevation . }\r\n  OPTIONAL { ?storey bot:hasSpace ?space . }\r\n}\r\nGROUP BY ?storey ?label ?kind ?elevation\r\nORDER BY ?elevation\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "A3",
+    "title": "Space Ledger",
+    "group": "A",
+    "module": "A",
+    "type": "retrieval",
+    "file": "A3_space_ledger.rq",
+    "inference": "no",
+    "description": "Space ledger: every space with its storey, usage and area.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?space ?label ?storey ?usage ?area\r\nWHERE {\r\n  ?storey bot:hasSpace ?space .\r\n  ?space a ?spaceType .\r\n  FILTER(?spaceType IN (ficr:RoomSpace, ficr:StairSpace, ficr:RoofSpace))\r\n  OPTIONAL { ?space rdfs:label ?label . }\r\n  OPTIONAL { ?space ficr:hasSpaceUsage ?usage . }\r\n  OPTIONAL { ?space ficr:hasArea ?area . }\r\n}\r\nORDER BY ?label\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "A4",
+    "title": "Space Usage Distribution",
+    "group": "A",
+    "module": "A",
+    "type": "aggregation",
+    "file": "A4_space_usage_distribution.rq",
+    "inference": "no",
+    "description": "Space usage distribution: count of spaces per usage class.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?usage (COUNT(DISTINCT ?space) AS ?count)\r\nWHERE {\r\n  ?space ficr:hasSpaceUsage ?usage .\r\n}\r\nGROUP BY ?usage\r\nORDER BY DESC(?count) ?usage\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "A5",
+    "title": "Element Inventory",
+    "group": "A",
+    "module": "A",
+    "type": "aggregation",
+    "file": "A5_element_inventory.rq",
+    "inference": "no",
+    "description": "ExternalWall counted separately); the materialised Wall total appears in B3.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?elementType (COUNT(DISTINCT ?e) AS ?count)\r\nWHERE {\r\n  VALUES ?elementType {\r\n    ficr:Wall ficr:ExternalWall ficr:FloorSlab ficr:RoofSlab ficr:Doorset\r\n    ficr:Window ficr:Opening ficr:Beam ficr:Ceiling ficr:Railing ficr:Stair\r\n    ficr:StairFlight ficr:WallFoundation ficr:Furnishings\r\n    ficr:FireExtinguisher ficr:Alarm\r\n  }\r\n  ?e rdf:type ?elementType .\r\n}\r\nGROUP BY ?elementType\r\nORDER BY DESC(?count) ?elementType\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "A6",
+    "title": "Per Space Fire Protection",
+    "group": "A",
+    "module": "A",
+    "type": "retrieval",
+    "file": "A6_per_space_fire_protection.rq",
+    "inference": "no",
+    "description": "not the graph is reasoned — matching the converter-ABox-derived oracle.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT DISTINCT ?space ?spaceLabel ?item ?itemKind\r\nWHERE {\r\n  ?space ficr:hasSpaceUsage ?usage .\r\n  OPTIONAL { ?space rdfs:label ?spaceLabel . }\r\n  {\r\n    ?space bot:adjacentElement ?item .\r\n    ?item a ?t . FILTER(?t IN (ficr:Wall, ficr:ExternalWall, ficr:FloorSlab, ficr:Doorset))\r\n    BIND(\"fabric\" AS ?itemKind)\r\n  } UNION {\r\n    ?item ficr:isLocatedIn ?space .\r\n    ?item a ?t . FILTER(?t IN (ficr:FireExtinguisher, ficr:Alarm))\r\n    BIND(\"equipment\" AS ?itemKind)\r\n  }\r\n}\r\nORDER BY ?spaceLabel ?itemKind\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "B1",
+    "title": "Compliance Health Score",
+    "group": "B",
+    "module": "B",
+    "type": "aggregation",
+    "file": "B1_compliance_health_score.rq",
+    "inference": "yes",
+    "description": "materialised graph (compartment walls are OWL-inferred CompartmentWall).",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?result (COUNT(DISTINCT ?finding) AS ?count)\r\nWHERE {\r\n  ?finding a ficr:ComplianceFinding ;\r\n           ficr:hasComplianceResult ?result ;\r\n           ficr:concernsElement ?element .\r\n}\r\nGROUP BY ?result\r\nORDER BY DESC(?count) ?result\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "B2",
+    "title": "Element Rei Detail",
+    "group": "B",
+    "module": "B",
+    "type": "inference-dependent",
+    "file": "B2_element_rei_detail.rq",
+    "inference": "yes",
+    "description": "Wall there. Compartment (party) walls surface positively as CompartmentWall.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?element ?category ?actualREI ?requiredREI ?result\r\nWHERE {\r\n  ?finding a ficr:ComplianceFinding ;\r\n           ficr:concernsElement ?element ;\r\n           ficr:checksRequirement ?req ;\r\n           ficr:hasComplianceResult ?result .\r\n  # OPTIONAL: the UND-01 no-record element has no assessed REI (Undetermined);\r\n  # it still surfaces as a finding row with an unbound actual REI.\r\n  OPTIONAL { ?element ficr:hasActualREI ?actualREI . }\r\n  ?req ficr:hasRequiredREI ?requiredREI .\r\n  # Category from the inferred class; party walls are CompartmentWall.\r\n  OPTIONAL {\r\n    ?element a ficr:CompartmentWall . BIND(\"CompartmentWall\" AS ?cw)\r\n  }\r\n  BIND(COALESCE(?cw, \"Wall/Floor\") AS ?category)\r\n  # Only elements that are NOT plain external walls receive REI findings; the\r\n  # filter guards against the materialised ExternalWall->Wall entailment.\r\n  FILTER NOT EXISTS {\r\n    ?element a ficr:ExternalWall .\r\n    FILTER NOT EXISTS { ?element a ficr:CompartmentWall . }\r\n  }\r\n}\r\nORDER BY ?category ?result ?element\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "B3",
+    "title": "Owl Inferred Classification",
+    "group": "B",
+    "module": "B",
+    "type": "inference-dependent",
+    "file": "B3_owl_inferred_classification.rq",
+    "inference": "yes",
+    "description": "equivalentClass-defined (e.g. BasementStorey).",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?definedClass (COUNT(DISTINCT ?instance) AS ?count)\r\nWHERE {\r\n  VALUES ?definedClass {\r\n    ficr:Wall ficr:ExternalWall ficr:CompartmentWall\r\n    ficr:FloorSlab ficr:CompartmentFloor\r\n  }\r\n  OPTIONAL { ?instance a ?definedClass . }\r\n}\r\nGROUP BY ?definedClass\r\nHAVING (COUNT(DISTINCT ?instance) > 0)\r\nORDER BY DESC(?count) ?definedClass\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "B4",
+    "title": "Finding Traceability",
+    "group": "B",
+    "module": "B",
+    "type": "inference-dependent",
+    "file": "B4_finding_traceability.rq",
+    "inference": "yes",
+    "description": "cross-checked against oracle Module-B.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?finding ?element ?actualREI ?req ?requiredREI ?result ?clause\r\nWHERE {\r\n  ?finding a ficr:ComplianceFinding ;\r\n           ficr:concernsElement ?element ;\r\n           ficr:checksRequirement ?req ;\r\n           ficr:hasComplianceResult ?result .\r\n  # OPTIONAL: the UND-01 no-record element has no assessed REI (Undetermined).\r\n  OPTIONAL { ?element ficr:hasActualREI ?actualREI . }\r\n  ?req ficr:hasRequiredREI ?requiredREI ;\r\n       ficr:hasClauseReference ?clause .\r\n  FILTER NOT EXISTS {\r\n    ?element a ficr:ExternalWall .\r\n    FILTER NOT EXISTS { ?element a ficr:CompartmentWall . }\r\n  }\r\n}\r\nORDER BY ?req ?result ?element\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "C1",
+    "title": "Risk Unit Inventory",
+    "group": "C",
+    "module": "C",
+    "type": "retrieval",
+    "file": "C1_risk_unit_inventory.rq",
+    "inference": "no",
+    "description": "Risk-unit inventory and spatial membership (installation status + covered spaces).",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?unit ?label ?installation (COUNT(DISTINCT ?space) AS ?coveredSpaces)\r\nWHERE {\r\n  ?unit a ficr:RiskUnit .\r\n  OPTIONAL { ?unit rdfs:label ?label . }\r\n  OPTIONAL { ?unit ficr:hasInstallationStatus ?installation . }\r\n  OPTIONAL { ?unit ficr:coversSpatialZone ?space . }\r\n}\r\nGROUP BY ?unit ?label ?installation\r\nORDER BY ?label\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "C2",
+    "title": "Boundary Condition Distribution",
+    "group": "C",
+    "module": "C",
+    "type": "aggregation",
+    "file": "C2_boundary_condition_distribution.rq",
+    "inference": "no",
+    "description": "Boundary-assumption condition distribution per risk unit.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?unit ?conditionState (COUNT(DISTINCT ?ba) AS ?count)\r\nWHERE {\r\n  ?ba a ficr:BoundaryAssumption ;\r\n      ficr:appliesToRiskUnit ?unit ;\r\n      ficr:hasConditionState ?conditionState .\r\n}\r\nGROUP BY ?unit ?conditionState\r\nORDER BY ?unit ?conditionState\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "C3",
+    "title": "Evidence Completeness",
+    "group": "C",
+    "module": "C",
+    "type": "retrieval",
+    "file": "C3_evidence_completeness.rq",
+    "inference": "no",
+    "description": "a gap flag when an Unknown assumption has no evidence.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n\r\nSELECT ?ba ?unit ?conditionState ?evidence ?evidenceType ?title ?gap\r\nWHERE {\r\n  ?ba a ficr:BoundaryAssumption ;\r\n      ficr:appliesToRiskUnit ?unit ;\r\n      ficr:hasConditionState ?conditionState .\r\n  OPTIONAL {\r\n    ?ba ficr:supportedByEvidence ?evidence .\r\n    OPTIONAL {\r\n      ?evidence a ?evidenceType .\r\n      FILTER(?evidenceType IN (ficr:CertificateEvidence, ficr:DrawingEvidence,\r\n                               ficr:ObservedEvidence, ficr:InspectionReportEvidence))\r\n    }\r\n    OPTIONAL { ?evidence ficr:documentTitle ?title . }\r\n  }\r\n  BIND(IF(!BOUND(?evidence) && ?conditionState = ficr:Unknown,\r\n          \"EVIDENCE GAP\", \"--\") AS ?gap)\r\n}\r\nORDER BY ?unit ?ba\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "C4",
+    "title": "Risk Unit Confidence",
+    "group": "C",
+    "module": "C",
+    "type": "rule-like",
+    "file": "C4_risk_unit_confidence.rq",
+    "inference": "no",
+    "description": "row position and cross-checks the whole frame against expected_truth_table.csv.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?unit\r\n       (SUM(?isUnknown) AS ?unknownCount)\r\n       (SUM(?isCompromised) AS ?compromisedCount)\r\n       (SUM(?isGap) AS ?evidenceGapCount)\r\n       (SUM(?isUnknown + ?isCompromised + ?isGap) AS ?priorityScore)\r\nWHERE {\r\n  ?ba a ficr:BoundaryAssumption ;\r\n      ficr:appliesToRiskUnit ?unit ;\r\n      ficr:hasConditionState ?state .\r\n  BIND(IF(?state = ficr:Unknown, 1, 0) AS ?isUnknown)\r\n  BIND(IF(?state = ficr:Compromised, 1, 0) AS ?isCompromised)\r\n  OPTIONAL { ?ba ficr:supportedByEvidence ?ev . }\r\n  BIND(IF(?state = ficr:Unknown && !BOUND(?ev), 1, 0) AS ?isGap)\r\n}\r\nGROUP BY ?unit\r\nORDER BY DESC(?priorityScore) DESC(?compromisedCount) ?unit\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "C5",
+    "title": "Gap Consistency",
+    "group": "C",
+    "module": "C",
+    "type": "rule-like",
+    "file": "C5_gap_consistency.rq",
+    "inference": "no",
+    "description": "pollute this negative control. C5 stays 0 asserted and materialised.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?ba ?evidenceStatus ?hasEvidence\r\nWHERE {\r\n  ?ba a ficr:BoundaryAssumption ;\r\n      ficr:hasEvidenceStatus ?evidenceStatus .\r\n  OPTIONAL { ?ba ficr:supportedByEvidence ?ev . }\r\n  BIND(BOUND(?ev) AS ?hasEvidence)\r\n  FILTER(\r\n    (?evidenceStatus = ficr:EvidenceMissing && BOUND(?ev)) ||\r\n    (?evidenceStatus = ficr:EvidenceAvailable && !BOUND(?ev))\r\n  )\r\n}\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "C6",
+    "title": "Risk Finding Traceability",
+    "group": "C",
+    "module": "C",
+    "type": "retrieval",
+    "file": "C6_risk_finding_traceability.rq",
+    "inference": "no",
+    "description": "condition state + evidence + evidence status. Exercises the full risk chain.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?finding ?unit ?scenario ?ba ?conditionState ?evidenceStatus ?evidence\r\nWHERE {\r\n  ?finding a ficr:RiskFinding ;\r\n           ficr:concernsRiskUnit ?unit ;\r\n           ficr:derivedFromScenario ?scenario .\r\n  ?scenario ficr:dependsOnBoundaryCondition ?ba .\r\n  ?ba ficr:appliesToRiskUnit ?unit ;\r\n      ficr:hasConditionState ?conditionState ;\r\n      ficr:hasEvidenceStatus ?evidenceStatus .\r\n  OPTIONAL { ?ba ficr:supportedByEvidence ?evidence . }\r\n}\r\nORDER BY ?unit ?ba\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "D1",
+    "title": "Inspection Workflow",
+    "group": "D",
+    "module": "D",
+    "type": "retrieval",
+    "file": "D1_inspection_workflow.rq",
+    "inference": "no",
+    "description": "Inspection workflow summary: event -> task -> assessment with planned times.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?event ?task ?taskLabel ?start ?end ?assessment\r\nWHERE {\r\n  ?event a ?eventType .\r\n  FILTER(?eventType IN (ficr:RoutineTriggerEvent, ficr:AnomalyTriggerEvent,\r\n                        ficr:ComplianceRequestTriggerEvent))\r\n  ?event ficr:triggersTask ?task .\r\n  OPTIONAL { ?task rdfs:label ?taskLabel . }\r\n  OPTIONAL { ?task ficr:plannedStartTime ?start . }\r\n  OPTIONAL { ?task ficr:plannedEndTime ?end . }\r\n  OPTIONAL { ?task ficr:producesAssessment ?assessment . }\r\n}\r\nORDER BY ?start\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+  },
+  {
+    "id": "D2",
+    "title": "Assessment Results",
+    "group": "D",
+    "module": "D",
+    "type": "retrieval",
+    "file": "D2_assessment_results.rq",
+    "inference": "no",
+    "description": "the findings it produces, their result and the requirement's clause reference.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?assessment ?finding ?result ?req ?clause\r\nWHERE {\r\n  ?assessment a ficr:ComplianceChecking ;\r\n              ficr:producesFinding ?finding .\r\n  ?finding ficr:hasComplianceResult ?result ;\r\n           ficr:checksRequirement ?req .\r\n  OPTIONAL { ?req ficr:hasClauseReference ?clause . }\r\n}\r\nORDER BY ?result ?req ?finding"
+  }
+]

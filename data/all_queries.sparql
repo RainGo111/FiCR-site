@@ -1,0 +1,486 @@
+# ===========================================================================
+# FiCR competency-question query suite - consolidated (18 queries)
+#
+# Generated from queries/*.rq (verbatim). READ-ONLY reference; the runner
+# executes the individual .rq files, not this one. Routing per header:
+# `# Inference: yes` -> MATERIALISED (reasoned) graph, `no` -> ASSERTED graph.
+# On a fully reasoned graph all 18 return the validated counts; only B2/B3/B4
+# are genuinely reasoning-dependent (they query OWL-inferred CompartmentWall).
+# ===========================================================================
+
+# ---------------------------------------------------------------------------
+# A1_building_overview.rq
+# ---------------------------------------------------------------------------
+# CQ: A1 | Module: A | Type: aggregation
+# Inference: no | Features: OPTIONAL,GROUP_BY,COUNT
+# Migrated-from: A1
+# Building overview: purpose group, storey and space counts.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?building (COUNT(DISTINCT ?storey) AS ?storeys) (COUNT(DISTINCT ?space) AS ?spaces)
+WHERE {
+  ?building a ficr:MultiStoreyBuilding .
+  OPTIONAL { ?building bot:hasStorey ?storey . }
+  OPTIONAL { ?building bot:hasStorey/bot:hasSpace ?space . }
+}
+GROUP BY ?building
+
+
+# ---------------------------------------------------------------------------
+# A2_storey_inventory.rq
+# ---------------------------------------------------------------------------
+# CQ: A2 | Module: A | Type: retrieval
+# Inference: no | Features: OPTIONAL,property-paths
+# Migrated-from: A2
+# Storey inventory and typology (basement vs ground-and-above).
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?storey ?label ?kind ?elevation (COUNT(DISTINCT ?space) AS ?spaces)
+WHERE {
+  ?building a ficr:MultiStoreyBuilding ; bot:hasStorey ?storey .
+  ?storey a ?kind .
+  FILTER(?kind IN (ficr:BasementStorey, ficr:GroundAndAboveStorey))
+  OPTIONAL { ?storey rdfs:label ?label . }
+  OPTIONAL { ?storey ficr:hasElevation ?elevation . }
+  OPTIONAL { ?storey bot:hasSpace ?space . }
+}
+GROUP BY ?storey ?label ?kind ?elevation
+ORDER BY ?elevation
+
+
+# ---------------------------------------------------------------------------
+# A3_space_ledger.rq
+# ---------------------------------------------------------------------------
+# CQ: A3 | Module: A | Type: retrieval
+# Inference: no | Features: OPTIONAL,property-paths
+# Migrated-from: A3
+# Space ledger: every space with its storey, usage and area.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?space ?label ?storey ?usage ?area
+WHERE {
+  ?storey bot:hasSpace ?space .
+  ?space a ?spaceType .
+  FILTER(?spaceType IN (ficr:RoomSpace, ficr:StairSpace, ficr:RoofSpace))
+  OPTIONAL { ?space rdfs:label ?label . }
+  OPTIONAL { ?space ficr:hasSpaceUsage ?usage . }
+  OPTIONAL { ?space ficr:hasArea ?area . }
+}
+ORDER BY ?label
+
+
+# ---------------------------------------------------------------------------
+# A4_space_usage_distribution.rq
+# ---------------------------------------------------------------------------
+# CQ: A4 | Module: A | Type: aggregation
+# Inference: no | Features: GROUP_BY,COUNT,ORDER_BY
+# Migrated-from: A4
+# Space usage distribution: count of spaces per usage class.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?usage (COUNT(DISTINCT ?space) AS ?count)
+WHERE {
+  ?space ficr:hasSpaceUsage ?usage .
+}
+GROUP BY ?usage
+ORDER BY DESC(?count) ?usage
+
+
+# ---------------------------------------------------------------------------
+# A5_element_inventory.rq
+# ---------------------------------------------------------------------------
+# CQ: A5 | Module: A | Type: aggregation
+# Inference: no | Features: UNION,GROUP_BY,COUNT,BIND
+# Migrated-from: A5
+# Fire-safety element inventory: instance count per asserted element class.
+# Runs on the ASSERTED graph, so counts are leaf types (Wall = internal only,
+# ExternalWall counted separately); the materialised Wall total appears in B3.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?elementType (COUNT(DISTINCT ?e) AS ?count)
+WHERE {
+  VALUES ?elementType {
+    ficr:Wall ficr:ExternalWall ficr:FloorSlab ficr:RoofSlab ficr:Doorset
+    ficr:Window ficr:Opening ficr:Beam ficr:Ceiling ficr:Railing ficr:Stair
+    ficr:StairFlight ficr:WallFoundation ficr:Furnishings
+    ficr:FireExtinguisher ficr:Alarm
+  }
+  ?e rdf:type ?elementType .
+}
+GROUP BY ?elementType
+ORDER BY DESC(?count) ?elementType
+
+
+# ---------------------------------------------------------------------------
+# A6_per_space_fire_protection.rq
+# ---------------------------------------------------------------------------
+# CQ: A6 | Module: A | Type: retrieval
+# Inference: no | Features: UNION,OPTIONAL,ORDER_BY,DISTINCT
+# Migrated-from: A6
+# Per-space fire protection: bounding fabric and located equipment per space.
+# SELECT DISTINCT is load-bearing for reasoning-invariance: on a materialised
+# graph an ExternalWall is also typed Wall, so the type-enumeration below would
+# otherwise count one physical element twice (once per matching ?t). DISTINCT on
+# the projected (space, item, kind) collapses that, so A6 returns 161 whether or
+# not the graph is reasoned — matching the converter-ABox-derived oracle.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT DISTINCT ?space ?spaceLabel ?item ?itemKind
+WHERE {
+  ?space ficr:hasSpaceUsage ?usage .
+  OPTIONAL { ?space rdfs:label ?spaceLabel . }
+  {
+    ?space bot:adjacentElement ?item .
+    ?item a ?t . FILTER(?t IN (ficr:Wall, ficr:ExternalWall, ficr:FloorSlab, ficr:Doorset))
+    BIND("fabric" AS ?itemKind)
+  } UNION {
+    ?item ficr:isLocatedIn ?space .
+    ?item a ?t . FILTER(?t IN (ficr:FireExtinguisher, ficr:Alarm))
+    BIND("equipment" AS ?itemKind)
+  }
+}
+ORDER BY ?spaceLabel ?itemKind
+
+
+# ---------------------------------------------------------------------------
+# B1_compliance_health_score.rq
+# ---------------------------------------------------------------------------
+# CQ: B1 | Module: B | Type: aggregation
+# Inference: yes | Features: GROUP_BY,COUNT,property-paths
+# Migrated-from: B1
+# Compliance health score: ComplianceFinding counts per result, on the
+# materialised graph (compartment walls are OWL-inferred CompartmentWall).
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?result (COUNT(DISTINCT ?finding) AS ?count)
+WHERE {
+  ?finding a ficr:ComplianceFinding ;
+           ficr:hasComplianceResult ?result ;
+           ficr:concernsElement ?element .
+}
+GROUP BY ?result
+ORDER BY DESC(?count) ?result
+
+
+# ---------------------------------------------------------------------------
+# B2_element_rei_detail.rq
+# ---------------------------------------------------------------------------
+# CQ: B2 | Module: B | Type: inference-dependent
+# Inference: yes | Features: OPTIONAL,FILTER-NOT-EXISTS,property-paths
+# Migrated-from: B2
+# Element-level REI compliance detail. Runs on the materialised graph; the
+# ExternalWall exclusion is load-bearing because ExternalWall is inferred as
+# Wall there. Compartment (party) walls surface positively as CompartmentWall.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?element ?category ?actualREI ?requiredREI ?result
+WHERE {
+  ?finding a ficr:ComplianceFinding ;
+           ficr:concernsElement ?element ;
+           ficr:checksRequirement ?req ;
+           ficr:hasComplianceResult ?result .
+  # OPTIONAL: the UND-01 no-record element has no assessed REI (Undetermined);
+  # it still surfaces as a finding row with an unbound actual REI.
+  OPTIONAL { ?element ficr:hasActualREI ?actualREI . }
+  ?req ficr:hasRequiredREI ?requiredREI .
+  # Category from the inferred class; party walls are CompartmentWall.
+  OPTIONAL {
+    ?element a ficr:CompartmentWall . BIND("CompartmentWall" AS ?cw)
+  }
+  BIND(COALESCE(?cw, "Wall/Floor") AS ?category)
+  # Only elements that are NOT plain external walls receive REI findings; the
+  # filter guards against the materialised ExternalWall->Wall entailment.
+  FILTER NOT EXISTS {
+    ?element a ficr:ExternalWall .
+    FILTER NOT EXISTS { ?element a ficr:CompartmentWall . }
+  }
+}
+ORDER BY ?category ?result ?element
+
+
+# ---------------------------------------------------------------------------
+# B3_owl_inferred_classification.rq
+# ---------------------------------------------------------------------------
+# CQ: B3 | Module: B | Type: inference-dependent
+# Inference: yes | Features: VALUES,OPTIONAL,GROUP_BY,COUNT,HAVING
+# Migrated-from: B3
+# Fabric classification audit on the materialised graph. Fixed VALUES list = the
+# wall/floor fabric taxonomy the compartmentation compliance argument reasons
+# over: the primitive base classes Wall and FloorSlab (whose materialised extent
+# shows subclass-entailment inflation, e.g. Wall 34 asserted -> 57 materialised)
+# and the equivalentClass-DEFINED fire-safety classes ExternalWall (isExternal),
+# CompartmentWall and CompartmentFloor (FireSeparatingRole). HAVING drops classes
+# with no materialised instance, so the row count is engine-independent (rdflib
+# and GraphDB agree). Storey/building/usage classes are out of scope — B3 is a
+# fabric audit, not a whole-model class census — even where they are themselves
+# equivalentClass-defined (e.g. BasementStorey).
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?definedClass (COUNT(DISTINCT ?instance) AS ?count)
+WHERE {
+  VALUES ?definedClass {
+    ficr:Wall ficr:ExternalWall ficr:CompartmentWall
+    ficr:FloorSlab ficr:CompartmentFloor
+  }
+  OPTIONAL { ?instance a ?definedClass . }
+}
+GROUP BY ?definedClass
+HAVING (COUNT(DISTINCT ?instance) > 0)
+ORDER BY DESC(?count) ?definedClass
+
+
+# ---------------------------------------------------------------------------
+# B4_finding_traceability.rq
+# ---------------------------------------------------------------------------
+# CQ: B4 | Module: B | Type: inference-dependent
+# Inference: yes | Features: property-paths,FILTER-NOT-EXISTS
+# New: compliance-finding traceability — finding -> requirement (required REI +
+# clause) -> element (actual REI) -> result. This is the B-module ground truth
+# cross-checked against oracle Module-B.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?finding ?element ?actualREI ?req ?requiredREI ?result ?clause
+WHERE {
+  ?finding a ficr:ComplianceFinding ;
+           ficr:concernsElement ?element ;
+           ficr:checksRequirement ?req ;
+           ficr:hasComplianceResult ?result .
+  # OPTIONAL: the UND-01 no-record element has no assessed REI (Undetermined).
+  OPTIONAL { ?element ficr:hasActualREI ?actualREI . }
+  ?req ficr:hasRequiredREI ?requiredREI ;
+       ficr:hasClauseReference ?clause .
+  FILTER NOT EXISTS {
+    ?element a ficr:ExternalWall .
+    FILTER NOT EXISTS { ?element a ficr:CompartmentWall . }
+  }
+}
+ORDER BY ?req ?result ?element
+
+
+# ---------------------------------------------------------------------------
+# C1_risk_unit_inventory.rq
+# ---------------------------------------------------------------------------
+# CQ: C1 | Module: C | Type: retrieval
+# Inference: no | Features: OPTIONAL,ORDER_BY
+# Migrated-from: C1
+# Risk-unit inventory and spatial membership (installation status + covered spaces).
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?unit ?label ?installation (COUNT(DISTINCT ?space) AS ?coveredSpaces)
+WHERE {
+  ?unit a ficr:RiskUnit .
+  OPTIONAL { ?unit rdfs:label ?label . }
+  OPTIONAL { ?unit ficr:hasInstallationStatus ?installation . }
+  OPTIONAL { ?unit ficr:coversSpatialZone ?space . }
+}
+GROUP BY ?unit ?label ?installation
+ORDER BY ?label
+
+
+# ---------------------------------------------------------------------------
+# C2_boundary_condition_distribution.rq
+# ---------------------------------------------------------------------------
+# CQ: C2 | Module: C | Type: aggregation
+# Inference: no | Features: GROUP_BY,COUNT,ORDER_BY
+# Migrated-from: C2
+# Boundary-assumption condition distribution per risk unit.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?unit ?conditionState (COUNT(DISTINCT ?ba) AS ?count)
+WHERE {
+  ?ba a ficr:BoundaryAssumption ;
+      ficr:appliesToRiskUnit ?unit ;
+      ficr:hasConditionState ?conditionState .
+}
+GROUP BY ?unit ?conditionState
+ORDER BY ?unit ?conditionState
+
+
+# ---------------------------------------------------------------------------
+# C3_evidence_completeness.rq
+# ---------------------------------------------------------------------------
+# CQ: C3 | Module: C | Type: retrieval
+# Inference: no | Features: OPTIONAL,BOUND,IF,evidence-typing
+# Migrated-from: C3
+# Evidence completeness and actionable gaps: per boundary assumption, its state,
+# the typed evidence (CertificateEvidence/DrawingEvidence/ObservedEvidence) and
+# a gap flag when an Unknown assumption has no evidence.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX owl: <http://www.w3.org/2002/07/owl#>
+
+SELECT ?ba ?unit ?conditionState ?evidence ?evidenceType ?title ?gap
+WHERE {
+  ?ba a ficr:BoundaryAssumption ;
+      ficr:appliesToRiskUnit ?unit ;
+      ficr:hasConditionState ?conditionState .
+  OPTIONAL {
+    ?ba ficr:supportedByEvidence ?evidence .
+    OPTIONAL {
+      ?evidence a ?evidenceType .
+      FILTER(?evidenceType IN (ficr:CertificateEvidence, ficr:DrawingEvidence,
+                               ficr:ObservedEvidence, ficr:InspectionReportEvidence))
+    }
+    OPTIONAL { ?evidence ficr:documentTitle ?title . }
+  }
+  BIND(IF(!BOUND(?evidence) && ?conditionState = ficr:Unknown,
+          "EVIDENCE GAP", "--") AS ?gap)
+}
+ORDER BY ?unit ?ba
+
+
+# ---------------------------------------------------------------------------
+# C4_risk_unit_confidence.rq
+# ---------------------------------------------------------------------------
+# CQ: C4 | Module: C | Type: rule-like
+# Inference: no | Features: GROUP_BY,SUM,IF,BOUND,ORDER_BY
+# Migrated-from: C4 (rewritten)
+# Risk-unit conservative confidence (worst-first). Per unit: unknown, compromised
+# and evidence-gap counts (gap = Unknown AND no evidence), and the priority score
+# = unknown + compromised + gap. Ordered worst-first; the runner assigns rank by
+# row position and cross-checks the whole frame against expected_truth_table.csv.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?unit
+       (SUM(?isUnknown) AS ?unknownCount)
+       (SUM(?isCompromised) AS ?compromisedCount)
+       (SUM(?isGap) AS ?evidenceGapCount)
+       (SUM(?isUnknown + ?isCompromised + ?isGap) AS ?priorityScore)
+WHERE {
+  ?ba a ficr:BoundaryAssumption ;
+      ficr:appliesToRiskUnit ?unit ;
+      ficr:hasConditionState ?state .
+  BIND(IF(?state = ficr:Unknown, 1, 0) AS ?isUnknown)
+  BIND(IF(?state = ficr:Compromised, 1, 0) AS ?isCompromised)
+  OPTIONAL { ?ba ficr:supportedByEvidence ?ev . }
+  BIND(IF(?state = ficr:Unknown && !BOUND(?ev), 1, 0) AS ?isGap)
+}
+GROUP BY ?unit
+ORDER BY DESC(?priorityScore) DESC(?compromisedCount) ?unit
+
+
+# ---------------------------------------------------------------------------
+# C5_gap_consistency.rq
+# ---------------------------------------------------------------------------
+# CQ: C5 | Module: C | Type: rule-like
+# Inference: no | Features: FILTER,BOUND,negative-control
+# New (negative control, MUST return 0 rows on every scenario): mismatches
+# between the explicit hasEvidenceStatus and the computed evidence status.
+# A boundary assumption is inconsistent if it is EvidenceMissing yet has
+# evidence, or is NOT EvidenceMissing yet lacks evidence.
+# The `?ba a ficr:BoundaryAssumption` type constraint is load-bearing: it scopes
+# the control to boundary-condition records, so the UND-01 no-record
+# ComplianceFinding (also EvidenceMissing, but a ComplianceFinding) cannot
+# pollute this negative control. C5 stays 0 asserted and materialised.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?ba ?evidenceStatus ?hasEvidence
+WHERE {
+  ?ba a ficr:BoundaryAssumption ;
+      ficr:hasEvidenceStatus ?evidenceStatus .
+  OPTIONAL { ?ba ficr:supportedByEvidence ?ev . }
+  BIND(BOUND(?ev) AS ?hasEvidence)
+  FILTER(
+    (?evidenceStatus = ficr:EvidenceMissing && BOUND(?ev)) ||
+    (?evidenceStatus = ficr:EvidenceAvailable && !BOUND(?ev))
+  )
+}
+
+
+# ---------------------------------------------------------------------------
+# C6_risk_finding_traceability.rq
+# ---------------------------------------------------------------------------
+# CQ: C6 | Module: C | Type: retrieval
+# Inference: no | Features: property-paths,OPTIONAL,ORDER_BY
+# New: risk-finding traceability — RiskFinding -> derivedFromScenario ->
+# FireRiskScenario -> dependsOnBoundaryCondition -> BoundaryConditionRecord ->
+# condition state + evidence + evidence status. Exercises the full risk chain.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+
+SELECT ?finding ?unit ?scenario ?ba ?conditionState ?evidenceStatus ?evidence
+WHERE {
+  ?finding a ficr:RiskFinding ;
+           ficr:concernsRiskUnit ?unit ;
+           ficr:derivedFromScenario ?scenario .
+  ?scenario ficr:dependsOnBoundaryCondition ?ba .
+  ?ba ficr:appliesToRiskUnit ?unit ;
+      ficr:hasConditionState ?conditionState ;
+      ficr:hasEvidenceStatus ?evidenceStatus .
+  OPTIONAL { ?ba ficr:supportedByEvidence ?evidence . }
+}
+ORDER BY ?unit ?ba
+
+
+# ---------------------------------------------------------------------------
+# D1_inspection_workflow.rq
+# ---------------------------------------------------------------------------
+# CQ: D1 | Module: D | Type: retrieval
+# Inference: no | Features: OPTIONAL,property-paths,ORDER_BY
+# Migrated-from: D1
+# Inspection workflow summary: event -> task -> assessment with planned times.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?event ?task ?taskLabel ?start ?end ?assessment
+WHERE {
+  ?event a ?eventType .
+  FILTER(?eventType IN (ficr:RoutineTriggerEvent, ficr:AnomalyTriggerEvent,
+                        ficr:ComplianceRequestTriggerEvent))
+  ?event ficr:triggersTask ?task .
+  OPTIONAL { ?task rdfs:label ?taskLabel . }
+  OPTIONAL { ?task ficr:plannedStartTime ?start . }
+  OPTIONAL { ?task ficr:plannedEndTime ?end . }
+  OPTIONAL { ?task ficr:producesAssessment ?assessment . }
+}
+ORDER BY ?start
+
+
+# ---------------------------------------------------------------------------
+# D2_assessment_results.rq
+# ---------------------------------------------------------------------------
+# CQ: D2 | Module: D | Type: retrieval
+# Inference: no | Features: OPTIONAL,property-paths,ORDER_BY
+# Migrated-from: D2 (finding-level)
+# Assessment results with regulatory basis: each ComplianceChecking assessment,
+# the findings it produces, their result and the requirement's clause reference.
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+
+SELECT ?assessment ?finding ?result ?req ?clause
+WHERE {
+  ?assessment a ficr:ComplianceChecking ;
+              ficr:producesFinding ?finding .
+  ?finding ficr:hasComplianceResult ?result ;
+           ficr:checksRequirement ?req .
+  OPTIONAL { ?req ficr:hasClauseReference ?clause . }
+}
+ORDER BY ?result ?req ?finding
