@@ -1,0 +1,309 @@
+{
+  "meta": {
+    "schema_version": "ficr-survey-v1",
+    "project_slug": "duplex-walkthrough-memo",
+    "building_name": "Two-unit residential duplex",
+    "data_source": "O&M walkthrough memo (rain-limited visit, no roof access, Unit B ground floor only)",
+    "purpose_group": "PurposeGroup1b",
+    "notes": "Extraction is limited to facts stated in the memo. Side notes (damp patch, bins in side passage) recorded as out of fire-survey scope."
+  },
+  "building": {
+    "id": "BLD-DPLX",
+    "label": "Two-unit residential duplex",
+    "type": "MultiStoreyBuilding",
+    "purpose_group": "PurposeGroup1b"
+  },
+  "storeys": [
+    {
+      "id": "S-GF",
+      "label": "Ground floor",
+      "type": "GroundAndAboveStorey",
+      "building_ref": "BLD-DPLX"
+    },
+    {
+      "id": "S-L2",
+      "label": "Level 2 (upper floor)",
+      "type": "GroundAndAboveStorey",
+      "building_ref": "BLD-DPLX"
+    },
+    {
+      "id": "S-ROOF",
+      "label": "Flat roof",
+      "type": "GroundAndAboveStorey",
+      "building_ref": "BLD-DPLX"
+    }
+  ],
+  "spaces": [
+    {
+      "id": "SP-A101",
+      "label": "A101 Living room",
+      "type": "RoomSpace",
+      "usage": "HabitableRoom",
+      "storey_ref": "S-GF",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-A102",
+      "label": "A102 Dining room",
+      "type": "RoomSpace",
+      "usage": "HabitableRoom",
+      "storey_ref": "S-GF",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-A103",
+      "label": "A103 Kitchen",
+      "type": "RoomSpace",
+      "usage": "Kitchen",
+      "storey_ref": "S-GF",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-A104",
+      "label": "A104 Bathroom",
+      "type": "RoomSpace",
+      "usage": "Bathroom",
+      "storey_ref": "S-GF",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-A105",
+      "label": "A105 Entrance hall",
+      "type": "RoomSpace",
+      "usage": "EntranceHall",
+      "storey_ref": "S-GF",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-A201",
+      "label": "A201 Bedroom",
+      "type": "RoomSpace",
+      "usage": "HabitableRoom",
+      "storey_ref": "S-L2",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-A202",
+      "label": "A202 Bedroom",
+      "type": "RoomSpace",
+      "usage": "HabitableRoom",
+      "storey_ref": "S-L2",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-A203",
+      "label": "A203 Bedroom",
+      "type": "RoomSpace",
+      "usage": "HabitableRoom",
+      "storey_ref": "S-L2",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-A204",
+      "label": "A204 Bathroom",
+      "type": "RoomSpace",
+      "usage": "Bathroom",
+      "storey_ref": "S-L2",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-A205",
+      "label": "A205 Utility room",
+      "type": "RoomSpace",
+      "usage": "ServiceUsage",
+      "storey_ref": "S-L2",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-B101",
+      "label": "B101 Unit B ground-floor room",
+      "type": "RoomSpace",
+      "usage": null,
+      "storey_ref": "S-GF",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    },
+    {
+      "id": "SP-B102",
+      "label": "B102 Unit B ground-floor room",
+      "type": "RoomSpace",
+      "usage": null,
+      "storey_ref": "S-GF",
+      "area_m2": null,
+      "adjacent_elements": [],
+      "adjacent_spaces": []
+    }
+  ],
+  "elements": [
+    {
+      "id": "W-001",
+      "label": "Party wall between Unit A and Unit B",
+      "type": "Wall",
+      "storey_ref": null,
+      "rei": 60,
+      "is_external": false,
+      "is_load_bearing": null,
+      "length_m": null,
+      "width_m": null,
+      "area_m2": null,
+      "sub_elements": []
+    },
+    {
+      "id": "D-001",
+      "label": "Entrance door to Unit B (fire door certificate not found)",
+      "type": "Doorset",
+      "storey_ref": "S-GF",
+      "rei": null,
+      "is_external": false,
+      "is_obscured": false,
+      "width_m": null,
+      "thickness_m": null
+    },
+    {
+      "id": "ALM-001",
+      "label": "Smoke detector, Unit A entrance hall",
+      "type": "Alarm",
+      "storey_ref": "S-GF",
+      "located_in_space": "SP-A105",
+      "is_obscured": false,
+      "service_expiry_date": null
+    }
+  ],
+  "risk_units": [
+    {
+      "id": "RU-A",
+      "label": "Unit A dwelling",
+      "covers_spaces": [
+        "SP-A101",
+        "SP-A102",
+        "SP-A103",
+        "SP-A104",
+        "SP-A105",
+        "SP-A201",
+        "SP-A202",
+        "SP-A203",
+        "SP-A204",
+        "SP-A205"
+      ],
+      "installation_status": "InstallationUnknown"
+    },
+    {
+      "id": "RU-B",
+      "label": "Unit B dwelling",
+      "covers_spaces": [
+        "SP-B101",
+        "SP-B102"
+      ],
+      "installation_status": "InstallationUnknown"
+    }
+  ],
+  "boundary_assumptions": [
+    {
+      "id": "BA-COMP-A",
+      "label": "Compartmentation of Unit A party-wall line",
+      "assumption_type": "CompartmentationPerformanceAspect",
+      "applies_to_risk_unit": "RU-A",
+      "about_element": "W-001",
+      "condition_state": "Compromised",
+      "supported_by_evidence": [
+        "EV-002"
+      ]
+    },
+    {
+      "id": "BA-CAV-A",
+      "label": "Cavity barriers, Unit A",
+      "assumption_type": "CavityBarrierPerformanceAspect",
+      "applies_to_risk_unit": "RU-A",
+      "condition_state": "Unknown",
+      "supported_by_evidence": []
+    },
+    {
+      "id": "BA-EXT-A",
+      "label": "External fire spread, Unit A (roof not accessed)",
+      "assumption_type": "ExternalFireSpreadPerformanceAspect",
+      "applies_to_risk_unit": "RU-A",
+      "condition_state": "Unknown",
+      "supported_by_evidence": []
+    },
+    {
+      "id": "BA-STRUCT-A",
+      "label": "Structural stability, Unit A",
+      "assumption_type": "StructuralStabilityPerformanceAspect",
+      "applies_to_risk_unit": "RU-A",
+      "condition_state": "Unknown",
+      "supported_by_evidence": []
+    },
+    {
+      "id": "BA-COMP-B",
+      "label": "Compartmentation of Unit B party-wall line",
+      "assumption_type": "CompartmentationPerformanceAspect",
+      "applies_to_risk_unit": "RU-B",
+      "about_element": "W-001",
+      "condition_state": "Compromised",
+      "supported_by_evidence": [
+        "EV-002"
+      ]
+    },
+    {
+      "id": "BA-CAV-B",
+      "label": "Cavity barriers, Unit B",
+      "assumption_type": "CavityBarrierPerformanceAspect",
+      "applies_to_risk_unit": "RU-B",
+      "condition_state": "Unknown",
+      "supported_by_evidence": []
+    },
+    {
+      "id": "BA-EXT-B",
+      "label": "External fire spread, Unit B (roof not accessed)",
+      "assumption_type": "ExternalFireSpreadPerformanceAspect",
+      "applies_to_risk_unit": "RU-B",
+      "condition_state": "Unknown",
+      "supported_by_evidence": []
+    },
+    {
+      "id": "BA-STRUCT-B",
+      "label": "Structural stability, Unit B (upper floor not inspected)",
+      "assumption_type": "StructuralStabilityPerformanceAspect",
+      "applies_to_risk_unit": "RU-B",
+      "condition_state": "Unknown",
+      "supported_by_evidence": []
+    }
+  ],
+  "evidence_log": [
+    {
+      "id": "EV-001",
+      "label": "O&M documentation records the party wall as REI 60",
+      "type": "DocumentEvidence",
+      "document_title": "O&M documentation: party wall fire resistance",
+      "document_uri": null
+    },
+    {
+      "id": "EV-002",
+      "label": "Observed unsealed pipe penetration through the party wall above the kitchen area, Level 2",
+      "type": "ObservedEvidence",
+      "document_title": null,
+      "document_uri": null
+    }
+  ]
+}

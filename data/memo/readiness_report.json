@@ -1,9 +1,9 @@
 {
-  "input": "extracted_survey.json",
+  "input": "survey.json",
   "summary": {
     "total": 18,
-    "runnable": 17,
-    "blocked": 1
+    "runnable": 15,
+    "blocked": 3
   },
   "queries": [
     {
@@ -56,9 +56,13 @@
     },
     {
       "query_id": "B3",
-      "status": "runnable",
-      "missing_terms": [],
-      "suggestions": []
+      "status": "blocked",
+      "missing_terms": [
+        "hasPhysicalObjectFireSafetyRole"
+      ],
+      "suggestions": [
+        "Record assigned fire safety roles (usage_roles) for separating elements."
+      ]
     },
     {
       "query_id": "B4",
@@ -104,9 +108,13 @@
     },
     {
       "query_id": "D1",
-      "status": "runnable",
-      "missing_terms": [],
-      "suggestions": []
+      "status": "blocked",
+      "missing_terms": [
+        "triggersTask"
+      ],
+      "suggestions": [
+        "Add events and tasks so workflow CQs can be run."
+      ]
     },
     {
       "query_id": "D2",

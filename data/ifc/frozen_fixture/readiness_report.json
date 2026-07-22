@@ -66,10 +66,10 @@
       "query_id": "B3",
       "status": "blocked",
       "missing_terms": [
-        "hasActualREI"
+        "hasPhysicalObjectFireSafetyRole"
       ],
       "suggestions": [
-        "Add element REI records so hasActualREI can be produced."
+        "Record assigned fire safety roles (usage_roles) for separating elements."
       ]
     },
     {

@@ -319,7 +319,7 @@ code {
 
 .ontology-diagram {
   width: min(100%, 48rem);
-  aspect-ratio: 4095 / 3895;
+  aspect-ratio: 10460 / 5715;
   margin-right: auto;
   margin-left: auto;
 }
@@ -784,78 +784,47 @@ tr:last-child td {
   margin-bottom: 2rem;
 }
 
-.report-part {
+.report-markdown {
+  margin-top: 2rem;
+}
+
+.report-markdown h1 {
   margin-top: 2.5rem;
-  padding-top: 2rem;
+  font-size: 2rem;
+}
+
+.report-markdown h2 {
+  margin-top: 2.5rem;
+  padding-top: 1.75rem;
   border-top: 1px solid var(--border);
 }
 
-.report-modules {
-  display: grid;
-  gap: 1rem;
+.report-markdown h3 {
+  margin-top: 2rem;
+  color: var(--accent-contrast);
 }
 
-.report-group {
-  margin-top: 0;
-  padding: 1rem;
-  background: var(--muted);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+.report-markdown pre {
+  margin: 1.25rem 0;
 }
 
-.report-group ol,
-.action-list,
-.advisory-notes ul {
+.report-markdown hr {
+  margin: 2rem 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.report-table {
+  margin: 1.25rem 0;
+  overflow-x: auto;
+}
+
+.report-markdown ul {
   margin-top: 0.75rem;
 }
 
-.report-group li,
-.action-list li,
-.advisory-notes li {
-  margin-top: 0.55rem;
-}
-
-.advisory-notes {
-  background: rgb(184 134 11 / 5%);
-  border: 1px solid rgb(184 134 11 / 18%);
-  border-radius: 12px;
-  padding: 1.2rem;
-}
-
-.advisory-grid {
-  display: grid;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.advisory-card {
-  padding: 1rem;
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-}
-
-.advisory-card h3 {
-  margin-top: 0;
-}
-
-.advisory-card dl {
-  display: grid;
-  grid-template-columns: minmax(9rem, 0.28fr) 1fr;
-  gap: 0.55rem 1rem;
-  margin: 1rem 0 0;
-}
-
-.advisory-card dt {
-  color: var(--accent-contrast);
-  font-family: var(--label-font);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-
-.advisory-card dd {
-  margin: 0;
+.report-markdown li {
+  margin-top: 0.5rem;
 }
 
 .roadmap-tiers {
@@ -942,10 +911,6 @@ li + li {
     width: 1px;
     height: 0.75rem;
     background: var(--accent-secondary);
-  }
-
-  .advisory-card dl {
-    grid-template-columns: 1fr;
   }
 
   table {

@@ -1,32 +1,34 @@
 # ===========================================================================
-# FiCR competency-question query suite - consolidated (18 queries)
-#
-# Generated from queries/*.rq (verbatim). READ-ONLY reference; the runner
-# executes the individual .rq files, not this one. Routing per header:
-# `# Inference: yes` -> MATERIALISED (reasoned) graph, `no` -> ASSERTED graph.
-# On a fully reasoned graph all 18 return the validated counts; only B2/B3/B4
-# are genuinely reasoning-dependent (they query OWL-inferred CompartmentWall).
+# FiCR competency-question query suite — consolidated (18 queries)
+# GENERATED from queries/*.rq by `ficr-enrichment validate`. Read-only.
+# All queries are executed on the materialised graph. `# Inference:` is
+# metadata: `yes` = needs reasoning; `no` = reasoning-invariant.
 # ===========================================================================
 
 # ---------------------------------------------------------------------------
 # A1_building_overview.rq
 # ---------------------------------------------------------------------------
 # CQ: A1 | Module: A | Type: aggregation
-# Inference: no | Features: OPTIONAL,GROUP_BY,COUNT
+# Inference: no | Features: VALUES,OPTIONAL,GROUP_BY,COUNT
 # Migrated-from: A1
-# Building overview: purpose group, storey and space counts.
+# Building overview: building type, purpose group, storey and space counts.
+# The four projected columns match the manuscript Listing 1 table one-to-one
+# (building type, purpose group, storeys, spaces). ?building stays internal to
+# WHERE; ?buildingType is bound with the B3 VALUES idiom.
 PREFIX ficr: <https://w3id.org/ficr#>
 PREFIX bot: <https://w3id.org/bot#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
-SELECT ?building (COUNT(DISTINCT ?storey) AS ?storeys) (COUNT(DISTINCT ?space) AS ?spaces)
+SELECT ?buildingType ?purposeGroup (COUNT(DISTINCT ?storey) AS ?storeys) (COUNT(DISTINCT ?space) AS ?spaces)
 WHERE {
-  ?building a ficr:MultiStoreyBuilding .
+  VALUES ?buildingType { ficr:MultiStoreyBuilding }
+  ?building a ?buildingType .
+  OPTIONAL { ?building ficr:hasPurposeGroup ?purposeGroup . }
   OPTIONAL { ?building bot:hasStorey ?storey . }
   OPTIONAL { ?building bot:hasStorey/bot:hasSpace ?space . }
 }
-GROUP BY ?building
+GROUP BY ?buildingType ?purposeGroup
 
 
 # ---------------------------------------------------------------------------
@@ -103,9 +105,11 @@ ORDER BY DESC(?count) ?usage
 # CQ: A5 | Module: A | Type: aggregation
 # Inference: no | Features: UNION,GROUP_BY,COUNT,BIND
 # Migrated-from: A5
-# Fire-safety element inventory: instance count per asserted element class.
-# Runs on the ASSERTED graph, so counts are leaf types (Wall = internal only,
-# ExternalWall counted separately); the materialised Wall total appears in B3.
+# Fire-safety element inventory: instance count per element class. Executed on
+# the reasoned (materialised) scenario graph like every query; the `Inference:
+# no` flag is metadata only — this query is reasoning-invariant (it counts the
+# element classes, not subclass-entailed instances), so the result is identical
+# on the asserted and materialised graphs.
 PREFIX ficr: <https://w3id.org/ficr#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 
@@ -220,32 +224,26 @@ ORDER BY ?category ?result ?element
 # B3_owl_inferred_classification.rq
 # ---------------------------------------------------------------------------
 # CQ: B3 | Module: B | Type: inference-dependent
-# Inference: yes | Features: VALUES,OPTIONAL,GROUP_BY,COUNT,HAVING
+# Inference: yes | Features: VALUES,DISTINCT
 # Migrated-from: B3
-# Fabric classification audit on the materialised graph. Fixed VALUES list = the
-# wall/floor fabric taxonomy the compartmentation compliance argument reasons
-# over: the primitive base classes Wall and FloorSlab (whose materialised extent
-# shows subclass-entailment inflation, e.g. Wall 34 asserted -> 57 materialised)
-# and the equivalentClass-DEFINED fire-safety classes ExternalWall (isExternal),
-# CompartmentWall and CompartmentFloor (FireSeparatingRole). HAVING drops classes
-# with no materialised instance, so the row count is engine-independent (rdflib
-# and GraphDB agree). Storey/building/usage classes are out of scope — B3 is a
-# fabric audit, not a whole-model class census — even where they are themselves
-# equivalentClass-defined (e.g. BasementStorey).
-PREFIX ficr: <https://w3id.org/ficr#>
-PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+# Identifies building elements inferred as CompartmentWall from an assigned
+# FireSeparatingRole and verifies that their Wall and ExternalWall physical
+# classifications are retained after materialisation.
 
-SELECT ?definedClass (COUNT(DISTINCT ?instance) AS ?count)
+PREFIX ficr: <https://w3id.org/ficr#>
+
+SELECT DISTINCT ?element ?assignedRole ?inferredClass
 WHERE {
-  VALUES ?definedClass {
-    ficr:Wall ficr:ExternalWall ficr:CompartmentWall
-    ficr:FloorSlab ficr:CompartmentFloor
+  VALUES (?assignedRole ?inferredClass) {
+    (ficr:FireSeparatingRole ficr:CompartmentWall)
   }
-  OPTIONAL { ?instance a ?definedClass . }
+
+  ?element ficr:hasPhysicalObjectFireSafetyRole ?assignedRole ;
+           a ?inferredClass ;
+           a ficr:Wall ;
+           a ficr:ExternalWall .
 }
-GROUP BY ?definedClass
-HAVING (COUNT(DISTINCT ?instance) > 0)
-ORDER BY DESC(?count) ?definedClass
+ORDER BY ?element
 
 
 # ---------------------------------------------------------------------------
@@ -396,7 +394,9 @@ ORDER BY DESC(?priorityScore) DESC(?compromisedCount) ?unit
 # The `?ba a ficr:BoundaryAssumption` type constraint is load-bearing: it scopes
 # the control to boundary-condition records, so the UND-01 no-record
 # ComplianceFinding (also EvidenceMissing, but a ComplianceFinding) cannot
-# pollute this negative control. C5 stays 0 asserted and materialised.
+# pollute this negative control. Executed on the reasoned (materialised)
+# scenario graph like every query; the `Inference: no` flag is metadata only —
+# C5 is reasoning-invariant and stays 0 rows.
 PREFIX ficr: <https://w3id.org/ficr#>
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 

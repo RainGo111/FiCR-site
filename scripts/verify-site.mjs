@@ -18,10 +18,10 @@ async function main() {
   const jsAsset = assets.find((name) => name.endsWith('.js'));
   assert.ok(jsAsset);
   const js = await readFile(path.join(distRoot, 'assets', jsAsset), 'utf8');
-  for (const marker of ['FiCR', 'Ontology', 'Competency Queries', 'ficr-abox-builder Skill', 'Roadmap']) {
+  for (const marker of ['FiCR', 'Ontology', 'Competency Queries', 'FiCR Assistant Skill', 'Roadmap']) {
     assert.ok(js.includes(marker), `bundle missing ${marker}`);
   }
-  for (const marker of ['module-nav', 'Storey Inventory', 'pipeline-narrative', 'flow-stage', 'input-lanes-row', 'planned-lane', 'sample-report', 'Advisory Notes', 'Near-term', 'Vision']) {
+  for (const marker of ['module-nav', 'Storey Inventory', 'pipeline-narrative', 'flow-stage', 'input-lanes-row', 'planned-lane', 'sample-report', 'report-markdown', 'Advisory Notes', 'Near-term', 'Vision']) {
     assert.ok(js.includes(marker), `bundle missing site marker ${marker}`);
   }
   assert.equal(js.includes('Inference:'), false);
@@ -41,20 +41,26 @@ async function main() {
   assert.equal(queries.find((item) => item.id === 'A2')?.title, 'Storey Inventory');
   assert.equal(queries.find((item) => item.id === 'B2')?.title, 'Element Rei Detail');
   assert.equal(content.home.overview.includes('LLM proposes'), false);
-  assert.equal(content.skill.memo.readiness.runnable, 17);
-  assert.equal(content.skill.memo.readiness.blocked, 1);
-  assert.equal(content.skill.sampleReport.cqSummary.A.length, 6);
-  assert.equal(content.skill.sampleReport.cqSummary.B.length, 4);
-  assert.equal(content.skill.sampleReport.cqSummary.C.length, 6);
-  assert.equal(content.skill.sampleReport.cqSummary.D.length, 2);
-  assert.match(content.skill.sampleReport.actions.join(' '), /D2.*ComplianceChecking.*producesFinding/);
-  assert.equal(content.skill.sampleReport.advisoryTitle, 'Advisory Notes');
-  assert.match(content.skill.sampleReport.advisoryNotes[0].remedialMeasure, /Approved Document B|ADB/);
-  assert.equal(content.skill.ifc.readiness.runnable, 6);
-  assert.equal(content.skill.ifc.readiness.blocked, 12);
+  assert.equal(queries.find((item) => item.id === 'A1')?.text.includes('SELECT ?buildingType ?purposeGroup'), true);
+  assert.equal(queries.find((item) => item.id === 'B3')?.text.includes('hasPhysicalObjectFireSafetyRole'), true);
+  assert.equal(queries.find((item) => item.id === 'B3')?.text.includes('GROUP BY'), false);
+  assert.equal(content.skill.memo.informationAvailability.available, 15);
+  assert.equal(content.skill.memo.informationAvailability.unavailable, 3);
+  assert.deepEqual(content.skill.memo.priorityScores.map((item) => item.score), [7, 7]);
+  assert.match(content.skill.sampleReport.markdown, /# FiCR Assistant . Session Report/);
+  assert.match(content.skill.sampleReport.markdown, /Information availability.*15 of 18 available/);
+  assert.match(content.skill.sampleReport.markdown, /FiCR controlled vocabulary/);
+  assert.equal((content.skill.sampleReport.markdown.match(/^### \[P/gm) ?? []).length, 5);
+  assert.match(content.skill.sampleReport.markdown, /BS EN 1366-3/);
+  assert.equal(content.skill.ifc.informationAvailability.available, 6);
+  assert.equal(content.skill.ifc.informationAvailability.unavailable, 12);
+  assert.deepEqual(
+    content.skill.ifc.unavailableQueries.find((query) => query.queryId === 'B3')?.missingTerms,
+    ['hasPhysicalObjectFireSafetyRole'],
+  );
   assert.equal(content.roadmap.nearTerm.length > 0, true);
 
-  for (const id of ['A1', 'B2', 'C1', 'D1']) {
+  for (const id of ['A1', 'B2', 'B3', 'C1', 'D1']) {
     const query = queries.find((item) => item.id === id);
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -69,10 +75,23 @@ async function main() {
     const json = await response.json();
     const rows = json.results?.bindings?.length ?? 0;
     assert.ok(rows > 0, `${id} returned no rows`);
+    if (id === 'A1') {
+      assert.deepEqual(json.head.vars, ['buildingType', 'purposeGroup', 'storeys', 'spaces']);
+      assert.deepEqual(
+        json.results.bindings[0],
+        {
+          buildingType: { type: 'uri', value: 'https://w3id.org/ficr#MultiStoreyBuilding' },
+          purposeGroup: { type: 'uri', value: 'https://w3id.org/ficr#PurposeGroup1b' },
+          storeys: { datatype: 'http://www.w3.org/2001/XMLSchema#integer', type: 'literal', value: '4' },
+          spaces: { datatype: 'http://www.w3.org/2001/XMLSchema#integer', type: 'literal', value: '21' },
+        },
+      );
+    }
+    if (id === 'B3') assert.equal(rows, 4);
     console.log(`${id} rows=${rows} vars=${json.head.vars.join(',')}`);
   }
 
-  console.log('SITE_VERIFY_OK pages=5 queries=18 memo=17/18 ifc=6/18');
+  console.log('SITE_VERIFY_OK pages=5 queries=18 memo=15/18 priorities=7/7 ifc=6/18 B3=unavailable-for-roles');
 }
 
 await main();

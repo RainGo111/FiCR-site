@@ -1,0 +1,209 @@
+@prefix bot: <https://w3id.org/bot#> .
+@prefix ficr: <https://w3id.org/ficr#> .
+@prefix inst: <https://lbd.example.com/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+inst:ALM-001 a owl:NamedIndividual,
+        ficr:Alarm ;
+    rdfs:label "Smoke detector, Unit A entrance hall" ;
+    ficr:isLocatedIn inst:S-GF,
+        inst:SP-A105 ;
+    ficr:isObscured false .
+
+inst:BLD-DPLX a owl:NamedIndividual,
+        ficr:MultiStoreyBuilding ;
+    rdfs:label "Two-unit residential duplex" ;
+    bot:hasStorey inst:S-GF,
+        inst:S-L2,
+        inst:S-ROOF ;
+    ficr:hasID "BLD-DPLX"^^xsd:string ;
+    ficr:hasPurposeGroup ficr:PurposeGroup1b .
+
+inst:D-001 a owl:NamedIndividual,
+        ficr:Doorset ;
+    rdfs:label "Entrance door to Unit B (fire door certificate not found)" ;
+    ficr:isExternal false ;
+    ficr:isLocatedIn inst:S-GF ;
+    ficr:isObscured false .
+
+inst:EV-001 a owl:NamedIndividual,
+        ficr:DocumentEvidence ;
+    rdfs:label "O&M documentation records the party wall as REI 60" ;
+    ficr:documentTitle "O&M documentation: party wall fire resistance"^^xsd:string .
+
+inst:boundary_assumption_001 a owl:NamedIndividual,
+        ficr:BoundaryAssumption ;
+    rdfs:label "Compartmentation of Unit A party-wall line" ;
+    ficr:aboutElement inst:W-001 ;
+    ficr:appliesToRiskUnit inst:riskunit_A ;
+    ficr:hasConditionState ficr:Compromised ;
+    ficr:hasEvidenceStatus ficr:EvidenceAvailable ;
+    ficr:supportedByEvidence inst:EV-002 .
+
+inst:boundary_assumption_002 a owl:NamedIndividual,
+        ficr:BoundaryAssumption ;
+    rdfs:label "Cavity barriers, Unit A" ;
+    ficr:appliesToRiskUnit inst:riskunit_A ;
+    ficr:hasConditionState ficr:Unknown ;
+    ficr:hasEvidenceStatus ficr:EvidenceMissing .
+
+inst:boundary_assumption_003 a owl:NamedIndividual,
+        ficr:BoundaryAssumption ;
+    rdfs:label "External fire spread, Unit A (roof not accessed)" ;
+    ficr:appliesToRiskUnit inst:riskunit_A ;
+    ficr:hasConditionState ficr:Unknown ;
+    ficr:hasEvidenceStatus ficr:EvidenceMissing .
+
+inst:boundary_assumption_004 a owl:NamedIndividual,
+        ficr:BoundaryAssumption ;
+    rdfs:label "Structural stability, Unit A" ;
+    ficr:appliesToRiskUnit inst:riskunit_A ;
+    ficr:hasConditionState ficr:Unknown ;
+    ficr:hasEvidenceStatus ficr:EvidenceMissing .
+
+inst:boundary_assumption_005 a owl:NamedIndividual,
+        ficr:BoundaryAssumption ;
+    rdfs:label "Compartmentation of Unit B party-wall line" ;
+    ficr:aboutElement inst:W-001 ;
+    ficr:appliesToRiskUnit inst:riskunit_B ;
+    ficr:hasConditionState ficr:Compromised ;
+    ficr:hasEvidenceStatus ficr:EvidenceAvailable ;
+    ficr:supportedByEvidence inst:EV-002 .
+
+inst:boundary_assumption_006 a owl:NamedIndividual,
+        ficr:BoundaryAssumption ;
+    rdfs:label "Cavity barriers, Unit B" ;
+    ficr:appliesToRiskUnit inst:riskunit_B ;
+    ficr:hasConditionState ficr:Unknown ;
+    ficr:hasEvidenceStatus ficr:EvidenceMissing .
+
+inst:boundary_assumption_007 a owl:NamedIndividual,
+        ficr:BoundaryAssumption ;
+    rdfs:label "External fire spread, Unit B (roof not accessed)" ;
+    ficr:appliesToRiskUnit inst:riskunit_B ;
+    ficr:hasConditionState ficr:Unknown ;
+    ficr:hasEvidenceStatus ficr:EvidenceMissing .
+
+inst:boundary_assumption_008 a owl:NamedIndividual,
+        ficr:BoundaryAssumption ;
+    rdfs:label "Structural stability, Unit B (upper floor not inspected)" ;
+    ficr:appliesToRiskUnit inst:riskunit_B ;
+    ficr:hasConditionState ficr:Unknown ;
+    ficr:hasEvidenceStatus ficr:EvidenceMissing .
+
+inst:S-L2 a owl:NamedIndividual,
+        ficr:GroundAndAboveStorey ;
+    rdfs:label "Level 2 (upper floor)" ;
+    bot:hasSpace inst:SP-A201,
+        inst:SP-A202,
+        inst:SP-A203,
+        inst:SP-A204,
+        inst:SP-A205 .
+
+inst:S-ROOF a owl:NamedIndividual,
+        ficr:GroundAndAboveStorey ;
+    rdfs:label "Flat roof" .
+
+inst:EV-002 a owl:NamedIndividual,
+        ficr:ObservedEvidence ;
+    rdfs:label "Observed unsealed pipe penetration through the party wall above the kitchen area, Level 2" .
+
+inst:SP-A101 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "A101 Living room" ;
+    ficr:hasSpaceUsage ficr:HabitableRoom .
+
+inst:SP-A102 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "A102 Dining room" ;
+    ficr:hasSpaceUsage ficr:HabitableRoom .
+
+inst:SP-A103 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "A103 Kitchen" ;
+    ficr:hasSpaceUsage ficr:Kitchen .
+
+inst:SP-A104 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "A104 Bathroom" ;
+    ficr:hasSpaceUsage ficr:Bathroom .
+
+inst:SP-A201 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "A201 Bedroom" ;
+    ficr:hasSpaceUsage ficr:HabitableRoom .
+
+inst:SP-A202 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "A202 Bedroom" ;
+    ficr:hasSpaceUsage ficr:HabitableRoom .
+
+inst:SP-A203 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "A203 Bedroom" ;
+    ficr:hasSpaceUsage ficr:HabitableRoom .
+
+inst:SP-A204 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "A204 Bathroom" ;
+    ficr:hasSpaceUsage ficr:Bathroom .
+
+inst:SP-A205 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "A205 Utility room" ;
+    ficr:hasSpaceUsage ficr:ServiceUsage .
+
+inst:SP-B101 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "B101 Unit B ground-floor room" .
+
+inst:SP-B102 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "B102 Unit B ground-floor room" .
+
+inst:W-001 a owl:NamedIndividual,
+        ficr:Wall ;
+    rdfs:label "Party wall between Unit A and Unit B" ;
+    ficr:hasActualREI 60 ;
+    ficr:isExternal false .
+
+inst:S-GF a owl:NamedIndividual,
+        ficr:GroundAndAboveStorey ;
+    rdfs:label "Ground floor" ;
+    bot:hasSpace inst:SP-A101,
+        inst:SP-A102,
+        inst:SP-A103,
+        inst:SP-A104,
+        inst:SP-A105,
+        inst:SP-B101,
+        inst:SP-B102 .
+
+inst:SP-A105 a owl:NamedIndividual,
+        ficr:RoomSpace ;
+    rdfs:label "A105 Entrance hall" ;
+    ficr:hasSpaceUsage ficr:EntranceHall .
+
+inst:riskunit_A a owl:NamedIndividual,
+        ficr:RiskUnit ;
+    rdfs:label "Unit A dwelling" ;
+    ficr:coversSpatialZone inst:SP-A101,
+        inst:SP-A102,
+        inst:SP-A103,
+        inst:SP-A104,
+        inst:SP-A105,
+        inst:SP-A201,
+        inst:SP-A202,
+        inst:SP-A203,
+        inst:SP-A204,
+        inst:SP-A205 ;
+    ficr:hasInstallationStatus ficr:InstallationUnknown .
+
+inst:riskunit_B a owl:NamedIndividual,
+        ficr:RiskUnit ;
+    rdfs:label "Unit B dwelling" ;
+    ficr:coversSpatialZone inst:SP-B101,
+        inst:SP-B102 ;
+    ficr:hasInstallationStatus ficr:InstallationUnknown .
+

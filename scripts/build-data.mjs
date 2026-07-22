@@ -54,7 +54,7 @@ async function readJson(root, relativePath) {
 
 function pickSurveyExcerpt(survey) {
   const partyWall = survey.elements?.find((element) => element.id === 'W-001');
-  const documentEvidence = survey.evidence_log?.find((item) => item.id === 'EV-OM-REI');
+  const documentEvidence = survey.evidence_log?.find((item) => item.id === 'EV-001');
   return {
     schema_version: survey.meta?.schema_version,
     building: `${survey.building?.label} (${survey.building?.purpose_group})`,
@@ -84,111 +84,38 @@ function pickSurveyExcerpt(survey) {
   };
 }
 
-function queryStatusLists(report) {
+function informationAvailability(report) {
   return {
-    runnableQueries: report.queries.filter((query) => query.status === 'runnable').map((query) => query.query_id),
-    blockedQueries: report.queries.filter((query) => query.status === 'blocked'),
+    availableQueries: report.queries.filter((query) => query.status === 'runnable').map((query) => query.query_id),
+    unavailableQueries: report.queries
+      .filter((query) => query.status === 'blocked')
+      .map(({ query_id, missing_terms, suggestions }) => ({ queryId: query_id, missingTerms: missing_terms, suggestions })),
   };
 }
 
-function formatCount(value, singular, plural = `${singular}s`) {
-  return `${value} ${value === 1 ? singular : plural}`;
-}
-
-function rowsByState(rows) {
-  return rows.map((row) => `${row.unit}: ${row.conditionState} ${row.count}`).join(', ');
-}
-
-function queryLine(query, result) {
-  const rows = result.rows ?? [];
-  const rowCount = result.row_count;
-  const prefix = `${query.id} ${query.title}: ${formatCount(rowCount, 'result')}`;
-  if (query.id === 'A1' && rows[0]) return `${prefix}; building ${rows[0].building}, ${rows[0].storeys} storeys, ${rows[0].spaces} spaces.`;
-  if (query.id === 'A2') return `${prefix}; storeys listed: ${rows.map((row) => row.label).join(', ')}.`;
-  if (query.id === 'A3') return `${prefix}; space ledger includes named room and roof spaces.`;
-  if (query.id === 'A4') return `${prefix}; usage categories: ${rows.map((row) => `${row.usage} ${row.count}`).join(', ')}.`;
-  if (query.id === 'A5') return `${prefix}; element inventory: ${rows.map((row) => `${row.elementType} ${row.count}`).join(', ')}.`;
-  if (query.id === 'A6') return `${prefix}; fire-protection item recorded in ${rows[0]?.spaceLabel ?? 'the graph'}.`;
-  if (query.id === 'B1') return `${prefix}; no compliance health-score rows because no compliance assessment records are present.`;
-  if (query.id === 'B2') return `${prefix}; no REI requirement comparison rows because no regulatory requirement records are present.`;
-  if (query.id === 'B3') return `${prefix}; inferred class summary reports ${rows.map((row) => `${row.definedClass} ${row.count}`).join(', ')}.`;
-  if (query.id === 'B4') return `${prefix}; no finding traceability rows because no compliance findings are present.`;
-  if (query.id === 'C1') return `${prefix}; risk units: ${rows.map((row) => `${row.label} covers ${row.coveredSpaces} spaces`).join('; ')}.`;
-  if (query.id === 'C2') return `${prefix}; boundary states by unit: ${rowsByState(rows)}.`;
-  if (query.id === 'C3') {
-    const gaps = rows.filter((row) => row.gap === 'EVIDENCE GAP').length;
-    return `${prefix}; ${formatCount(gaps, 'evidence gap')} and ${formatCount(rowCount - gaps, 'supported assumption')}.`;
-  }
-  if (query.id === 'C4') return `${prefix}; risk priority rows: ${rows.map((row) => `${row.unit} score ${row.priorityScore}`).join(', ')}.`;
-  if (query.id === 'C5') return `${prefix}; no contradictory gap-consistency rows.`;
-  if (query.id === 'C6') return `${prefix}; no risk-finding traceability rows because findings are absent.`;
-  if (query.id === 'D1') return `${prefix}; workflow task: ${rows[0]?.taskLabel ?? 'none returned'}.`;
-  if (query.id === 'D2') return `${prefix}; no assessment-result rows because assessment records are absent.`;
-  return `${prefix}.`;
-}
-
-function buildCqSummary(queryDefs, results) {
-  const grouped = { A: [], B: [], C: [], D: [] };
-  for (const query of queryDefs) {
-    const result = results.queries[query.id];
-    grouped[query.group].push(queryLine(query, result));
-  }
-  return grouped;
-}
-
-function buildSampleReport(queryDefs, results, readiness, survey) {
-  const pipeEvidence = survey.evidence_log?.find((item) => item.id === 'EV-PIPE-PENETRATION');
-  const blocked = readiness.queries.find((query) => query.query_id === 'D2');
-  const c3Rows = results.queries.C3.rows;
-  const evidenceGapCount = c3Rows.filter((row) => row.gap === 'EVIDENCE GAP').length;
-  const compromisedUnits = results.queries.C2.rows.filter((row) => row.conditionState === 'Compromised').map((row) => row.unit);
+function availabilitySummary(report) {
   return {
-    title: 'Duplex A memo sample report',
-    source: 'Generated from the memo-derived ABox, CQ results, and gap check.',
-    cqSummary: buildCqSummary(queryDefs, results),
-    actions: [
-      `${pipeEvidence.label} is linked to compromised compartmentation for ${compromisedUnits.join(' and ')}; treat the party-wall penetration as a firestopping action item before relying on the compartment boundary.`,
-      `${formatCount(evidenceGapCount, 'boundary assumption')} returned an evidence gap; supplement the record with inspection evidence for unknown cavity-barrier, external-spread, and structural-stability assumptions.`,
-      `D2 is unanswerable because ${blocked.missing_terms.join(' and ')} are missing; add assessment records linked to compliance outputs before reporting assessment results.`,
-      'B2 and B4 return no rows; add regulatory requirement and compliance finding records before presenting REI comparison or finding traceability as an ontology-backed judgment.',
-    ],
-    advisoryTitle: 'Advisory Notes',
-    advisoryNotes: [
-      {
-        finding: 'Observed party-wall penetration',
-        riskMechanism:
-          'The demo records a compromised compartmentation assumption for both risk units, supported by the observed unsealed pipe penetration through the party wall. If the service opening is not sealed to the wall resistance, fire and smoke can bypass the separating construction.',
-        remedialMeasure:
-          'Inspect the penetration, identify the pipe/service type and aperture size, and install a tested proprietary fire-stopping system or an ADB-compatible pipe penetration treatment that maintains the fire resistance of the separating element. Capture before/after photographs and product/test evidence.',
-        priority:
-          'Priority 1: arrange firestopping verification and remedial works before relying on the Unit A / Unit B boundary as intact compartmentation.',
-      },
-      {
-        finding: 'Unknown boundary and roof-access evidence',
-        riskMechanism:
-          'The CQ output carries evidence gaps for unknown cavity-barrier, external-spread, and structural-stability assumptions. The memo also states that roof access was not obtained, so the roof/external-spread evidence remains incomplete rather than verified.',
-        remedialMeasure:
-          'Schedule a follow-up inspection with roof access and targeted checks to collect photographs, notes, and document references for the unknown assumptions. Keep each evidence item linked to the specific boundary assumption it supports.',
-        priority:
-          'Priority 2: resolve missing evidence after the party-wall penetration is controlled, then update Unknown assumptions only where the new evidence supports a clear state.',
-      },
-      {
-        finding: 'Missing regulatory and assessment records',
-        riskMechanism:
-          'The demo has no regulatory requirement records, no compliance assessments, and no produced findings, so REI comparison and assessment-result questions cannot produce ontology-backed compliance conclusions.',
-        remedialMeasure:
-          'Select the applicable regulatory basis, add requirement records for the relevant separating elements, and record compliance assessments that produce findings. Where using England guidance, reference the current GOV.UK Approved Document B route and any accepted project-specific fire-engineered alternative.',
-        priority:
-          'Priority 3: complete the regulatory and assessment layer after field evidence is updated, so later reports can separate evidence gaps from formal compliance findings.',
-      },
-    ],
+    total: report.summary.total,
+    available: report.summary.runnable,
+    unavailable: report.summary.blocked,
   };
+}
+
+function applyPresentationTerminology(markdown) {
+  return markdown
+    .replaceAll('TBox fingerprint', 'FiCR ontology reference')
+    .replaceAll('FiCR whitelist', 'FiCR controlled vocabulary')
+    .replaceAll('Readiness', 'Information availability')
+    .replace(/\breadiness\b(?!_report)/g, 'information availability')
+    .replaceAll('runnable', 'available')
+    .replaceAll('blocked', 'unavailable');
 }
 
 export async function buildContent(root = DATA_ROOT) {
-  const extractedSurvey = await readJson(root, 'memo/extracted_survey.json');
+  const extractedSurvey = await readJson(root, 'memo/survey.json');
   const memoReadiness = await readJson(root, 'memo/readiness_report.json');
   const memoCqResults = await readJson(root, 'memo/cq_results.json');
+  const memoReport = applyPresentationTerminology(await readFile(path.join(root, 'memo/survey-to-report.md'), 'utf8'));
   const ifcReadiness = await readJson(root, 'ifc/frozen_fixture/readiness_report.json');
   const ifcGate = await readJson(root, 'ifc/frozen_fixture/gate_report.json');
   const queryDefs = parseQueries(await readFile(path.join(root, 'all_queries.sparql'), 'utf8'));
@@ -196,7 +123,7 @@ export async function buildContent(root = DATA_ROOT) {
   return {
     home: {
       overview:
-        'FiCR is a fire-compartmentation-and-risk ontology for AEC/FM digital-twin records. It models building elements, compartment and risk-unit boundaries, fire-resistance evidence, boundary assumptions, regulatory requirements, compliance findings, and inspection workflow records for researchers and practitioners who need traceable fire-safety assessment data.',
+        'FiCR, Fire Compliance Checking and Risk Analysis, is a fire-compartmentation-and-risk ontology for AEC/FM digital-twin records. It models building elements, compartment and risk-unit boundaries, fire-resistance evidence, boundary assumptions, regulatory requirements, compliance findings, and inspection workflow records for researchers and practitioners who need traceable fire-safety assessment data.',
     },
     ontology: {
       iri: 'https://w3id.org/ficr/',
@@ -204,17 +131,21 @@ export async function buildContent(root = DATA_ROOT) {
     },
     skill: {
       lanes: ['Text memo or survey notes', 'FiCR ABox TTL', 'IFC via IFCtoFiCR'],
-      gates: ['survey schema', 'vocabulary whitelist', 'TBox fingerprint', 'RDF parse', 'FiCR term closure'],
-      sampleReport: buildSampleReport(queryDefs, memoCqResults, memoReadiness, extractedSurvey),
+      gates: ['survey schema', 'FiCR controlled vocabulary', 'FiCR ontology reference', 'RDF parse', 'FiCR term closure'],
+      sampleReport: {
+        source: 'Frozen survey-to-report output from the memo session artifacts.',
+        markdown: memoReport,
+      },
       memo: {
         extractedSurvey: pickSurveyExcerpt(extractedSurvey),
-        readiness: memoReadiness.summary,
-        ...queryStatusLists(memoReadiness),
+        informationAvailability: availabilitySummary(memoReadiness),
+        priorityScores: memoCqResults.queries.C4.rows.map((row) => ({ unit: row.unit, score: row.priorityScore })),
+        ...informationAvailability(memoReadiness),
       },
       ifc: {
         fixture: 'data/ifc/frozen_fixture',
-        readiness: ifcReadiness.summary,
-        ...queryStatusLists(ifcReadiness),
+        informationAvailability: availabilitySummary(ifcReadiness),
+        ...informationAvailability(ifcReadiness),
         gate: ifcGate,
       },
     },

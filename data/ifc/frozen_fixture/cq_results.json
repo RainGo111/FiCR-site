@@ -1,0 +1,1312 @@
+{
+  "graph": "D:\\CodingProjects\\FiCR\\FiCR-site\\.sync-ifc-20260722\\abox.ttl",
+  "queries": {
+    "A1": {
+      "file": "A1_building_overview.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 1,
+      "rows": [
+        {
+          "buildingType": "MultiStoreyBuilding",
+          "purposeGroup": "None",
+          "storeys": 4,
+          "spaces": 21
+        }
+      ]
+    },
+    "A2": {
+      "file": "A2_storey_inventory.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 4,
+      "rows": [
+        {
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95f6ab3",
+          "label": "T/FDN",
+          "kind": "BasementStorey",
+          "elevation": -1.25,
+          "spaces": 0
+        },
+        {
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "label": "Level 1",
+          "kind": "GroundAndAboveStorey",
+          "elevation": 0,
+          "spaces": 10
+        },
+        {
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "label": "Level 2",
+          "kind": "GroundAndAboveStorey",
+          "elevation": 3.1,
+          "spaces": 10
+        },
+        {
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95f770e",
+          "label": "Roof",
+          "kind": "GroundAndAboveStorey",
+          "elevation": 6,
+          "spaces": 1
+        }
+      ]
+    },
+    "A3": {
+      "file": "A3_space_ledger.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 21,
+      "rows": [
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d75",
+          "label": "A101",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "usage": "HabitableRoom",
+          "area": 17.936
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d42",
+          "label": "A102",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "usage": "HabitableRoom",
+          "area": 30.142
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d7f",
+          "label": "A103",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "usage": "Kitchen",
+          "area": 13.898
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d78",
+          "label": "A104",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "usage": "Bathroom",
+          "area": 3.998
+        },
+        {
+          "space": "space_40c2d70d-8d3b-49a9-9702-6756a4ee40fd",
+          "label": "A105",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "usage": "CirculationUsage",
+          "area": 4.922
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "label": "A201",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "usage": "HabitableRoom",
+          "area": 7.8
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d66",
+          "label": "A202",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "usage": "HabitableRoom",
+          "area": 26.119
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d65",
+          "label": "A203",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "usage": "HabitableRoom",
+          "area": 26.178
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d68",
+          "label": "A204",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "usage": "Bathroom",
+          "area": 5.416
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433df",
+          "label": "A205",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "usage": "ServiceUsage",
+          "area": 1.754
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0da",
+          "label": "B101",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "usage": "HabitableRoom",
+          "area": 17.936
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe323",
+          "label": "B102",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "usage": "HabitableRoom",
+          "area": 30.142
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0dc",
+          "label": "B103",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "usage": "Kitchen",
+          "area": 13.898
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d9",
+          "label": "B104",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "usage": "Bathroom",
+          "area": 3.998
+        },
+        {
+          "space": "space_40c2d70d-8d3b-49a9-9702-6756a4ee4132",
+          "label": "B105",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6512",
+          "usage": "CirculationUsage",
+          "area": 4.922
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d0",
+          "label": "B201",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "usage": "HabitableRoom",
+          "area": 7.8
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0ca",
+          "label": "B202",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "usage": "HabitableRoom",
+          "area": 26.119
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0c9",
+          "label": "B203",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "usage": "HabitableRoom",
+          "area": 26.178
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0cc",
+          "label": "B204",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "usage": "Bathroom",
+          "area": 5.441
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433cc",
+          "label": "B205",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95d6693",
+          "usage": "ServiceUsage",
+          "area": 1.728
+        },
+        {
+          "space": "space_335fc1b3-63ca-474d-9c21-6d5abbd83da0",
+          "label": "R301",
+          "storey": "storey_7b7032cc-b822-417b-9aea-6429f95f770e",
+          "usage": "ServiceUsage",
+          "area": 145.722
+        }
+      ]
+    },
+    "A4": {
+      "file": "A4_space_usage_distribution.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 5,
+      "rows": [
+        {
+          "usage": "HabitableRoom",
+          "count": 10
+        },
+        {
+          "usage": "Bathroom",
+          "count": 4
+        },
+        {
+          "usage": "ServiceUsage",
+          "count": 3
+        },
+        {
+          "usage": "CirculationUsage",
+          "count": 2
+        },
+        {
+          "usage": "Kitchen",
+          "count": 2
+        }
+      ]
+    },
+    "A5": {
+      "file": "A5_element_inventory.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 14,
+      "rows": [
+        {
+          "elementType": "Furnishings",
+          "count": 61
+        },
+        {
+          "elementType": "Opening",
+          "count": 50
+        },
+        {
+          "elementType": "Wall",
+          "count": 34
+        },
+        {
+          "elementType": "Window",
+          "count": 24
+        },
+        {
+          "elementType": "ExternalWall",
+          "count": 23
+        },
+        {
+          "elementType": "FloorSlab",
+          "count": 20
+        },
+        {
+          "elementType": "Doorset",
+          "count": 14
+        },
+        {
+          "elementType": "Ceiling",
+          "count": 13
+        },
+        {
+          "elementType": "Beam",
+          "count": 8
+        },
+        {
+          "elementType": "WallFoundation",
+          "count": 7
+        },
+        {
+          "elementType": "StairFlight",
+          "count": 6
+        },
+        {
+          "elementType": "Railing",
+          "count": 4
+        },
+        {
+          "elementType": "RoofSlab",
+          "count": 2
+        },
+        {
+          "elementType": "Stair",
+          "count": 2
+        }
+      ]
+    },
+    "A6": {
+      "file": "A6_per_space_fire_protection.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 153,
+      "rows": [
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d75",
+          "spaceLabel": "A101",
+          "item": "door_6b61ce71-1a7a-473c-8f87-4262e0bdb41a",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d75",
+          "spaceLabel": "A101",
+          "item": "door_6b61ce71-1a7a-473c-8f87-4262e0bdc223",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d75",
+          "spaceLabel": "A101",
+          "item": "slab_9808fd7f-dc48-478e-9217-628e833d49bd",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d75",
+          "spaceLabel": "A101",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7ef5",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d75",
+          "spaceLabel": "A101",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d441c",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d75",
+          "spaceLabel": "A101",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d471d",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d75",
+          "spaceLabel": "A101",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d795d",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d75",
+          "spaceLabel": "A101",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7d12",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d75",
+          "spaceLabel": "A101",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7d42",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d42",
+          "spaceLabel": "A102",
+          "item": "door_7606d7eb-508f-40ce-a522-9b526ddc728b",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d42",
+          "spaceLabel": "A102",
+          "item": "slab_9808fd7f-dc48-478e-9217-628e833d49bd",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d42",
+          "spaceLabel": "A102",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7ef5",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d42",
+          "spaceLabel": "A102",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d441c",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d42",
+          "spaceLabel": "A102",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7af9",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d42",
+          "spaceLabel": "A102",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7d42",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d7f",
+          "spaceLabel": "A103",
+          "item": "slab_9808fd7f-dc48-478e-9217-628e833d49bd",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d7f",
+          "spaceLabel": "A103",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7ca4",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d7f",
+          "spaceLabel": "A103",
+          "item": "wall_2c391822-07f8-4a22-86a8-a1e57412d386",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d7f",
+          "spaceLabel": "A103",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d44b8",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d7f",
+          "spaceLabel": "A103",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d471d",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d7f",
+          "spaceLabel": "A103",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7af9",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d78",
+          "spaceLabel": "A104",
+          "item": "door_6b61ce71-1a7a-473c-8f87-4262e0bdc223",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d78",
+          "spaceLabel": "A104",
+          "item": "slab_9808fd7f-dc48-478e-9217-628e833d49bd",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d78",
+          "spaceLabel": "A104",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7b5b",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d78",
+          "spaceLabel": "A104",
+          "item": "wall_2c391822-07f8-4a22-86a8-a1e57412d365",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d78",
+          "spaceLabel": "A104",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d44b8",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d78",
+          "spaceLabel": "A104",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d471d",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d78",
+          "spaceLabel": "A104",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d795d",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_40c2d70d-8d3b-49a9-9702-6756a4ee40fd",
+          "spaceLabel": "A105",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd56",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_40c2d70d-8d3b-49a9-9702-6756a4ee40fd",
+          "spaceLabel": "A105",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7ef5",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_40c2d70d-8d3b-49a9-9702-6756a4ee40fd",
+          "spaceLabel": "A105",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d795d",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_40c2d70d-8d3b-49a9-9702-6756a4ee40fd",
+          "spaceLabel": "A105",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7d12",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "spaceLabel": "A201",
+          "item": "door_64b7f7d3-8cfc-4277-ba33-8de2e6533926",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "spaceLabel": "A201",
+          "item": "door_6b61ce71-1a7a-473c-8f87-4262e0bdc370",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "spaceLabel": "A201",
+          "item": "door_982f59b0-f2e1-485f-8ce1-c9f6117b9655",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "spaceLabel": "A201",
+          "item": "door_982f59b0-f2e1-485f-8ce1-c9f6117b97df",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "spaceLabel": "A201",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd56",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "spaceLabel": "A201",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7160",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "spaceLabel": "A201",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5239",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "spaceLabel": "A201",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5246",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "spaceLabel": "A201",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5275",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d6c",
+          "spaceLabel": "A201",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d56c9",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d66",
+          "spaceLabel": "A202",
+          "item": "door_982f59b0-f2e1-485f-8ce1-c9f6117b97df",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d66",
+          "spaceLabel": "A202",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd56",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d66",
+          "spaceLabel": "A202",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7361",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d66",
+          "spaceLabel": "A202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d4938",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d66",
+          "spaceLabel": "A202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5246",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d66",
+          "spaceLabel": "A202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5275",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d66",
+          "spaceLabel": "A202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5393",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d66",
+          "spaceLabel": "A202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d568d",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d66",
+          "spaceLabel": "A202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d56c9",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d65",
+          "spaceLabel": "A203",
+          "item": "door_6b61ce71-1a7a-473c-8f87-4262e0bdc370",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d65",
+          "spaceLabel": "A203",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd56",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d65",
+          "spaceLabel": "A203",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b72d9",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d65",
+          "spaceLabel": "A203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d4938",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d65",
+          "spaceLabel": "A203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5239",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d65",
+          "spaceLabel": "A203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5275",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d65",
+          "spaceLabel": "A203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5330",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d65",
+          "spaceLabel": "A203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5611",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d65",
+          "spaceLabel": "A203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d56c9",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d68",
+          "spaceLabel": "A204",
+          "item": "door_64b7f7d3-8cfc-4277-ba33-8de2e6533926",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d68",
+          "spaceLabel": "A204",
+          "item": "door_982f59b0-f2e1-485f-8ce1-c9f6117b9655",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d68",
+          "spaceLabel": "A204",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd56",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d68",
+          "spaceLabel": "A204",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b700f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d68",
+          "spaceLabel": "A204",
+          "item": "wall_27ece05c-f06c-4dd2-9ccd-945e52597b0a",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d68",
+          "spaceLabel": "A204",
+          "item": "wall_64b7f7d3-8cfc-4277-ba33-8de2e65338fa",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d68",
+          "spaceLabel": "A204",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5275",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067be1d68",
+          "spaceLabel": "A204",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5330",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433df",
+          "spaceLabel": "A205",
+          "item": "door_64b7f7d3-8cfc-4277-ba33-8de2e6533926",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433df",
+          "spaceLabel": "A205",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd56",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433df",
+          "spaceLabel": "A205",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b700f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433df",
+          "spaceLabel": "A205",
+          "item": "wall_27ece05c-f06c-4dd2-9ccd-945e52597b0a",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433df",
+          "spaceLabel": "A205",
+          "item": "wall_64b7f7d3-8cfc-4277-ba33-8de2e65338fa",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433df",
+          "spaceLabel": "A205",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5275",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433df",
+          "spaceLabel": "A205",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5393",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0da",
+          "spaceLabel": "B101",
+          "item": "door_6b61ce71-1a7a-473c-8f87-4262e0bdb448",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0da",
+          "spaceLabel": "B101",
+          "item": "door_6b61ce71-1a7a-473c-8f87-4262e0bdc24f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0da",
+          "spaceLabel": "B101",
+          "item": "slab_9808fd7f-dc48-478e-9217-628e833d410f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0da",
+          "spaceLabel": "B101",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7a99",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0da",
+          "spaceLabel": "B101",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d46ec",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0da",
+          "spaceLabel": "B101",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7938",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0da",
+          "spaceLabel": "B101",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7af9",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0da",
+          "spaceLabel": "B101",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7be7",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0da",
+          "spaceLabel": "B101",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7df1",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe323",
+          "spaceLabel": "B102",
+          "item": "door_7606d7eb-508f-40ce-a522-9b526ddc7201",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe323",
+          "spaceLabel": "B102",
+          "item": "slab_9808fd7f-dc48-478e-9217-628e833d410f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe323",
+          "spaceLabel": "B102",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7a99",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe323",
+          "spaceLabel": "B102",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7be7",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe323",
+          "spaceLabel": "B102",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7d12",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe323",
+          "spaceLabel": "B102",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7df1",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0dc",
+          "spaceLabel": "B103",
+          "item": "slab_9808fd7f-dc48-478e-9217-628e833d410f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0dc",
+          "spaceLabel": "B103",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7a31",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0dc",
+          "spaceLabel": "B103",
+          "item": "wall_2c391822-07f8-4a22-86a8-a1e57412d8c1",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0dc",
+          "spaceLabel": "B103",
+          "item": "wall_2c391822-07f8-4a22-86a8-a1e57412dcef",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0dc",
+          "spaceLabel": "B103",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7938",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0dc",
+          "spaceLabel": "B103",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7d12",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d9",
+          "spaceLabel": "B104",
+          "item": "door_6b61ce71-1a7a-473c-8f87-4262e0bdc24f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d9",
+          "spaceLabel": "B104",
+          "item": "slab_9808fd7f-dc48-478e-9217-628e833d410f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d9",
+          "spaceLabel": "B104",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7b78",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d9",
+          "spaceLabel": "B104",
+          "item": "wall_2c391822-07f8-4a22-86a8-a1e57412dcef",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d9",
+          "spaceLabel": "B104",
+          "item": "wall_2c391822-07f8-4a22-86a8-a1e57412df9e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d9",
+          "spaceLabel": "B104",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d46ec",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d9",
+          "spaceLabel": "B104",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7938",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_40c2d70d-8d3b-49a9-9702-6756a4ee4132",
+          "spaceLabel": "B105",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd1e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_40c2d70d-8d3b-49a9-9702-6756a4ee4132",
+          "spaceLabel": "B105",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7a99",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_40c2d70d-8d3b-49a9-9702-6756a4ee4132",
+          "spaceLabel": "B105",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d46ec",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_40c2d70d-8d3b-49a9-9702-6756a4ee4132",
+          "spaceLabel": "B105",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d7af9",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d0",
+          "spaceLabel": "B201",
+          "item": "door_6b61ce71-1a7a-473c-8f87-4262e0bdc3d4",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d0",
+          "spaceLabel": "B201",
+          "item": "door_982f59b0-f2e1-485f-8ce1-c9f6117b8873",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d0",
+          "spaceLabel": "B201",
+          "item": "door_982f59b0-f2e1-485f-8ce1-c9f6117b96c4",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d0",
+          "spaceLabel": "B201",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd1e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d0",
+          "spaceLabel": "B201",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7236",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d0",
+          "spaceLabel": "B201",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d548e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d0",
+          "spaceLabel": "B201",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d54e7",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d0",
+          "spaceLabel": "B201",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5659",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0d0",
+          "spaceLabel": "B201",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d574f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0ca",
+          "spaceLabel": "B202",
+          "item": "door_982f59b0-f2e1-485f-8ce1-c9f6117b8873",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0ca",
+          "spaceLabel": "B202",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd1e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0ca",
+          "spaceLabel": "B202",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b720f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0ca",
+          "spaceLabel": "B202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d4938",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0ca",
+          "spaceLabel": "B202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d548e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0ca",
+          "spaceLabel": "B202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d54e7",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0ca",
+          "spaceLabel": "B202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5512",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0ca",
+          "spaceLabel": "B202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5611",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0ca",
+          "spaceLabel": "B202",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5659",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0c9",
+          "spaceLabel": "B203",
+          "item": "door_6b61ce71-1a7a-473c-8f87-4262e0bdc3d4",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0c9",
+          "spaceLabel": "B203",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd1e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0c9",
+          "spaceLabel": "B203",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b7300",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0c9",
+          "spaceLabel": "B203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d4938",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0c9",
+          "spaceLabel": "B203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d548e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0c9",
+          "spaceLabel": "B203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d55b5",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0c9",
+          "spaceLabel": "B203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5659",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0c9",
+          "spaceLabel": "B203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d568d",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0c9",
+          "spaceLabel": "B203",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d574f",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0cc",
+          "spaceLabel": "B204",
+          "item": "door_64b7f7d3-8cfc-4277-ba33-8de2e6533fec",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0cc",
+          "spaceLabel": "B204",
+          "item": "door_982f59b0-f2e1-485f-8ce1-c9f6117b96c4",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0cc",
+          "spaceLabel": "B204",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd1e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0cc",
+          "spaceLabel": "B204",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b70a9",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0cc",
+          "spaceLabel": "B204",
+          "item": "wall_27ece05c-f06c-4dd2-9ccd-945e52597fa3",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0cc",
+          "spaceLabel": "B204",
+          "item": "wall_64b7f7d3-8cfc-4277-ba33-8de2e6533e77",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0cc",
+          "spaceLabel": "B204",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d548e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_0b74b3fa-1a92-405e-9ac9-d59067bfe0cc",
+          "spaceLabel": "B204",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d55b5",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433cc",
+          "spaceLabel": "B205",
+          "item": "door_64b7f7d3-8cfc-4277-ba33-8de2e6533fec",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433cc",
+          "spaceLabel": "B205",
+          "item": "slab_6b61ce71-1a7a-473c-8f87-4262e0bdbd1e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433cc",
+          "spaceLabel": "B205",
+          "item": "slab_982f59b0-f2e1-485f-8ce1-c9f6117b70a9",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433cc",
+          "spaceLabel": "B205",
+          "item": "wall_27ece05c-f06c-4dd2-9ccd-945e52597fa3",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433cc",
+          "spaceLabel": "B205",
+          "item": "wall_64b7f7d3-8cfc-4277-ba33-8de2e6533e77",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433cc",
+          "spaceLabel": "B205",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d548e",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_aa6e13ea-b5bc-4245-93bf-8b23558433cc",
+          "spaceLabel": "B205",
+          "item": "wall_9808fd7f-dc48-478e-9217-628e833d5512",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_335fc1b3-63ca-474d-9c21-6d5abbd83da0",
+          "spaceLabel": "R301",
+          "item": "wall_2da40d62-4698-436c-a2c3-95c49bb70c3c",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_335fc1b3-63ca-474d-9c21-6d5abbd83da0",
+          "spaceLabel": "R301",
+          "item": "wall_2da40d62-4698-436c-a2c3-95c49bb70ca4",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_335fc1b3-63ca-474d-9c21-6d5abbd83da0",
+          "spaceLabel": "R301",
+          "item": "wall_2da40d62-4698-436c-a2c3-95c49bb70cfa",
+          "itemKind": "fabric"
+        },
+        {
+          "space": "space_335fc1b3-63ca-474d-9c21-6d5abbd83da0",
+          "spaceLabel": "R301",
+          "item": "wall_2da40d62-4698-436c-a2c3-95c49bb70d41",
+          "itemKind": "fabric"
+        }
+      ]
+    },
+    "B1": {
+      "file": "B1_compliance_health_score.rq",
+      "inference": "yes",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "B2": {
+      "file": "B2_element_rei_detail.rq",
+      "inference": "yes",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "B3": {
+      "file": "B3_owl_inferred_classification.rq",
+      "inference": "yes",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "B4": {
+      "file": "B4_finding_traceability.rq",
+      "inference": "yes",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "C1": {
+      "file": "C1_risk_unit_inventory.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "C2": {
+      "file": "C2_boundary_condition_distribution.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "C3": {
+      "file": "C3_evidence_completeness.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "C4": {
+      "file": "C4_risk_unit_confidence.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "C5": {
+      "file": "C5_gap_consistency.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "C6": {
+      "file": "C6_risk_finding_traceability.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "D1": {
+      "file": "D1_inspection_workflow.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    },
+    "D2": {
+      "file": "D2_assessment_results.rq",
+      "inference": "no",
+      "status": "ok",
+      "row_count": 0,
+      "rows": []
+    }
+  }
+}

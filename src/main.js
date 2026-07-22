@@ -74,9 +74,9 @@ function renderOntology() {
     'Ontology',
     'ontology',
     `
-      <p class="lede">The FiCR TBox defines the core vocabulary for fire-compartmentation and risk records: building elements, risk units, evidence, boundary assumptions, regulatory requirements, compliance findings, and workflow entities. The canonical identifier resolves to the current WIDOCO documentation.</p>
+      <p class="lede">The FiCR ontology reference defines the core vocabulary for fire-compartmentation and risk records: building elements, risk units, evidence, boundary assumptions, regulatory requirements, compliance findings, and workflow entities. The canonical identifier resolves to the current WIDOCO documentation.</p>
       <figure class="media-figure ontology-diagram">
-        <img src="/ontology-diagram.png" alt="FiCR ontology structure diagram" width="4095" height="3895" loading="lazy">
+        <img src="/ontology-diagram.png" alt="FiCR ontology structure diagram" width="10460" height="5715" loading="lazy">
       </figure>
       <p><a class="primary-link" href="${content.ontology.iri}" target="_blank" rel="noreferrer">FiCR ontology documentation: ${content.ontology.iri}</a></p>
     `,
@@ -184,7 +184,7 @@ function renderQueries() {
     'Competency Queries',
     'queries',
     `
-      <p class="lede">The competency queries are bundled from the local showcase data at build time. Run sends the selected query text directly to the TriplyDB SPARQL endpoint from the browser.</p>
+      <p class="lede">The competency queries are bundled from the local showcase data at build time. Every query executes against the reasoned, materialised graph. The inference flag in the source bundle is metadata only. Run sends the selected query text directly to the TriplyDB SPARQL endpoint from the browser.</p>
       ${renderModuleNav()}
       <div class="query-groups">
         ${groupedQueries()
@@ -239,31 +239,75 @@ function renderFlowStage(stage, index) {
   `;
 }
 
-function renderReportGroup(label, lines) {
-  return `
-    <section class="report-group">
-      <h3>${escapeHtml(label)}</h3>
-      <ol>
-        ${lines.map((line) => `<li>${escapeHtml(line)}</li>`).join('')}
-      </ol>
-    </section>
-  `;
+function renderInlineMarkdown(text) {
+  return escapeHtml(text)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>');
 }
 
-function renderAdvisoryNote(note) {
-  return `
-    <article class="advisory-card">
-      <h3>${escapeHtml(note.finding)}</h3>
-      <dl>
-        <dt>Risk mechanism</dt>
-        <dd>${escapeHtml(note.riskMechanism)}</dd>
-        <dt>Remedial measure</dt>
-        <dd>${escapeHtml(note.remedialMeasure)}</dd>
-        <dt>Priority / sequence</dt>
-        <dd>${escapeHtml(note.priority)}</dd>
-      </dl>
-    </article>
-  `;
+function tableCells(line) {
+  return line
+    .trim()
+    .replace(/^\||\|$/g, '')
+    .split('|')
+    .map((cell) => cell.trim());
+}
+
+function renderReportMarkdown(markdown) {
+  const lines = markdown.trim().split(/\r?\n/);
+  const html = [];
+  let index = 0;
+
+  while (index < lines.length) {
+    const line = lines[index];
+    if (!line.trim()) {
+      index += 1;
+      continue;
+    }
+    if (line.startsWith('```')) {
+      const code = [];
+      index += 1;
+      while (index < lines.length && !lines[index].startsWith('```')) code.push(lines[index++]);
+      index += 1;
+      html.push(`<pre><code>${escapeHtml(code.join('\n'))}</code></pre>`);
+      continue;
+    }
+    const heading = line.match(/^(#{1,3})\s+(.+)$/);
+    if (heading) {
+      const level = heading[1].length;
+      html.push(`<h${level}>${renderInlineMarkdown(heading[2])}</h${level}>`);
+      index += 1;
+      continue;
+    }
+    if (line === '---') {
+      html.push('<hr>');
+      index += 1;
+      continue;
+    }
+    if (line.startsWith('|') && /^\|\s*:?-{3,}/.test(lines[index + 1] ?? '')) {
+      const headers = tableCells(line);
+      index += 2;
+      const rows = [];
+      while (index < lines.length && lines[index].startsWith('|')) rows.push(tableCells(lines[index++]));
+      html.push(`<div class="report-table"><table><thead><tr>${headers.map((cell) => `<th>${renderInlineMarkdown(cell)}</th>`).join('')}</tr></thead><tbody>${rows.map((row) => `<tr>${row.map((cell) => `<td>${renderInlineMarkdown(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`);
+      continue;
+    }
+    if (/^\s*-\s+/.test(line)) {
+      const items = [];
+      while (index < lines.length && /^\s*-\s+/.test(lines[index])) {
+        items.push(lines[index].replace(/^\s*-\s+/, ''));
+        index += 1;
+      }
+      html.push(`<ul>${items.map((item) => `<li>${renderInlineMarkdown(item)}</li>`).join('')}</ul>`);
+      continue;
+    }
+    const paragraph = [];
+    while (index < lines.length && lines[index].trim() && !lines[index].startsWith('```') && !/^(#{1,3})\s+/.test(lines[index]) && lines[index] !== '---' && !lines[index].startsWith('|') && !/^\s*-\s+/.test(lines[index])) {
+      paragraph.push(lines[index++]);
+    }
+    html.push(`<p>${renderInlineMarkdown(paragraph.join(' '))}</p>`);
+  }
+  return html.join('');
 }
 
 function renderSkill() {
@@ -310,7 +354,7 @@ function renderSkill() {
     },
   ];
   app.innerHTML = page(
-    'ficr-abox-builder Skill',
+    'FiCR Assistant Skill',
     'skill',
     `
       <section class="pipeline-narrative featured-panel">
@@ -341,29 +385,9 @@ function renderSkill() {
         <article class="report-shell">
           <header>
             <p class="muted">${escapeHtml(report.source)}</p>
-            <h2>${escapeHtml(report.title)}</h2>
+            <h2>Duplex A survey-to-report output</h2>
           </header>
-          <section class="report-part">
-            <h2>Part 1. CQ Results Summary</h2>
-            <div class="report-modules">
-              ${renderReportGroup('A. Inventory', report.cqSummary.A)}
-              ${renderReportGroup('B. REI compliance via inference', report.cqSummary.B)}
-              ${renderReportGroup('C. Risk-unit boundaries', report.cqSummary.C)}
-              ${renderReportGroup('D. Workflow', report.cqSummary.D)}
-            </div>
-          </section>
-          <section class="report-part">
-            <h2>Part 2. Findings to Actions</h2>
-            <ol class="action-list">
-              ${report.actions.map((action) => `<li>${escapeHtml(action)}</li>`).join('')}
-            </ol>
-          </section>
-          <section class="report-part advisory-notes">
-            <h2>Part 3. Advisory Notes</h2>
-            <div class="advisory-grid">
-              ${report.advisoryNotes.map(renderAdvisoryNote).join('')}
-            </div>
-          </section>
+          <div class="report-markdown">${renderReportMarkdown(report.markdown)}</div>
         </article>
       </section>
     `,

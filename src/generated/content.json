@@ -1,6 +1,6 @@
 {
   "home": {
-    "overview": "FiCR is a fire-compartmentation-and-risk ontology for AEC/FM digital-twin records. It models building elements, compartment and risk-unit boundaries, fire-resistance evidence, boundary assumptions, regulatory requirements, compliance findings, and inspection workflow records for researchers and practitioners who need traceable fire-safety assessment data."
+    "overview": "FiCR, Fire Compliance Checking and Risk Analysis, is a fire-compartmentation-and-risk ontology for AEC/FM digital-twin records. It models building elements, compartment and risk-unit boundaries, fire-resistance evidence, boundary assumptions, regulatory requirements, compliance findings, and inspection workflow records for researchers and practitioners who need traceable fire-safety assessment data."
   },
   "ontology": {
     "iri": "https://w3id.org/ficr/",
@@ -14,78 +14,23 @@
     ],
     "gates": [
       "survey schema",
-      "vocabulary whitelist",
-      "TBox fingerprint",
+      "FiCR controlled vocabulary",
+      "FiCR ontology reference",
       "RDF parse",
       "FiCR term closure"
     ],
     "sampleReport": {
-      "title": "Duplex A memo sample report",
-      "source": "Generated from the memo-derived ABox, CQ results, and gap check.",
-      "cqSummary": {
-        "A": [
-          "A1 Building Overview: 1 result; building BLD-DA, 3 storeys, 13 spaces.",
-          "A2 Storey Inventory: 3 results; storeys listed: Ground Floor, Level 2, Flat Roof.",
-          "A3 Space Ledger: 13 results; space ledger includes named room and roof spaces.",
-          "A4 Space Usage Distribution: 5 results; usage categories: HabitableRoom 5, Bathroom 2, EntranceHall 1, Kitchen 1, ServiceUsage 1.",
-          "A5 Element Inventory: 4 results; element inventory: Wall 2, Alarm 1, Doorset 1, RoofSlab 1.",
-          "A6 Per Space Fire Protection: 1 result; fire-protection item recorded in A105 Entrance Hall."
-        ],
-        "B": [
-          "B1 Compliance Health Score: 0 results; no compliance health-score rows because no compliance assessment records are present.",
-          "B2 Element Rei Detail: 0 results; no REI requirement comparison rows because no regulatory requirement records are present.",
-          "B3 Owl Inferred Classification: 1 result; inferred class summary reports Wall 2.",
-          "B4 Finding Traceability: 0 results; no finding traceability rows because no compliance findings are present."
-        ],
-        "C": [
-          "C1 Risk Unit Inventory: 2 results; risk units: Unit A covers 10 spaces; Unit B covers 2 spaces.",
-          "C2 Boundary Condition Distribution: 4 results; boundary states by unit: riskunit_A: Compromised 1, riskunit_A: Unknown 3, riskunit_B: Compromised 1, riskunit_B: Unknown 3.",
-          "C3 Evidence Completeness: 8 results; 6 evidence gaps and 2 supported assumptions.",
-          "C4 Risk Unit Confidence: 2 results; risk priority rows: riskunit_A score 7, riskunit_B score 7.",
-          "C5 Gap Consistency: 0 results; no contradictory gap-consistency rows.",
-          "C6 Risk Finding Traceability: 0 results; no risk-finding traceability rows because findings are absent."
-        ],
-        "D": [
-          "D1 Inspection Workflow: 1 result; workflow task: Arrange firestopping contractor follow-up next week.",
-          "D2 Assessment Results: 0 results; no assessment-result rows because assessment records are absent."
-        ]
-      },
-      "actions": [
-        "Unsealed pipe penetration through the party wall on Level 2 roughly above the kitchen area is linked to compromised compartmentation for riskunit_A and riskunit_B; treat the party-wall penetration as a firestopping action item before relying on the compartment boundary.",
-        "6 boundary assumptions returned an evidence gap; supplement the record with inspection evidence for unknown cavity-barrier, external-spread, and structural-stability assumptions.",
-        "D2 is unanswerable because ComplianceChecking and producesFinding are missing; add assessment records linked to compliance outputs before reporting assessment results.",
-        "B2 and B4 return no rows; add regulatory requirement and compliance finding records before presenting REI comparison or finding traceability as an ontology-backed judgment."
-      ],
-      "advisoryTitle": "Advisory Notes",
-      "advisoryNotes": [
-        {
-          "finding": "Observed party-wall penetration",
-          "riskMechanism": "The demo records a compromised compartmentation assumption for both risk units, supported by the observed unsealed pipe penetration through the party wall. If the service opening is not sealed to the wall resistance, fire and smoke can bypass the separating construction.",
-          "remedialMeasure": "Inspect the penetration, identify the pipe/service type and aperture size, and install a tested proprietary fire-stopping system or an ADB-compatible pipe penetration treatment that maintains the fire resistance of the separating element. Capture before/after photographs and product/test evidence.",
-          "priority": "Priority 1: arrange firestopping verification and remedial works before relying on the Unit A / Unit B boundary as intact compartmentation."
-        },
-        {
-          "finding": "Unknown boundary and roof-access evidence",
-          "riskMechanism": "The CQ output carries evidence gaps for unknown cavity-barrier, external-spread, and structural-stability assumptions. The memo also states that roof access was not obtained, so the roof/external-spread evidence remains incomplete rather than verified.",
-          "remedialMeasure": "Schedule a follow-up inspection with roof access and targeted checks to collect photographs, notes, and document references for the unknown assumptions. Keep each evidence item linked to the specific boundary assumption it supports.",
-          "priority": "Priority 2: resolve missing evidence after the party-wall penetration is controlled, then update Unknown assumptions only where the new evidence supports a clear state."
-        },
-        {
-          "finding": "Missing regulatory and assessment records",
-          "riskMechanism": "The demo has no regulatory requirement records, no compliance assessments, and no produced findings, so REI comparison and assessment-result questions cannot produce ontology-backed compliance conclusions.",
-          "remedialMeasure": "Select the applicable regulatory basis, add requirement records for the relevant separating elements, and record compliance assessments that produce findings. Where using England guidance, reference the current GOV.UK Approved Document B route and any accepted project-specific fire-engineered alternative.",
-          "priority": "Priority 3: complete the regulatory and assessment layer after field evidence is updated, so later reports can separate evidence gaps from formal compliance findings."
-        }
-      ]
+      "source": "Frozen survey-to-report output from the memo session artifacts.",
+      "markdown": "# FiCR Assistant — Session Report (survey text lane)\n\n**Input:** O&M walkthrough memo, two-unit residential duplex (rain-limited visit, no roof access, Unit B ground floor only)\n**Route:** host-model extraction to survey-v1 JSON -> schema and vocabulary validation -> RDF generation -> CQ execution (asserted lane) -> information availability report\n**Session artifacts:** `survey.json`, `abox.ttl`, `cq_results.json`, `readiness_report.json` (this directory). Case facts carry source tags; guidance content is attributed to its external source.\n\n## 1. Deterministic checks\n\n| Check | Status | Detail |\n|---|:---:|---|\n| Survey schema validation | VALID | after two extraction fixes (omitted unstated elevations, dropped null element references) |\n| Vocabulary control | PASS | every term inside the derived FiCR controlled vocabulary |\n| RDF generation | PASS | 171 triples |\n\n## 2. Result overview\n\n**Information availability** — 15 of 18 available:\n\n```\nA building & spaces   ●●●●●●   6/6 available\nB compliance          ●●○●     3/4 ready (B3 unavailable: no role assignments)\nC condition & risk    ●●●●●●   6/6 available\nD workflow            ○○       0/2 unavailable (no event, task or assessment records)\n```\n\nThe 14 asserted-lane queries executed; the three inference-marked B queries belong to the materialised assessment stage and are not part of this lane.\n\n**Extracted structure** (survey layer): 1 building (`PurposeGroup1b`) · 3 storeys · 12 spaces · 3 elements · 2 risk units · 8 boundary assumptions · 2 evidence items.\n\n**Space use** (A4) — Unit B rooms keep no usage claim (only door plates were seen):\n\n```\nHabitableRoom   5  █████\nBathroom        2  ██\nEntranceHall    1  █\nKitchen         1  █\nServiceUsage    1  █\nunclassified    2  (B101, B102)\n```\n\n**Boundary conditions** — risk units x aspects (C3):\n\n| Risk unit | Compartmentation | Cavity barriers | External spread | Structural stability |\n|---|:---:|:---:|:---:|:---:|\n| Unit A | ✖ observed breach | ◌ gap | ◌ gap | ◌ gap |\n| Unit B | ✖ observed breach | ◌ gap | ◌ gap | ◌ gap |\n\nLegend: ✖ Compromised, observed evidence · ◌ Unknown, no supporting evidence. The shared party-wall penetration compromises the compartmentation aspect of both dwellings.\n\n**Inspection priority** (C4):\n\n```\nUnit A  ███████  7   (3 unknown · 1 compromised · 3 gaps)\nUnit B  ███████  7   (3 unknown · 1 compromised · 3 gaps)\n```\n\nEqual scores: the defect sits on the shared boundary and the access limits affected both units, so follow-up applies to the whole building.\n\n**Integrity check** (C5): 0 rows — no contradiction between evidence status and recorded evidence.\n\n## 3. CQ results\n\nA1 1 · A2 3 · A3 12 · A4 5 · A5 3 · A6 1 · C1 2 · C2 4 · C3 8 · C4 2 · C5 0 · C6 0 · D1 0 · D2 0. Key values: the building is `PurposeGroup1b` with 3 storey records and 12 spaces (A1); the party wall carries the O&M-documented REI 60 (survey layer, EV-001); C6 returns no rows because no formal risk-analysis record exists yet.\n\n## 4. Advisory Notes\n\n### [P1] Firestop the party-wall pipe penetration\n\n- **Finding:** an unsealed pipe penetration through the party wall above the kitchen area, Level 2, is recorded as observed evidence and compromises the compartmentation assumption of both dwellings.\n- **Why it matters:** the party wall is the separating line between the two homes and its documented REI 60 is defeated at the penetration; fire and smoke can pass between units through the opening.\n- **Do next:**\n  - proceed with the contractor firestopping already agreed in the memo and treat it as the top action;\n  - seal with a proprietary penetration system tested to BS EN 1366-3, matched to the pipe type and aperture, maintaining the wall's 60-minute performance;\n  - capture before/after photographs and the product evidence, and link them to the two compartmentation assumptions.\n- **Sources:** case facts C2, C3, C4, EV-002 · guidance: ADB Vol. 1 fire-stopping provisions; BS EN 1366-3 penetration seals.\n\n### [P2] Obtain or commission fire-door evidence for the Unit B entrance door\n\n- **Finding:** the door appears to be a fire door but no certificate was found on site or in the handover folder; its rating is recorded as null rather than assumed.\n- **Why it matters:** an uncertified door on a dwelling entrance cannot be credited in any later compliance check, and dwelling entrance doors are a standard point of fire-safety failure.\n- **Do next:**\n  - search the O&M records for the doorset certificate;\n  - failing that, commission an inspection by a competent fire-door inspector to establish the doorset's rating and condition.\n- **Sources:** case facts survey element D-001 · guidance: fire doorset certification practice (third-party certification schemes); BS 8214 for timber doorset maintenance.\n\n### [P2] Complete the interrupted survey scope\n\n- **Finding:** six of eight boundary assumptions are Unknown with no supporting evidence, matching the memo's stated limits (no roof access, Unit B ground floor only, weather-shortened external check).\n- **Why it matters:** unknowns without evidence keep both units at maximum priority and cannot be told apart from concealed defects.\n- **Do next:**\n  - schedule one follow-up visit with roof access and full Unit B access arranged in advance;\n  - collect evidence per assumption (cavity barriers, external spread, structural stability for both units) and link each item to the assumption it supports;\n  - obtain or reconstruct the Unit B room schedule so B101/B102 receive usage records.\n- **Sources:** case facts C3, C4 · guidance: PAS 79-1:2020 evidence-based FRA practice.\n\n### [P3] Verify detection coverage beyond the entrance hall\n\n- **Finding:** one smoke detector is recorded in the Unit A entrance hall; other rooms were not checked during this walkthrough.\n- **Why it matters:** a single confirmed detector does not establish a dwelling-wide detection grade, and Unit B has no detection record at all.\n- **Do next:**\n  - survey detection in both dwellings and record each device;\n  - assess coverage against the dwelling detection standard and record the resulting grade/category.\n- **Sources:** case facts A5, A6 · guidance: BS 5839-6 for detection in dwellings.\n\n### [P3] Add the regulatory and workflow layers to unlock the remaining questions\n\n- **Finding:** B3 is unavailable (no role assignments), the inference-marked B queries await the materialised assessment stage, and D1/D2 are unavailable (no event, task or assessment records).\n- **Why it matters:** without requirement records and a recorded checking run, the documented REI 60 cannot become a compliance finding, and the agreed follow-up has no auditable workflow trail.\n- **Do next:**\n  - record the requirement basis for the party wall (insurer or statutory REI values for Purpose Group 1(b));\n  - assign `FireSeparatingRole` to the party wall once its separating function is confirmed with the maintainer;\n  - log the agreed firestopping follow-up as an event-task chain so the next assessment lands in the workflow record.\n- **Sources:** case facts information availability B3, D1, D2 · guidance: RISCAuthority BDM02; ADB Vol. 1.\n\n## 5. Interpretation\n\nThe memo's informal observations became a validated, queryable record in one pass: the extraction layer refused to invent what the memo did not state (null ratings, unclassified Unit B rooms, no workflow records), the deterministic layer turned the stated facts into eight boundary assumptions with evidence links, and the queries surfaced the shared party-wall breach as the driver of both units' priority. What is missing is exactly as visible as what is known, which is the property the interface is designed to preserve.\n"
     },
     "memo": {
       "extractedSurvey": {
         "schema_version": "ficr-survey-v1",
-        "building": "Duplex A (PurposeGroup1b)",
+        "building": "Two-unit residential duplex (PurposeGroup1b)",
         "counts": {
           "storeys": 3,
-          "spaces": 13,
-          "elements": 5,
+          "spaces": 12,
+          "elements": 3,
           "risk_units": 2,
           "boundary_assumptions": 8
         },
@@ -93,24 +38,30 @@
           "id": "W-001",
           "type": "Wall",
           "rei": 60,
-          "is_external": false,
-          "roles": [
-            "FireSeparatingRole",
-            "FireResistingRole"
-          ]
+          "is_external": false
         },
         "document_evidence": {
-          "id": "EV-OM-REI",
+          "id": "EV-001",
           "type": "DocumentEvidence",
-          "document_title": "O&M documentation"
+          "document_title": "O&M documentation: party wall fire resistance"
         }
       },
-      "readiness": {
+      "informationAvailability": {
         "total": 18,
-        "runnable": 17,
-        "blocked": 1
+        "available": 15,
+        "unavailable": 3
       },
-      "runnableQueries": [
+      "priorityScores": [
+        {
+          "unit": "riskunit_A",
+          "score": 7
+        },
+        {
+          "unit": "riskunit_B",
+          "score": 7
+        }
+      ],
+      "availableQueries": [
         "A1",
         "A2",
         "A3",
@@ -119,21 +70,36 @@
         "A6",
         "B1",
         "B2",
-        "B3",
         "B4",
         "C1",
         "C2",
         "C3",
         "C4",
         "C5",
-        "C6",
-        "D1"
+        "C6"
       ],
-      "blockedQueries": [
+      "unavailableQueries": [
         {
-          "query_id": "D2",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "B3",
+          "missingTerms": [
+            "hasPhysicalObjectFireSafetyRole"
+          ],
+          "suggestions": [
+            "Record assigned fire safety roles (usage_roles) for separating elements."
+          ]
+        },
+        {
+          "queryId": "D1",
+          "missingTerms": [
+            "triggersTask"
+          ],
+          "suggestions": [
+            "Add events and tasks so workflow CQs can be run."
+          ]
+        },
+        {
+          "queryId": "D2",
+          "missingTerms": [
             "ComplianceChecking",
             "producesFinding"
           ],
@@ -145,12 +111,12 @@
     },
     "ifc": {
       "fixture": "data/ifc/frozen_fixture",
-      "readiness": {
+      "informationAvailability": {
         "total": 18,
-        "runnable": 6,
-        "blocked": 12
+        "available": 6,
+        "unavailable": 12
       },
-      "runnableQueries": [
+      "availableQueries": [
         "A1",
         "A2",
         "A3",
@@ -158,11 +124,10 @@
         "A5",
         "A6"
       ],
-      "blockedQueries": [
+      "unavailableQueries": [
         {
-          "query_id": "B1",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "B1",
+          "missingTerms": [
             "hasActualREI"
           ],
           "suggestions": [
@@ -170,9 +135,8 @@
           ]
         },
         {
-          "query_id": "B2",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "B2",
+          "missingTerms": [
             "hasActualREI"
           ],
           "suggestions": [
@@ -180,9 +144,17 @@
           ]
         },
         {
-          "query_id": "B3",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "B3",
+          "missingTerms": [
+            "hasPhysicalObjectFireSafetyRole"
+          ],
+          "suggestions": [
+            "Record assigned fire safety roles (usage_roles) for separating elements."
+          ]
+        },
+        {
+          "queryId": "B4",
+          "missingTerms": [
             "hasActualREI"
           ],
           "suggestions": [
@@ -190,19 +162,8 @@
           ]
         },
         {
-          "query_id": "B4",
-          "status": "blocked",
-          "missing_terms": [
-            "hasActualREI"
-          ],
-          "suggestions": [
-            "Add element REI records so hasActualREI can be produced."
-          ]
-        },
-        {
-          "query_id": "C1",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "C1",
+          "missingTerms": [
             "RiskUnit",
             "coversSpatialZone"
           ],
@@ -211,9 +172,8 @@
           ]
         },
         {
-          "query_id": "C2",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "C2",
+          "missingTerms": [
             "BoundaryAssumption",
             "appliesToRiskUnit",
             "hasConditionState"
@@ -223,9 +183,8 @@
           ]
         },
         {
-          "query_id": "C3",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "C3",
+          "missingTerms": [
             "BoundaryAssumption",
             "hasConditionState"
           ],
@@ -234,9 +193,8 @@
           ]
         },
         {
-          "query_id": "C4",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "C4",
+          "missingTerms": [
             "BoundaryAssumption",
             "appliesToRiskUnit",
             "hasConditionState"
@@ -246,9 +204,8 @@
           ]
         },
         {
-          "query_id": "C5",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "C5",
+          "missingTerms": [
             "BoundaryAssumption",
             "hasEvidenceStatus"
           ],
@@ -257,9 +214,8 @@
           ]
         },
         {
-          "query_id": "C6",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "C6",
+          "missingTerms": [
             "dependsOnBoundaryCondition",
             "hasConditionState",
             "hasEvidenceStatus"
@@ -269,9 +225,8 @@
           ]
         },
         {
-          "query_id": "D1",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "D1",
+          "missingTerms": [
             "triggersTask"
           ],
           "suggestions": [
@@ -279,9 +234,8 @@
           ]
         },
         {
-          "query_id": "D2",
-          "status": "blocked",
-          "missing_terms": [
+          "queryId": "D2",
+          "missingTerms": [
             "ComplianceChecking",
             "producesFinding"
           ],
@@ -291,13 +245,13 @@
         }
       ],
       "gate": {
-        "input": "tests\\session_artifacts\\m5\\frozen_fixture\\abox.ttl",
+        "input": "D:\\CodingProjects\\FiCR\\FiCR-site\\.sync-ifc-20260722\\abox.ttl",
         "rdf_parse": "ok",
         "triple_count": 2606,
         "term_closure": "ok",
         "unknown_ficr_terms": [],
         "tbox_fingerprint": "ok",
-        "tbox_sha256": "509daee0884e7a6175c3aeab4fb75962cc4a714927fb1244350ef2c45e8ae30f"
+        "tbox_sha256": "9143df4f71beb506a5a90c2a88afff661a96fbdd11fe8743ec4eb1346ec55b12"
       }
     }
   },

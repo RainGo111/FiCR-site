@@ -7,8 +7,8 @@
     "type": "aggregation",
     "file": "A1_building_overview.rq",
     "inference": "no",
-    "description": "Building overview: purpose group, storey and space counts.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?building (COUNT(DISTINCT ?storey) AS ?storeys) (COUNT(DISTINCT ?space) AS ?spaces)\r\nWHERE {\r\n  ?building a ficr:MultiStoreyBuilding .\r\n  OPTIONAL { ?building bot:hasStorey ?storey . }\r\n  OPTIONAL { ?building bot:hasStorey/bot:hasSpace ?space . }\r\n}\r\nGROUP BY ?building\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "description": "WHERE; ?buildingType is bound with the B3 VALUES idiom.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?buildingType ?purposeGroup (COUNT(DISTINCT ?storey) AS ?storeys) (COUNT(DISTINCT ?space) AS ?spaces)\r\nWHERE {\r\n  VALUES ?buildingType { ficr:MultiStoreyBuilding }\r\n  ?building a ?buildingType .\r\n  OPTIONAL { ?building ficr:hasPurposeGroup ?purposeGroup . }\r\n  OPTIONAL { ?building bot:hasStorey ?storey . }\r\n  OPTIONAL { ?building bot:hasStorey/bot:hasSpace ?space . }\r\n}\r\nGROUP BY ?buildingType ?purposeGroup\r\n\r\n\r\n# ---------------------------------------------------------------------------"
   },
   {
     "id": "A2",
@@ -51,7 +51,7 @@
     "type": "aggregation",
     "file": "A5_element_inventory.rq",
     "inference": "no",
-    "description": "ExternalWall counted separately); the materialised Wall total appears in B3.",
+    "description": "on the asserted and materialised graphs.",
     "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?elementType (COUNT(DISTINCT ?e) AS ?count)\r\nWHERE {\r\n  VALUES ?elementType {\r\n    ficr:Wall ficr:ExternalWall ficr:FloorSlab ficr:RoofSlab ficr:Doorset\r\n    ficr:Window ficr:Opening ficr:Beam ficr:Ceiling ficr:Railing ficr:Stair\r\n    ficr:StairFlight ficr:WallFoundation ficr:Furnishings\r\n    ficr:FireExtinguisher ficr:Alarm\r\n  }\r\n  ?e rdf:type ?elementType .\r\n}\r\nGROUP BY ?elementType\r\nORDER BY DESC(?count) ?elementType\r\n\r\n\r\n# ---------------------------------------------------------------------------"
   },
   {
@@ -95,8 +95,8 @@
     "type": "inference-dependent",
     "file": "B3_owl_inferred_classification.rq",
     "inference": "yes",
-    "description": "equivalentClass-defined (e.g. BasementStorey).",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?definedClass (COUNT(DISTINCT ?instance) AS ?count)\r\nWHERE {\r\n  VALUES ?definedClass {\r\n    ficr:Wall ficr:ExternalWall ficr:CompartmentWall\r\n    ficr:FloorSlab ficr:CompartmentFloor\r\n  }\r\n  OPTIONAL { ?instance a ?definedClass . }\r\n}\r\nGROUP BY ?definedClass\r\nHAVING (COUNT(DISTINCT ?instance) > 0)\r\nORDER BY DESC(?count) ?definedClass\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "description": "classifications are retained after materialisation.",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\n\r\nSELECT DISTINCT ?element ?assignedRole ?inferredClass\r\nWHERE {\r\n  VALUES (?assignedRole ?inferredClass) {\r\n    (ficr:FireSeparatingRole ficr:CompartmentWall)\r\n  }\r\n\r\n  ?element ficr:hasPhysicalObjectFireSafetyRole ?assignedRole ;\r\n           a ?inferredClass ;\r\n           a ficr:Wall ;\r\n           a ficr:ExternalWall .\r\n}\r\nORDER BY ?element\r\n\r\n\r\n# ---------------------------------------------------------------------------"
   },
   {
     "id": "B4",
@@ -161,7 +161,7 @@
     "type": "rule-like",
     "file": "C5_gap_consistency.rq",
     "inference": "no",
-    "description": "pollute this negative control. C5 stays 0 asserted and materialised.",
+    "description": "C5 is reasoning-invariant and stays 0 rows.",
     "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?ba ?evidenceStatus ?hasEvidence\r\nWHERE {\r\n  ?ba a ficr:BoundaryAssumption ;\r\n      ficr:hasEvidenceStatus ?evidenceStatus .\r\n  OPTIONAL { ?ba ficr:supportedByEvidence ?ev . }\r\n  BIND(BOUND(?ev) AS ?hasEvidence)\r\n  FILTER(\r\n    (?evidenceStatus = ficr:EvidenceMissing && BOUND(?ev)) ||\r\n    (?evidenceStatus = ficr:EvidenceAvailable && !BOUND(?ev))\r\n  )\r\n}\r\n\r\n\r\n# ---------------------------------------------------------------------------"
   },
   {
