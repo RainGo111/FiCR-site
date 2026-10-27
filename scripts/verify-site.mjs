@@ -57,7 +57,7 @@ for (const file of required) {
 }
 const assets = await readdir(path.join(root,'dist/assets'));
 const js = (await Promise.all(assets.filter(n=>n.endsWith('.js')).map(n=>readFile(path.join(root,'dist/assets',n),'utf8')))).join('\n');
-for (const marker of ['Fire safety records','Case study','Competency queries','FiCR Assistant Skill','Research outlook','Run public query','UNBOUND']) assert.ok(js.includes(marker), `Missing page marker: ${marker}`);
+for (const marker of ['Fire compliance checking','Buildings, spaces and fire safety','Case study','Competency queries','FiCR Assistant Skill','Research outlook','Run public query','UNBOUND']) assert.ok(js.includes(marker), `Missing page marker: ${marker}`);
 for (const marker of ['D:\\CodingProjects','fire-compartmentation-and-risk ontology','live competency-query interface']) assert.equal(js.includes(marker),false);
 
 function canonicalTerm(term) {

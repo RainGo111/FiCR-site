@@ -41,7 +41,7 @@ function sectionHeading(index,title,note='') {
 }
 function renderHome() {
   app.innerHTML = `${nav('home')}<main id="main-content" tabindex="-1" class="research-page home-page">
-    <div class="home-intro"><p class="eyebrow">An ontology for building fire safety</p><h1>Fire safety records,<br><em>connected by evidence.</em></h1><p class="lede">${escapeHtml(content.home.overview)}</p></div>
+    <div class="home-intro"><p class="eyebrow">Buildings, spaces and fire safety</p><h1>Fire compliance checking<br><em>&amp; risk analysis.</em></h1><p class="lede">${escapeHtml(content.home.overview)}</p></div>
     <section class="resource-grid" aria-label="Explore FiCR"><a href="#/ontology"><span class="index-label">ONTOLOGY</span><h2>Explore the vocabulary</h2><p>Building elements, fire-safety roles, findings and evidence.</p><span aria-hidden="true">↗</span></a><a href="#/study"><span class="index-label">CASE STUDY</span><h2>Follow the evidence</h2><p>One building, three information scenarios and traceable assessment records.</p><span aria-hidden="true">↗</span></a><a href="#/queries"><span class="index-label">QUERY EXPLORER</span><h2>Inspect the results</h2><p>22 competency queries with verified results and public query access.</p><span aria-hidden="true">↗</span></a></section>
   </main>${footer()}`;
 }
