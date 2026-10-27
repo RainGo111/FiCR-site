@@ -1,6 +1,6 @@
 {
   "home": {
-    "overview": "FiCR, Fire Compliance Checking and Risk Analysis, is a fire-compartmentation-and-risk ontology for AEC/FM digital-twin records. It models building elements, compartment and risk-unit boundaries, fire-resistance evidence, boundary assumptions, regulatory requirements, compliance findings, and inspection workflow records for researchers and practitioners who need traceable fire-safety assessment data."
+    "overview": "FiCR is an ontology for fire compliance and risk analysis in existing buildings. It connects building elements, fire-protection equipment, inspection findings and supporting evidence, so assessment results can be queried and traced to their sources."
   },
   "ontology": {
     "iri": "https://w3id.org/ficr/",
@@ -257,18 +257,98 @@
   },
   "roadmap": {
     "current": [
-      "text / TTL / IFC input lanes",
-      "single building",
-      "single source per session",
-      "static site without live LLM or chatbot"
+      "IFC-derived building identity and an editable inspection workbook",
+      "Three controlled information scenarios on one assessed date",
+      "OWL classification, 22 SPARQL queries and source-linked results",
+      "Complete typed reference comparison and reproducible builds"
     ],
     "nearTerm": [
-      "richer input-format handling for existing text and TTL lanes",
-      "saved query sets and repeatable endpoint checks"
+      "Apply the workflow to additional buildings and inspection records",
+      "Evaluate evidence adequacy with independent field observations",
+      "Compare findings with established assessment practice"
     ],
     "vision": [
-      "multimodal ingestion for point cloud, RGBD, and drawings via the same JSON/TTL contracts",
-      "cross-source entity resolution before merged assessment workflows"
+      "Link drawings, point clouds and RGBD observations to persistent building identities",
+      "Resolve evidence across sources and inspection dates",
+      "Study how evidence quality affects assessment decisions"
     ]
+  },
+  "research": {
+    "revision": "B1",
+    "assessedDate": "2025-03-17",
+    "summary": {
+      "passed": true,
+      "scenarios": 3,
+      "queries_per_scenario": 22,
+      "query_frames": 66,
+      "typed_rows": 1313,
+      "reproducible": true
+    },
+    "priorities": {
+      "S1": [
+        {
+          "unit": "https://lbd.example.com/riskunit_B",
+          "totalAssumptions": "4",
+          "unknownCount": "2",
+          "compromisedCount": "1",
+          "evidenceGapCount": "2",
+          "priorityScore": "5"
+        },
+        {
+          "unit": "https://lbd.example.com/riskunit_A",
+          "totalAssumptions": "4",
+          "unknownCount": "2",
+          "compromisedCount": "0",
+          "evidenceGapCount": "2",
+          "priorityScore": "4"
+        }
+      ],
+      "S2": [
+        {
+          "unit": "https://lbd.example.com/riskunit_A",
+          "totalAssumptions": "4",
+          "unknownCount": "4",
+          "compromisedCount": "0",
+          "evidenceGapCount": "4",
+          "priorityScore": "8"
+        },
+        {
+          "unit": "https://lbd.example.com/riskunit_B",
+          "totalAssumptions": "4",
+          "unknownCount": "3",
+          "compromisedCount": "1",
+          "evidenceGapCount": "3",
+          "priorityScore": "7"
+        }
+      ],
+      "S3": [
+        {
+          "unit": "https://lbd.example.com/riskunit_B",
+          "totalAssumptions": "4",
+          "unknownCount": "0",
+          "compromisedCount": "3",
+          "evidenceGapCount": "0",
+          "priorityScore": "3"
+        },
+        {
+          "unit": "https://lbd.example.com/riskunit_A",
+          "totalAssumptions": "4",
+          "unknownCount": "0",
+          "compromisedCount": "0",
+          "evidenceGapCount": "0",
+          "priorityScore": "0"
+        }
+      ]
+    },
+    "equipment": {
+      "assessment": "https://lbd.example.com/ass_inspection",
+      "devices": "8",
+      "checks": "20",
+      "passedChecks": "17",
+      "deficientChecks": "3",
+      "unresolvedChecks": "0",
+      "devicesWithDeficiency": "3",
+      "devicesWithUnresolvedChecks": "0"
+    }
   }
 }

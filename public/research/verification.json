@@ -1,0 +1,445 @@
+{
+  "summary": {
+    "passed": true,
+    "scenarios": 3,
+    "queries_per_scenario": 22,
+    "query_frames": 66,
+    "typed_rows": 1313,
+    "reproducible": true
+  },
+  "environment": {
+    "version": "2.0.0",
+    "python": "3.13.12",
+    "java": "openjdk version \"25.0.2\" 2026-01-20 LTS\nOpenJDK Runtime Environment Temurin-25.0.2+10 (build 25.0.2+10-LTS)\nOpenJDK 64-Bit Server VM Temurin-25.0.2+10 (build 25.0.2+10-LTS, mixed mode, sharing)",
+    "reasoner_options": {
+      "engine": "owlready2 bundled Pellet",
+      "memory_mb": 2000,
+      "infer_object_properties": true,
+      "infer_data_properties": false,
+      "named_subclass_closure": true
+    },
+    "packages": {
+      "rdflib": "7.6.0",
+      "owlready2": "0.51",
+      "openpyxl": "3.1.5",
+      "PyYAML": "6.0.3",
+      "reportlab": "5.0.0"
+    },
+    "revision": "B1",
+    "assessed_date": "2025-03-17",
+    "reasoner": "Pellet",
+    "timing_method": "One measured execution per query, including query parsing; not a scalability benchmark",
+    "inference_dependencies": {
+      "A1": "yes",
+      "A2": "yes",
+      "A3": "yes",
+      "A4": "yes",
+      "A5": "yes",
+      "A6": "yes",
+      "B1": "no",
+      "B2": "yes",
+      "B3": "yes",
+      "B4": "no",
+      "C1": "no",
+      "C2": "no",
+      "C3": "no",
+      "C4": "no",
+      "C5": "no",
+      "C6": "no",
+      "D1": "no",
+      "D2": "no",
+      "D3": "no",
+      "E1": "yes",
+      "E2": "no",
+      "E3": "yes"
+    },
+    "headers_agree": true
+  },
+  "reasoning": [
+    {
+      "scenario_id": "S1",
+      "reasoner": "pellet",
+      "consistent": true,
+      "unsatisfiable": [],
+      "asserted_triples": 8243,
+      "inferred_triples": 3227,
+      "total_triples": 11470,
+      "wall_seconds": 1.636,
+      "output_path": null
+    },
+    {
+      "scenario_id": "S2",
+      "reasoner": "pellet",
+      "consistent": true,
+      "unsatisfiable": [],
+      "asserted_triples": 8156,
+      "inferred_triples": 3203,
+      "total_triples": 11359,
+      "wall_seconds": 1.484,
+      "output_path": null
+    },
+    {
+      "scenario_id": "S3",
+      "reasoner": "pellet",
+      "consistent": true,
+      "unsatisfiable": [],
+      "asserted_triples": 8359,
+      "inferred_triples": 3255,
+      "total_triples": 11614,
+      "wall_seconds": 1.606,
+      "output_path": null
+    }
+  ],
+  "timings": [
+    {
+      "scenario": "S1",
+      "query": "A1",
+      "seconds": 0.0198250999674201
+    },
+    {
+      "scenario": "S1",
+      "query": "A2",
+      "seconds": 0.01808640011586249
+    },
+    {
+      "scenario": "S1",
+      "query": "A3",
+      "seconds": 0.01159820007160306
+    },
+    {
+      "scenario": "S1",
+      "query": "A4",
+      "seconds": 0.009243299951776862
+    },
+    {
+      "scenario": "S1",
+      "query": "A5",
+      "seconds": 0.013684000121429563
+    },
+    {
+      "scenario": "S1",
+      "query": "A6",
+      "seconds": 0.43056699982844293
+    },
+    {
+      "scenario": "S1",
+      "query": "B1",
+      "seconds": 0.007215299876406789
+    },
+    {
+      "scenario": "S1",
+      "query": "B2",
+      "seconds": 0.018930200021713972
+    },
+    {
+      "scenario": "S1",
+      "query": "B3",
+      "seconds": 0.008273399900645018
+    },
+    {
+      "scenario": "S1",
+      "query": "B4",
+      "seconds": 0.018993300152942538
+    },
+    {
+      "scenario": "S1",
+      "query": "C1",
+      "seconds": 0.01004929980263114
+    },
+    {
+      "scenario": "S1",
+      "query": "C2",
+      "seconds": 0.007593200076371431
+    },
+    {
+      "scenario": "S1",
+      "query": "C3",
+      "seconds": 0.03017259994521737
+    },
+    {
+      "scenario": "S1",
+      "query": "C4",
+      "seconds": 0.026426699943840504
+    },
+    {
+      "scenario": "S1",
+      "query": "C5",
+      "seconds": 0.07136539998464286
+    },
+    {
+      "scenario": "S1",
+      "query": "C6",
+      "seconds": 0.0094159001018852
+    },
+    {
+      "scenario": "S1",
+      "query": "D1",
+      "seconds": 0.007945699850097299
+    },
+    {
+      "scenario": "S1",
+      "query": "D2",
+      "seconds": 0.010903300018981099
+    },
+    {
+      "scenario": "S1",
+      "query": "D3",
+      "seconds": 0.10979770007543266
+    },
+    {
+      "scenario": "S1",
+      "query": "E1",
+      "seconds": 0.23274790006689727
+    },
+    {
+      "scenario": "S1",
+      "query": "E2",
+      "seconds": 0.10363590018823743
+    },
+    {
+      "scenario": "S1",
+      "query": "E3",
+      "seconds": 0.037082800175994635
+    },
+    {
+      "scenario": "S2",
+      "query": "A1",
+      "seconds": 0.020146100083366036
+    },
+    {
+      "scenario": "S2",
+      "query": "A2",
+      "seconds": 0.01714499993249774
+    },
+    {
+      "scenario": "S2",
+      "query": "A3",
+      "seconds": 0.011703599942848086
+    },
+    {
+      "scenario": "S2",
+      "query": "A4",
+      "seconds": 0.01019329996779561
+    },
+    {
+      "scenario": "S2",
+      "query": "A5",
+      "seconds": 0.013228500029072165
+    },
+    {
+      "scenario": "S2",
+      "query": "A6",
+      "seconds": 0.4276620000600815
+    },
+    {
+      "scenario": "S2",
+      "query": "B1",
+      "seconds": 0.007164099952206016
+    },
+    {
+      "scenario": "S2",
+      "query": "B2",
+      "seconds": 0.018072000006213784
+    },
+    {
+      "scenario": "S2",
+      "query": "B3",
+      "seconds": 0.00711030000820756
+    },
+    {
+      "scenario": "S2",
+      "query": "B4",
+      "seconds": 0.01814639987424016
+    },
+    {
+      "scenario": "S2",
+      "query": "C1",
+      "seconds": 0.010572700062766671
+    },
+    {
+      "scenario": "S2",
+      "query": "C2",
+      "seconds": 0.007722000125795603
+    },
+    {
+      "scenario": "S2",
+      "query": "C3",
+      "seconds": 0.028059399919584394
+    },
+    {
+      "scenario": "S2",
+      "query": "C4",
+      "seconds": 0.028487600153312087
+    },
+    {
+      "scenario": "S2",
+      "query": "C5",
+      "seconds": 0.07370620011352003
+    },
+    {
+      "scenario": "S2",
+      "query": "C6",
+      "seconds": 0.008512399857863784
+    },
+    {
+      "scenario": "S2",
+      "query": "D1",
+      "seconds": 0.00836130022071302
+    },
+    {
+      "scenario": "S2",
+      "query": "D2",
+      "seconds": 0.010713899973779917
+    },
+    {
+      "scenario": "S2",
+      "query": "D3",
+      "seconds": 0.10679979994893074
+    },
+    {
+      "scenario": "S2",
+      "query": "E1",
+      "seconds": 0.23011959996074438
+    },
+    {
+      "scenario": "S2",
+      "query": "E2",
+      "seconds": 0.10239739995449781
+    },
+    {
+      "scenario": "S2",
+      "query": "E3",
+      "seconds": 0.036433500004932284
+    },
+    {
+      "scenario": "S3",
+      "query": "A1",
+      "seconds": 0.019762800075113773
+    },
+    {
+      "scenario": "S3",
+      "query": "A2",
+      "seconds": 0.016960300039499998
+    },
+    {
+      "scenario": "S3",
+      "query": "A3",
+      "seconds": 0.01144260005094111
+    },
+    {
+      "scenario": "S3",
+      "query": "A4",
+      "seconds": 0.009036500006914139
+    },
+    {
+      "scenario": "S3",
+      "query": "A5",
+      "seconds": 0.01201340020634234
+    },
+    {
+      "scenario": "S3",
+      "query": "A6",
+      "seconds": 0.42083780001848936
+    },
+    {
+      "scenario": "S3",
+      "query": "B1",
+      "seconds": 0.00705519993789494
+    },
+    {
+      "scenario": "S3",
+      "query": "B2",
+      "seconds": 0.01817520009353757
+    },
+    {
+      "scenario": "S3",
+      "query": "B3",
+      "seconds": 0.007296999916434288
+    },
+    {
+      "scenario": "S3",
+      "query": "B4",
+      "seconds": 0.017620299942791462
+    },
+    {
+      "scenario": "S3",
+      "query": "C1",
+      "seconds": 0.009463499998673797
+    },
+    {
+      "scenario": "S3",
+      "query": "C2",
+      "seconds": 0.007123899878934026
+    },
+    {
+      "scenario": "S3",
+      "query": "C3",
+      "seconds": 0.03334240010008216
+    },
+    {
+      "scenario": "S3",
+      "query": "C4",
+      "seconds": 0.02890309994108975
+    },
+    {
+      "scenario": "S3",
+      "query": "C5",
+      "seconds": 0.13188300002366304
+    },
+    {
+      "scenario": "S3",
+      "query": "C6",
+      "seconds": 0.009002800099551678
+    },
+    {
+      "scenario": "S3",
+      "query": "D1",
+      "seconds": 0.008308300049975514
+    },
+    {
+      "scenario": "S3",
+      "query": "D2",
+      "seconds": 0.01132529997266829
+    },
+    {
+      "scenario": "S3",
+      "query": "D3",
+      "seconds": 0.11897350009530783
+    },
+    {
+      "scenario": "S3",
+      "query": "E1",
+      "seconds": 0.2343331000301987
+    },
+    {
+      "scenario": "S3",
+      "query": "E2",
+      "seconds": 0.10674210009165108
+    },
+    {
+      "scenario": "S3",
+      "query": "E3",
+      "seconds": 0.03844129992648959
+    }
+  ],
+  "reproducibility": {
+    "S1": {
+      "asserted": true,
+      "materialised": true,
+      "typed_answers": true,
+      "lineage": true
+    },
+    "S2": {
+      "asserted": true,
+      "materialised": true,
+      "typed_answers": true,
+      "lineage": true
+    },
+    "S3": {
+      "asserted": true,
+      "materialised": true,
+      "typed_answers": true,
+      "lineage": true
+    }
+  }
+}

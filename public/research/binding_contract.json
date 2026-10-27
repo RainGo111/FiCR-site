@@ -1,0 +1,1041 @@
+{
+  "A1": {
+    "columns": [
+      "building",
+      "buildingType",
+      "purposeGroup",
+      "storeys",
+      "spaces"
+    ],
+    "bindings": {
+      "building": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "buildingType": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "purposeGroup": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "storeys": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "spaces": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "A2": {
+    "columns": [
+      "building",
+      "storey",
+      "kind",
+      "label",
+      "elevation",
+      "spaces"
+    ],
+    "bindings": {
+      "building": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "storey": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "kind": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "label": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "elevation": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "spaces": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "A3": {
+    "columns": [
+      "building",
+      "storey",
+      "space",
+      "label",
+      "usage",
+      "area"
+    ],
+    "bindings": {
+      "building": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "storey": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "space": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "label": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "usage": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "area": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#decimal",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "A4": {
+    "columns": [
+      "building",
+      "usage",
+      "count"
+    ],
+    "bindings": {
+      "building": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "usage": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "count": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "A5": {
+    "columns": [
+      "elementType",
+      "count"
+    ],
+    "bindings": {
+      "elementType": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "count": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "A6": {
+    "columns": [
+      "building",
+      "space",
+      "item",
+      "relationship",
+      "spaceLabel",
+      "itemKind"
+    ],
+    "bindings": {
+      "building": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "space": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "item": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "relationship": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "spaceLabel": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "itemKind": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "B1": {
+    "columns": [
+      "result",
+      "count"
+    ],
+    "bindings": {
+      "result": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "count": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "B2": {
+    "columns": [
+      "finding",
+      "element",
+      "requirement",
+      "category",
+      "actualREI",
+      "requiredREI",
+      "result"
+    ],
+    "bindings": {
+      "finding": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "element": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "requirement": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "category": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "actualREI": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": true
+      },
+      "requiredREI": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "result": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "B3": {
+    "columns": [
+      "element",
+      "assignedRole",
+      "inferredClass",
+      "retainsExternalWall"
+    ],
+    "bindings": {
+      "element": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "assignedRole": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "inferredClass": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "retainsExternalWall": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#boolean",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "B4": {
+    "columns": [
+      "finding",
+      "element",
+      "requirement",
+      "actualREI",
+      "requiredREI",
+      "result",
+      "evidenceStatus",
+      "clause",
+      "source"
+    ],
+    "bindings": {
+      "finding": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "element": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "requirement": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "actualREI": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": true
+      },
+      "requiredREI": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "result": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "evidenceStatus": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "clause": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "source": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "C1": {
+    "columns": [
+      "unit",
+      "label",
+      "installation",
+      "coveredSpaces"
+    ],
+    "bindings": {
+      "unit": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "label": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "installation": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "coveredSpaces": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "C2": {
+    "columns": [
+      "unit",
+      "conditionState",
+      "count"
+    ],
+    "bindings": {
+      "unit": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "conditionState": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "count": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "C3": {
+    "columns": [
+      "boundary",
+      "evidence",
+      "unit",
+      "aspect",
+      "conditionState",
+      "evidenceStatus",
+      "evidenceType",
+      "title",
+      "adequacy",
+      "gap"
+    ],
+    "bindings": {
+      "boundary": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "evidence": {
+        "term_kind": "IRI",
+        "nullable_in_main": true
+      },
+      "unit": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "aspect": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "conditionState": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "evidenceStatus": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "evidenceType": {
+        "term_kind": "IRI",
+        "nullable_in_main": true
+      },
+      "title": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": true
+      },
+      "adequacy": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "gap": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#boolean",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "C4": {
+    "columns": [
+      "unit",
+      "totalAssumptions",
+      "unknownCount",
+      "compromisedCount",
+      "evidenceGapCount",
+      "priorityScore"
+    ],
+    "bindings": {
+      "unit": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "totalAssumptions": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "unknownCount": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "compromisedCount": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "evidenceGapCount": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "priorityScore": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "ordered rows",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "C5": {
+    "columns": [
+      "boundary",
+      "issueCode",
+      "evidenceStatus",
+      "hasEvidence"
+    ],
+    "bindings": {
+      "boundary": {
+        "term_kind": "IRI",
+        "nullable_in_main": true
+      },
+      "issueCode": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": true
+      },
+      "evidenceStatus": {
+        "term_kind": "IRI",
+        "nullable_in_main": true
+      },
+      "hasEvidence": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#boolean",
+        "language": null,
+        "nullable_in_main": true
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "C6": {
+    "columns": [
+      "finding",
+      "fireScenario",
+      "boundary",
+      "evidence",
+      "unit",
+      "conditionState",
+      "evidenceStatus"
+    ],
+    "bindings": {
+      "finding": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "fireScenario": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "boundary": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "evidence": {
+        "term_kind": "IRI",
+        "nullable_in_main": true
+      },
+      "unit": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "conditionState": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "evidenceStatus": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "D1": {
+    "columns": [
+      "event",
+      "task",
+      "assessment",
+      "taskLabel",
+      "plannedStart",
+      "plannedEnd",
+      "actualStart"
+    ],
+    "bindings": {
+      "event": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "task": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "assessment": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "taskLabel": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "plannedStart": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "plannedEnd": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "actualStart": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "language": null,
+        "nullable_in_main": true
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "D2": {
+    "columns": [
+      "assessment",
+      "finding",
+      "requirement",
+      "element",
+      "result",
+      "requiredREI",
+      "clause",
+      "source"
+    ],
+    "bindings": {
+      "assessment": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "finding": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "requirement": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "element": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "result": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "requiredREI": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "clause": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "source": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "D3": {
+    "columns": [
+      "assessment",
+      "sourceRecord",
+      "inspectionID",
+      "assessedDate",
+      "actualStart",
+      "workbookIdentifier",
+      "revision",
+      "sheet",
+      "recordID"
+    ],
+    "bindings": {
+      "assessment": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "sourceRecord": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "inspectionID": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "assessedDate": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#date",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "actualStart": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "language": null,
+        "nullable_in_main": true
+      },
+      "revision": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "sheet": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "recordID": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "workbookIdentifier": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "E1": {
+    "columns": [
+      "assessment",
+      "device",
+      "finding",
+      "criterion",
+      "room",
+      "location",
+      "observationID",
+      "assessedDate",
+      "actualStart",
+      "serviceDue",
+      "damage",
+      "functionalTest",
+      "impairment",
+      "outcome",
+      "statement"
+    ],
+    "bindings": {
+      "assessment": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "device": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "finding": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "criterion": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "room": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "location": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "observationID": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "assessedDate": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#date",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "actualStart": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+        "language": null,
+        "nullable_in_main": true
+      },
+      "serviceDue": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#date",
+        "language": null,
+        "nullable_in_main": true
+      },
+      "damage": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#boolean",
+        "language": null,
+        "nullable_in_main": true
+      },
+      "functionalTest": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": true
+      },
+      "impairment": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "outcome": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "statement": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "E2": {
+    "columns": [
+      "finding",
+      "sourceRecord",
+      "evidence",
+      "observationID",
+      "criterion",
+      "evidenceType",
+      "title",
+      "locator",
+      "evidenceDate",
+      "availability",
+      "adequacy",
+      "physicalFileExists",
+      "workbookIdentifier",
+      "revision"
+    ],
+    "bindings": {
+      "finding": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "sourceRecord": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "evidence": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "observationID": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "criterion": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "evidenceType": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "title": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "locator": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#anyURI",
+        "language": null,
+        "nullable_in_main": true
+      },
+      "evidenceDate": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#date",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "availability": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "adequacy": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "physicalFileExists": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#boolean",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "revision": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "workbookIdentifier": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#string",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  },
+  "E3": {
+    "columns": [
+      "assessment",
+      "devices",
+      "checks",
+      "passedChecks",
+      "deficientChecks",
+      "unresolvedChecks",
+      "devicesWithDeficiency",
+      "devicesWithUnresolvedChecks"
+    ],
+    "bindings": {
+      "assessment": {
+        "term_kind": "IRI",
+        "nullable_in_main": false
+      },
+      "devices": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "checks": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "passedChecks": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "deficientChecks": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "unresolvedChecks": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "devicesWithDeficiency": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      },
+      "devicesWithUnresolvedChecks": {
+        "term_kind": "literal",
+        "datatype": "http://www.w3.org/2001/XMLSchema#integer",
+        "language": null,
+        "nullable_in_main": false
+      }
+    },
+    "comparison": "unordered multiset",
+    "unbound": "JSON null; not an empty string, zero, false or a named Unknown resource"
+  }
+}

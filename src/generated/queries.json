@@ -1,200 +1,222 @@
 [
   {
     "id": "A1",
-    "title": "Building Overview",
     "group": "A",
     "module": "A",
-    "type": "aggregation",
-    "file": "A1_building_overview.rq",
-    "inference": "no",
-    "description": "WHERE; ?buildingType is bound with the B3 VALUES idiom.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?buildingType ?purposeGroup (COUNT(DISTINCT ?storey) AS ?storeys) (COUNT(DISTINCT ?space) AS ?spaces)\r\nWHERE {\r\n  VALUES ?buildingType { ficr:MultiStoreyBuilding }\r\n  ?building a ?buildingType .\r\n  OPTIONAL { ?building ficr:hasPurposeGroup ?purposeGroup . }\r\n  OPTIONAL { ?building bot:hasStorey ?storey . }\r\n  OPTIONAL { ?building bot:hasStorey/bot:hasSpace ?space . }\r\n}\r\nGROUP BY ?buildingType ?purposeGroup\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "type": "SELECT",
+    "inference": "yes",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?building ?buildingType ?purposeGroup (COUNT(DISTINCT ?storey) AS ?storeys) (COUNT(DISTINCT ?space) AS ?spaces)\r\nWHERE {\r\n ?building a bot:Building .\r\n OPTIONAL { ?building a ?buildingType . FILTER(?buildingType IN (ficr:MultiStoreyBuilding,ficr:SingleStoreyBuilding)) }\r\n OPTIONAL { ?building ficr:hasPurposeGroup ?purposeGroup }\r\n OPTIONAL { ?building bot:hasStorey ?storey }\r\n OPTIONAL { ?building bot:hasStorey/bot:hasSpace ?space }\r\n} GROUP BY ?building ?buildingType ?purposeGroup ORDER BY ?building ?buildingType ?purposeGroup",
+    "title": "Building inventory",
+    "description": "Building identity, classification, purpose group, storeys and spaces."
   },
   {
     "id": "A2",
-    "title": "Storey Inventory",
     "group": "A",
     "module": "A",
-    "type": "retrieval",
-    "file": "A2_storey_inventory.rq",
-    "inference": "no",
-    "description": "Storey inventory and typology (basement vs ground-and-above).",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?storey ?label ?kind ?elevation (COUNT(DISTINCT ?space) AS ?spaces)\r\nWHERE {\r\n  ?building a ficr:MultiStoreyBuilding ; bot:hasStorey ?storey .\r\n  ?storey a ?kind .\r\n  FILTER(?kind IN (ficr:BasementStorey, ficr:GroundAndAboveStorey))\r\n  OPTIONAL { ?storey rdfs:label ?label . }\r\n  OPTIONAL { ?storey ficr:hasElevation ?elevation . }\r\n  OPTIONAL { ?storey bot:hasSpace ?space . }\r\n}\r\nGROUP BY ?storey ?label ?kind ?elevation\r\nORDER BY ?elevation\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "type": "SELECT",
+    "inference": "yes",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?building ?storey ?kind ?label ?elevation (COUNT(DISTINCT ?space) AS ?spaces)\r\nWHERE {\r\n ?building a bot:Building; bot:hasStorey ?storey .\r\n OPTIONAL { ?storey a ?kind . FILTER(?kind IN (ficr:BasementStorey,ficr:GroundAndAboveStorey)) }\r\n OPTIONAL { ?storey rdfs:label ?label } OPTIONAL { ?storey ficr:hasElevation ?elevation }\r\n OPTIONAL { ?storey bot:hasSpace ?space }\r\n} GROUP BY ?building ?storey ?kind ?label ?elevation ORDER BY ?building ?storey",
+    "title": "Storey inventory",
+    "description": "All linked storeys, including records with no optional classification."
   },
   {
     "id": "A3",
-    "title": "Space Ledger",
     "group": "A",
     "module": "A",
-    "type": "retrieval",
-    "file": "A3_space_ledger.rq",
-    "inference": "no",
-    "description": "Space ledger: every space with its storey, usage and area.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?space ?label ?storey ?usage ?area\r\nWHERE {\r\n  ?storey bot:hasSpace ?space .\r\n  ?space a ?spaceType .\r\n  FILTER(?spaceType IN (ficr:RoomSpace, ficr:StairSpace, ficr:RoofSpace))\r\n  OPTIONAL { ?space rdfs:label ?label . }\r\n  OPTIONAL { ?space ficr:hasSpaceUsage ?usage . }\r\n  OPTIONAL { ?space ficr:hasArea ?area . }\r\n}\r\nORDER BY ?label\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "type": "SELECT",
+    "inference": "yes",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?building ?storey ?space ?label ?usage ?area WHERE {\r\n ?building a bot:Building; bot:hasStorey ?storey . ?storey bot:hasSpace ?space .\r\n OPTIONAL { ?space rdfs:label ?label } OPTIONAL { ?space ficr:hasSpaceUsage ?usage }\r\n OPTIONAL { ?space ficr:hasArea ?area }\r\n} ORDER BY ?building ?storey ?space",
+    "title": "Space inventory",
+    "description": "Spaces, their storeys, uses and areas within each building."
   },
   {
     "id": "A4",
-    "title": "Space Usage Distribution",
     "group": "A",
     "module": "A",
-    "type": "aggregation",
-    "file": "A4_space_usage_distribution.rq",
-    "inference": "no",
-    "description": "Space usage distribution: count of spaces per usage class.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?usage (COUNT(DISTINCT ?space) AS ?count)\r\nWHERE {\r\n  ?space ficr:hasSpaceUsage ?usage .\r\n}\r\nGROUP BY ?usage\r\nORDER BY DESC(?count) ?usage\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "type": "SELECT",
+    "inference": "yes",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?building ?usage (COUNT(DISTINCT ?space) AS ?count) WHERE {\r\n ?building a bot:Building; bot:hasStorey/bot:hasSpace ?space .\r\n OPTIONAL { ?space ficr:hasSpaceUsage ?usage }\r\n} GROUP BY ?building ?usage ORDER BY ?building ?usage",
+    "title": "Space use summary",
+    "description": "Distinct spaces by use, with missing uses retained as unbound values."
   },
   {
     "id": "A5",
-    "title": "Element Inventory",
     "group": "A",
     "module": "A",
-    "type": "aggregation",
-    "file": "A5_element_inventory.rq",
-    "inference": "no",
-    "description": "on the asserted and materialised graphs.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?elementType (COUNT(DISTINCT ?e) AS ?count)\r\nWHERE {\r\n  VALUES ?elementType {\r\n    ficr:Wall ficr:ExternalWall ficr:FloorSlab ficr:RoofSlab ficr:Doorset\r\n    ficr:Window ficr:Opening ficr:Beam ficr:Ceiling ficr:Railing ficr:Stair\r\n    ficr:StairFlight ficr:WallFoundation ficr:Furnishings\r\n    ficr:FireExtinguisher ficr:Alarm\r\n  }\r\n  ?e rdf:type ?elementType .\r\n}\r\nGROUP BY ?elementType\r\nORDER BY DESC(?count) ?elementType\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "type": "SELECT",
+    "inference": "yes",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?elementType (COUNT(DISTINCT ?element) AS ?count) WHERE {\r\n VALUES ?elementType { ficr:Wall ficr:ExternalWall ficr:FloorSlab ficr:RoofSlab ficr:Doorset\r\n ficr:Window ficr:Opening ficr:Beam ficr:Ceiling ficr:Railing ficr:Stair ficr:StairFlight\r\n ficr:WallFoundation ficr:Furnishings ficr:FireExtinguisher ficr:Alarm }\r\n ?element a ?elementType .\r\n} GROUP BY ?elementType ORDER BY ?elementType",
+    "title": "Element classifications",
+    "description": "Membership counts across 16 reporting classes. Classes may overlap."
   },
   {
     "id": "A6",
-    "title": "Per Space Fire Protection",
     "group": "A",
     "module": "A",
-    "type": "retrieval",
-    "file": "A6_per_space_fire_protection.rq",
-    "inference": "no",
-    "description": "not the graph is reasoned — matching the converter-ABox-derived oracle.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT DISTINCT ?space ?spaceLabel ?item ?itemKind\r\nWHERE {\r\n  ?space ficr:hasSpaceUsage ?usage .\r\n  OPTIONAL { ?space rdfs:label ?spaceLabel . }\r\n  {\r\n    ?space bot:adjacentElement ?item .\r\n    ?item a ?t . FILTER(?t IN (ficr:Wall, ficr:ExternalWall, ficr:FloorSlab, ficr:Doorset))\r\n    BIND(\"fabric\" AS ?itemKind)\r\n  } UNION {\r\n    ?item ficr:isLocatedIn ?space .\r\n    ?item a ?t . FILTER(?t IN (ficr:FireExtinguisher, ficr:Alarm))\r\n    BIND(\"equipment\" AS ?itemKind)\r\n  }\r\n}\r\nORDER BY ?spaceLabel ?itemKind\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "type": "SELECT",
+    "inference": "yes",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT DISTINCT ?building ?space ?item ?relationship ?spaceLabel ?itemKind WHERE {\r\n ?building a bot:Building; bot:hasStorey/bot:hasSpace ?space .\r\n OPTIONAL { ?space rdfs:label ?spaceLabel }\r\n { VALUES ?relationship { bot:containsElement bot:adjacentElement }\r\n   ?space ?relationship ?item . ?item a ?class .\r\n   FILTER(?class IN (ficr:Wall,ficr:FloorSlab,ficr:Doorset)) BIND(\"fabric\" AS ?itemKind)\r\n } UNION {\r\n   ?item a ficr:FireProtectionEquipment; ficr:isLocatedIn ?space .\r\n   BIND(ficr:isLocatedIn AS ?relationship) BIND(\"equipment\" AS ?itemKind)\r\n }\r\n} ORDER BY ?building ?space ?item ?relationship",
+    "title": "Elements and equipment by space",
+    "description": "Contained or adjacent fabric elements and located fire-protection equipment."
   },
   {
     "id": "B1",
-    "title": "Compliance Health Score",
     "group": "B",
     "module": "B",
-    "type": "aggregation",
-    "file": "B1_compliance_health_score.rq",
-    "inference": "yes",
-    "description": "materialised graph (compartment walls are OWL-inferred CompartmentWall).",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?result (COUNT(DISTINCT ?finding) AS ?count)\r\nWHERE {\r\n  ?finding a ficr:ComplianceFinding ;\r\n           ficr:hasComplianceResult ?result ;\r\n           ficr:concernsElement ?element .\r\n}\r\nGROUP BY ?result\r\nORDER BY DESC(?count) ?result\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "type": "SELECT",
+    "inference": "no",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?result (COUNT(DISTINCT ?finding) AS ?count) WHERE {\r\n ?finding a ficr:ComplianceFinding; ficr:hasComplianceResult ?result; ficr:concernsElement ?element .\r\n} GROUP BY ?result ORDER BY ?result",
+    "title": "REI result summary",
+    "description": "Compliant, noncompliant and undetermined outcomes for the 44 selected checks."
   },
   {
     "id": "B2",
-    "title": "Element Rei Detail",
     "group": "B",
     "module": "B",
-    "type": "inference-dependent",
-    "file": "B2_element_rei_detail.rq",
+    "type": "SELECT",
     "inference": "yes",
-    "description": "Wall there. Compartment (party) walls surface positively as CompartmentWall.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?element ?category ?actualREI ?requiredREI ?result\r\nWHERE {\r\n  ?finding a ficr:ComplianceFinding ;\r\n           ficr:concernsElement ?element ;\r\n           ficr:checksRequirement ?req ;\r\n           ficr:hasComplianceResult ?result .\r\n  # OPTIONAL: the UND-01 no-record element has no assessed REI (Undetermined);\r\n  # it still surfaces as a finding row with an unbound actual REI.\r\n  OPTIONAL { ?element ficr:hasActualREI ?actualREI . }\r\n  ?req ficr:hasRequiredREI ?requiredREI .\r\n  # Category from the inferred class; party walls are CompartmentWall.\r\n  OPTIONAL {\r\n    ?element a ficr:CompartmentWall . BIND(\"CompartmentWall\" AS ?cw)\r\n  }\r\n  BIND(COALESCE(?cw, \"Wall/Floor\") AS ?category)\r\n  # Only elements that are NOT plain external walls receive REI findings; the\r\n  # filter guards against the materialised ExternalWall->Wall entailment.\r\n  FILTER NOT EXISTS {\r\n    ?element a ficr:ExternalWall .\r\n    FILTER NOT EXISTS { ?element a ficr:CompartmentWall . }\r\n  }\r\n}\r\nORDER BY ?category ?result ?element\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?finding ?element ?requirement ?category ?actualREI ?requiredREI ?result WHERE {\r\n ?finding a ficr:ComplianceFinding; ficr:concernsElement ?element; ficr:checksRequirement ?requirement; ficr:hasComplianceResult ?result .\r\n OPTIONAL { ?element ficr:hasActualREI ?actualREI }\r\n ?requirement ficr:hasRequiredREI ?requiredREI .\r\n BIND(IF(EXISTS { ?element a ficr:CompartmentWall },\"CompartmentWall\",\"Other element\") AS ?category)\r\n} ORDER BY ?finding",
+    "title": "Element REI detail",
+    "description": "Actual and required fire resistance for each selected element, including missing values."
   },
   {
     "id": "B3",
-    "title": "Owl Inferred Classification",
     "group": "B",
     "module": "B",
-    "type": "inference-dependent",
-    "file": "B3_owl_inferred_classification.rq",
+    "type": "SELECT",
     "inference": "yes",
-    "description": "classifications are retained after materialisation.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\n\r\nSELECT DISTINCT ?element ?assignedRole ?inferredClass\r\nWHERE {\r\n  VALUES (?assignedRole ?inferredClass) {\r\n    (ficr:FireSeparatingRole ficr:CompartmentWall)\r\n  }\r\n\r\n  ?element ficr:hasPhysicalObjectFireSafetyRole ?assignedRole ;\r\n           a ?inferredClass ;\r\n           a ficr:Wall ;\r\n           a ficr:ExternalWall .\r\n}\r\nORDER BY ?element\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT DISTINCT ?element ?assignedRole ?inferredClass ?retainsExternalWall WHERE {\r\n VALUES (?assignedRole ?inferredClass) { (ficr:FireSeparatingRole ficr:CompartmentWall) }\r\n ?element ficr:hasPhysicalObjectFireSafetyRole ?assignedRole; a ?inferredClass; a ficr:Wall .\r\n BIND(EXISTS { ?element a ficr:ExternalWall } AS ?retainsExternalWall)\r\n} ORDER BY ?element",
+    "title": "Fire-separating role inference",
+    "description": "Compartment-wall classification inferred from an assigned fire-separating role."
   },
   {
     "id": "B4",
-    "title": "Finding Traceability",
     "group": "B",
     "module": "B",
-    "type": "inference-dependent",
-    "file": "B4_finding_traceability.rq",
-    "inference": "yes",
-    "description": "cross-checked against oracle Module-B.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?finding ?element ?actualREI ?req ?requiredREI ?result ?clause\r\nWHERE {\r\n  ?finding a ficr:ComplianceFinding ;\r\n           ficr:concernsElement ?element ;\r\n           ficr:checksRequirement ?req ;\r\n           ficr:hasComplianceResult ?result .\r\n  # OPTIONAL: the UND-01 no-record element has no assessed REI (Undetermined).\r\n  OPTIONAL { ?element ficr:hasActualREI ?actualREI . }\r\n  ?req ficr:hasRequiredREI ?requiredREI ;\r\n       ficr:hasClauseReference ?clause .\r\n  FILTER NOT EXISTS {\r\n    ?element a ficr:ExternalWall .\r\n    FILTER NOT EXISTS { ?element a ficr:CompartmentWall . }\r\n  }\r\n}\r\nORDER BY ?req ?result ?element\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "type": "SELECT",
+    "inference": "no",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?finding ?element ?requirement ?actualREI ?requiredREI ?result ?evidenceStatus ?clause ?source WHERE {\r\n ?finding a ficr:ComplianceFinding; ficr:concernsElement ?element; ficr:checksRequirement ?requirement; ficr:hasComplianceResult ?result .\r\n OPTIONAL { ?finding ficr:hasEvidenceStatus ?evidenceStatus }\r\n OPTIONAL { ?element ficr:hasActualREI ?actualREI }\r\n ?requirement ficr:hasRequiredREI ?requiredREI; ficr:hasClauseReference ?clause; ficr:derivedFromRegulatorySource ?source .\r\n} ORDER BY ?finding",
+    "title": "Compliance evidence and sources",
+    "description": "Trace each REI finding through its requirement, clause and regulatory source."
   },
   {
     "id": "C1",
-    "title": "Risk Unit Inventory",
     "group": "C",
     "module": "C",
-    "type": "retrieval",
-    "file": "C1_risk_unit_inventory.rq",
+    "type": "SELECT",
     "inference": "no",
-    "description": "Risk-unit inventory and spatial membership (installation status + covered spaces).",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?unit ?label ?installation (COUNT(DISTINCT ?space) AS ?coveredSpaces)\r\nWHERE {\r\n  ?unit a ficr:RiskUnit .\r\n  OPTIONAL { ?unit rdfs:label ?label . }\r\n  OPTIONAL { ?unit ficr:hasInstallationStatus ?installation . }\r\n  OPTIONAL { ?unit ficr:coversSpatialZone ?space . }\r\n}\r\nGROUP BY ?unit ?label ?installation\r\nORDER BY ?label\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?unit ?label ?installation (COUNT(DISTINCT ?space) AS ?coveredSpaces) WHERE {\r\n ?unit a ficr:RiskUnit . OPTIONAL { ?unit rdfs:label ?label }\r\n OPTIONAL { ?unit ficr:hasInstallationStatus ?installation }\r\n OPTIONAL { ?unit ficr:coversSpatialZone ?space }\r\n} GROUP BY ?unit ?label ?installation ORDER BY ?unit",
+    "title": "Risk-unit coverage",
+    "description": "Risk units, installation and explicit space membership."
   },
   {
     "id": "C2",
-    "title": "Boundary Condition Distribution",
     "group": "C",
     "module": "C",
-    "type": "aggregation",
-    "file": "C2_boundary_condition_distribution.rq",
+    "type": "SELECT",
     "inference": "no",
-    "description": "Boundary-assumption condition distribution per risk unit.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?unit ?conditionState (COUNT(DISTINCT ?ba) AS ?count)\r\nWHERE {\r\n  ?ba a ficr:BoundaryAssumption ;\r\n      ficr:appliesToRiskUnit ?unit ;\r\n      ficr:hasConditionState ?conditionState .\r\n}\r\nGROUP BY ?unit ?conditionState\r\nORDER BY ?unit ?conditionState\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?unit ?conditionState (COUNT(DISTINCT ?boundary) AS ?count) WHERE {\r\n ?boundary a ficr:BoundaryAssumption; ficr:appliesToRiskUnit ?unit; ficr:hasConditionState ?conditionState .\r\n} GROUP BY ?unit ?conditionState ORDER BY ?unit ?conditionState",
+    "title": "Boundary condition summary",
+    "description": "Distinct boundary records grouped by unit and condition state."
   },
   {
     "id": "C3",
-    "title": "Evidence Completeness",
     "group": "C",
     "module": "C",
-    "type": "retrieval",
-    "file": "C3_evidence_completeness.rq",
+    "type": "SELECT",
     "inference": "no",
-    "description": "a gap flag when an Unknown assumption has no evidence.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX owl: <http://www.w3.org/2002/07/owl#>\r\n\r\nSELECT ?ba ?unit ?conditionState ?evidence ?evidenceType ?title ?gap\r\nWHERE {\r\n  ?ba a ficr:BoundaryAssumption ;\r\n      ficr:appliesToRiskUnit ?unit ;\r\n      ficr:hasConditionState ?conditionState .\r\n  OPTIONAL {\r\n    ?ba ficr:supportedByEvidence ?evidence .\r\n    OPTIONAL {\r\n      ?evidence a ?evidenceType .\r\n      FILTER(?evidenceType IN (ficr:CertificateEvidence, ficr:DrawingEvidence,\r\n                               ficr:ObservedEvidence, ficr:InspectionReportEvidence))\r\n    }\r\n    OPTIONAL { ?evidence ficr:documentTitle ?title . }\r\n  }\r\n  BIND(IF(!BOUND(?evidence) && ?conditionState = ficr:Unknown,\r\n          \"EVIDENCE GAP\", \"--\") AS ?gap)\r\n}\r\nORDER BY ?unit ?ba\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?boundary ?evidence ?unit ?aspect ?conditionState ?evidenceStatus ?evidenceType ?title ?adequacy ?gap WHERE {\r\n ?boundary a ficr:BoundaryAssumption; ficr:appliesToRiskUnit ?unit; ficr:hasBoundaryPerformanceAspect ?aspect; ficr:hasConditionState ?conditionState .\r\n OPTIONAL { ?boundary ficr:hasEvidenceStatus ?evidenceStatus }\r\n OPTIONAL { ?boundary prov:wasDerivedFrom ?record .\r\n   ?record dcterms:hasPart [ dcterms:type field:evidence-adequacy; rdf:value ?adequacy ] }\r\n OPTIONAL { ?boundary ficr:supportedByEvidence ?evidence .\r\n   OPTIONAL { ?evidence a ?evidenceType . FILTER(?evidenceType IN (ficr:CertificateEvidence,ficr:DrawingEvidence,ficr:ObservedEvidence,ficr:InspectionReportEvidence)) }\r\n   OPTIONAL { ?evidence ficr:documentTitle ?title }\r\n }\r\n BIND(?conditionState=ficr:Unknown && NOT EXISTS { ?boundary ficr:supportedByEvidence ?anyEvidence } AS ?gap)\r\n} ORDER BY ?unit ?boundary ?evidence",
+    "title": "Boundary evidence detail",
+    "description": "Conditions, evidence availability and adequacy for each boundary aspect."
   },
   {
     "id": "C4",
-    "title": "Risk Unit Confidence",
     "group": "C",
     "module": "C",
-    "type": "rule-like",
-    "file": "C4_risk_unit_confidence.rq",
+    "type": "SELECT",
     "inference": "no",
-    "description": "row position and cross-checks the whole frame against expected_truth_table.csv.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?unit\r\n       (SUM(?isUnknown) AS ?unknownCount)\r\n       (SUM(?isCompromised) AS ?compromisedCount)\r\n       (SUM(?isGap) AS ?evidenceGapCount)\r\n       (SUM(?isUnknown + ?isCompromised + ?isGap) AS ?priorityScore)\r\nWHERE {\r\n  ?ba a ficr:BoundaryAssumption ;\r\n      ficr:appliesToRiskUnit ?unit ;\r\n      ficr:hasConditionState ?state .\r\n  BIND(IF(?state = ficr:Unknown, 1, 0) AS ?isUnknown)\r\n  BIND(IF(?state = ficr:Compromised, 1, 0) AS ?isCompromised)\r\n  OPTIONAL { ?ba ficr:supportedByEvidence ?ev . }\r\n  BIND(IF(?state = ficr:Unknown && !BOUND(?ev), 1, 0) AS ?isGap)\r\n}\r\nGROUP BY ?unit\r\nORDER BY DESC(?priorityScore) DESC(?compromisedCount) ?unit\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?unit (COUNT(DISTINCT ?boundary) AS ?totalAssumptions)\r\n (SUM(?unknown) AS ?unknownCount) (SUM(?compromised) AS ?compromisedCount)\r\n (SUM(?gap) AS ?evidenceGapCount) (SUM(?unknown+?compromised+?gap) AS ?priorityScore) WHERE {\r\n ?boundary a ficr:BoundaryAssumption; ficr:appliesToRiskUnit ?unit; ficr:hasConditionState ?state .\r\n BIND(IF(?state=ficr:Unknown,1,0) AS ?unknown)\r\n BIND(IF(?state=ficr:Compromised,1,0) AS ?compromised)\r\n BIND(IF(?state=ficr:Unknown && NOT EXISTS { ?boundary ficr:supportedByEvidence ?evidence },1,0) AS ?gap)\r\n} GROUP BY ?unit ORDER BY DESC(?priorityScore) DESC(?compromisedCount) ?unit",
+    "title": "Information priority",
+    "description": "Unit-level P = U + C + G, counting each boundary once despite multiple evidence links."
   },
   {
     "id": "C5",
-    "title": "Gap Consistency",
     "group": "C",
     "module": "C",
-    "type": "rule-like",
-    "file": "C5_gap_consistency.rq",
+    "type": "SELECT",
     "inference": "no",
-    "description": "C5 is reasoning-invariant and stays 0 rows.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?ba ?evidenceStatus ?hasEvidence\r\nWHERE {\r\n  ?ba a ficr:BoundaryAssumption ;\r\n      ficr:hasEvidenceStatus ?evidenceStatus .\r\n  OPTIONAL { ?ba ficr:supportedByEvidence ?ev . }\r\n  BIND(BOUND(?ev) AS ?hasEvidence)\r\n  FILTER(\r\n    (?evidenceStatus = ficr:EvidenceMissing && BOUND(?ev)) ||\r\n    (?evidenceStatus = ficr:EvidenceAvailable && !BOUND(?ev))\r\n  )\r\n}\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?boundary ?issueCode ?evidenceStatus ?hasEvidence WHERE {\r\n { SELECT ?boundary (COUNT(DISTINCT ?state) AS ?states) (COUNT(DISTINCT ?status) AS ?statuses)\r\n   (COUNT(DISTINCT ?unit) AS ?units) (SAMPLE(?status) AS ?onlyStatus) WHERE {\r\n     ?boundary a ficr:BoundaryAssumption .\r\n     OPTIONAL { ?boundary ficr:hasConditionState ?state }\r\n     OPTIONAL { ?boundary ficr:hasEvidenceStatus ?status }\r\n     OPTIONAL { ?boundary ficr:appliesToRiskUnit ?unit }\r\n   } GROUP BY ?boundary }\r\n BIND(IF(?statuses=1,?onlyStatus,1/0) AS ?evidenceStatus)\r\n BIND(EXISTS { ?boundary ficr:supportedByEvidence ?ev } AS ?hasEvidence)\r\n VALUES ?issueCode { \"missing-condition\" \"conflicting-condition\" \"missing-status\" \"conflicting-status\" \"missing-unit\" \"conflicting-unit\" \"link-status-conflict\" }\r\n FILTER((?issueCode=\"missing-condition\" && ?states=0) || (?issueCode=\"conflicting-condition\" && ?states>1) ||\r\n (?issueCode=\"missing-status\" && ?statuses=0) || (?issueCode=\"conflicting-status\" && ?statuses>1) ||\r\n (?issueCode=\"missing-unit\" && ?units=0) || (?issueCode=\"conflicting-unit\" && ?units>1) ||\r\n (?issueCode=\"link-status-conflict\" && ((?evidenceStatus=ficr:EvidenceMissing && ?hasEvidence) ||\r\n (?evidenceStatus IN (ficr:EvidenceAvailable,ficr:EvidenceInsufficient) && !?hasEvidence))))\r\n} ORDER BY ?boundary ?issueCode",
+    "title": "Boundary consistency checks",
+    "description": "Missing or conflicting states and contradictions between evidence status and links."
   },
   {
     "id": "C6",
-    "title": "Risk Finding Traceability",
     "group": "C",
     "module": "C",
-    "type": "retrieval",
-    "file": "C6_risk_finding_traceability.rq",
+    "type": "SELECT",
     "inference": "no",
-    "description": "condition state + evidence + evidence status. Exercises the full risk chain.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\n\r\nSELECT ?finding ?unit ?scenario ?ba ?conditionState ?evidenceStatus ?evidence\r\nWHERE {\r\n  ?finding a ficr:RiskFinding ;\r\n           ficr:concernsRiskUnit ?unit ;\r\n           ficr:derivedFromScenario ?scenario .\r\n  ?scenario ficr:dependsOnBoundaryCondition ?ba .\r\n  ?ba ficr:appliesToRiskUnit ?unit ;\r\n      ficr:hasConditionState ?conditionState ;\r\n      ficr:hasEvidenceStatus ?evidenceStatus .\r\n  OPTIONAL { ?ba ficr:supportedByEvidence ?evidence . }\r\n}\r\nORDER BY ?unit ?ba\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?finding ?fireScenario ?boundary ?evidence ?unit ?conditionState ?evidenceStatus WHERE {\r\n ?finding a ficr:RiskFinding; ficr:concernsRiskUnit ?unit; ficr:derivedFromScenario ?fireScenario .\r\n ?fireScenario ficr:dependsOnBoundaryCondition ?boundary .\r\n ?boundary ficr:appliesToRiskUnit ?unit; ficr:hasConditionState ?conditionState .\r\n OPTIONAL { ?boundary ficr:hasEvidenceStatus ?evidenceStatus }\r\n OPTIONAL { ?boundary ficr:supportedByEvidence ?evidence }\r\n} ORDER BY ?unit ?boundary ?evidence",
+    "title": "Risk finding support",
+    "description": "Trace a risk finding through its fire scenario, boundary and evidence."
   },
   {
     "id": "D1",
-    "title": "Inspection Workflow",
     "group": "D",
     "module": "D",
-    "type": "retrieval",
-    "file": "D1_inspection_workflow.rq",
+    "type": "SELECT",
     "inference": "no",
-    "description": "Inspection workflow summary: event -> task -> assessment with planned times.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?event ?task ?taskLabel ?start ?end ?assessment\r\nWHERE {\r\n  ?event a ?eventType .\r\n  FILTER(?eventType IN (ficr:RoutineTriggerEvent, ficr:AnomalyTriggerEvent,\r\n                        ficr:ComplianceRequestTriggerEvent))\r\n  ?event ficr:triggersTask ?task .\r\n  OPTIONAL { ?task rdfs:label ?taskLabel . }\r\n  OPTIONAL { ?task ficr:plannedStartTime ?start . }\r\n  OPTIONAL { ?task ficr:plannedEndTime ?end . }\r\n  OPTIONAL { ?task ficr:producesAssessment ?assessment . }\r\n}\r\nORDER BY ?start\r\n\r\n\r\n# ---------------------------------------------------------------------------"
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT DISTINCT ?event ?task ?assessment ?taskLabel ?plannedStart ?plannedEnd ?actualStart WHERE {\r\n ?event ficr:triggersTask ?task .\r\n OPTIONAL { ?task rdfs:label ?taskLabel }\r\n OPTIONAL { ?task ficr:plannedStartTime ?plannedStart }\r\n OPTIONAL { ?task ficr:plannedEndTime ?plannedEnd }\r\n OPTIONAL { ?task ficr:producesAssessment ?assessment . OPTIONAL { ?assessment prov:startedAtTime ?actualStart } }\r\n} ORDER BY ?task",
+    "title": "Assessment workflow",
+    "description": "Event, task and assessment relationships, with planned and actual times kept separate."
   },
   {
     "id": "D2",
-    "title": "Assessment Results",
     "group": "D",
     "module": "D",
-    "type": "retrieval",
-    "file": "D2_assessment_results.rq",
+    "type": "SELECT",
     "inference": "no",
-    "description": "the findings it produces, their result and the requirement's clause reference.",
-    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\n\r\nSELECT ?assessment ?finding ?result ?req ?clause\r\nWHERE {\r\n  ?assessment a ficr:ComplianceChecking ;\r\n              ficr:producesFinding ?finding .\r\n  ?finding ficr:hasComplianceResult ?result ;\r\n           ficr:checksRequirement ?req .\r\n  OPTIONAL { ?req ficr:hasClauseReference ?clause . }\r\n}\r\nORDER BY ?result ?req ?finding"
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?assessment ?finding ?requirement ?element ?result ?requiredREI ?clause ?source WHERE {\r\n ?assessment a ficr:ComplianceChecking; ficr:producesFinding ?finding .\r\n ?finding a ficr:ComplianceFinding; ficr:concernsElement ?element; ficr:hasComplianceResult ?result; ficr:checksRequirement ?requirement .\r\n ?requirement ficr:hasRequiredREI ?requiredREI; ficr:hasClauseReference ?clause; ficr:derivedFromRegulatorySource ?source .\r\n} ORDER BY ?finding",
+    "title": "Compliance workflow",
+    "description": "Assessments and compliance findings linked to the requirements they check."
+  },
+  {
+    "id": "D3",
+    "group": "D",
+    "module": "D",
+    "type": "SELECT",
+    "inference": "no",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT DISTINCT ?assessment ?sourceRecord ?inspectionID ?assessedDate ?actualStart ?workbookIdentifier ?revision ?sheet ?recordID WHERE {\r\n ?assessment a ficr:InspectionAssessment; dcterms:date ?assessedDate; prov:wasDerivedFrom ?inspectionRecord .\r\n ?inspectionRecord dcterms:hasPart [ dcterms:type field:inspection-id; rdf:value ?inspectionID ] .\r\n { ?assessment prov:wasDerivedFrom ?sourceRecord } UNION { ?assessment ficr:producesFinding/prov:wasDerivedFrom ?sourceRecord }\r\n ?sourceRecord dcterms:isPartOf ?workbook; dcterms:identifier ?recordID;\r\n   dcterms:hasPart [ dcterms:type field:source-sheet; rdf:value ?sheet ] .\r\n FILTER(STR(?sheet) IN (\"Inspection\",\"Observations\"))\r\n ?workbook dcterms:identifier ?workbookIdentifier; dcterms:hasVersion ?revision .\r\n OPTIONAL { ?assessment prov:startedAtTime ?actualStart }\r\n} ORDER BY ?sourceRecord",
+    "title": "Inspection source register",
+    "description": "Inspection date, workbook revision, worksheet and source-record identifiers."
+  },
+  {
+    "id": "E1",
+    "group": "E",
+    "module": "E",
+    "type": "SELECT",
+    "inference": "yes",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?assessment ?device ?finding ?criterion ?room ?location ?observationID ?assessedDate ?actualStart ?serviceDue ?damage ?functionalTest ?impairment ?outcome ?statement WHERE {\r\n ?assessment a ficr:InspectionAssessment; ficr:producesFinding ?finding; dcterms:date ?assessedDate .\r\n ?finding a ficr:InspectionFinding; ficr:concernsElement ?device; dcterms:subject ?criterion;\r\n  dcterms:type ?outcome; ficr:hasFindingStatement ?statement; prov:wasDerivedFrom ?record .\r\n ?device a ficr:FireProtectionEquipment .\r\n ?record dcterms:identifier ?observationID; dcterms:hasPart [dcterms:type field:source-sheet; rdf:value \"Observations\"^^<http://www.w3.org/2001/XMLSchema#string>] .\r\n OPTIONAL { ?device ficr:isLocatedIn ?location . OPTIONAL { ?location rdfs:label ?room } }\r\n OPTIONAL { ?device ficr:hasImpairmentState ?impairment }\r\n OPTIONAL { ?record dcterms:hasPart [dcterms:type field:service-due; rdf:value ?serviceDue] }\r\n OPTIONAL { ?record dcterms:hasPart [dcterms:type field:observed-damage; rdf:value ?damage] }\r\n OPTIONAL { ?record dcterms:hasPart [dcterms:type field:functional-test; rdf:value ?functionalTest] }\r\n OPTIONAL { ?assessment prov:startedAtTime ?actualStart }\r\n} ORDER BY ?device ?criterion",
+    "title": "Equipment inspection detail",
+    "description": "Service deadlines, physical condition, functional tests and criterion-level outcomes."
+  },
+  {
+    "id": "E2",
+    "group": "E",
+    "module": "E",
+    "type": "SELECT",
+    "inference": "no",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?finding ?sourceRecord ?evidence ?observationID ?criterion ?evidenceType ?title ?locator ?evidenceDate ?availability ?adequacy ?physicalFileExists ?workbookIdentifier ?revision WHERE {\r\n ?assessment a ficr:InspectionAssessment; ficr:producesFinding ?finding .\r\n ?finding a ficr:InspectionFinding; dcterms:subject ?criterion; prov:wasDerivedFrom ?sourceRecord .\r\n ?sourceRecord dcterms:identifier ?observationID; dcterms:isPartOf ?workbook;\r\n   dcterms:hasPart [dcterms:type field:source-sheet; rdf:value \"Observations\"^^<http://www.w3.org/2001/XMLSchema#string>] .\r\n ?workbook dcterms:identifier ?workbookIdentifier; dcterms:hasVersion ?revision .\r\n OPTIONAL { ?sourceRecord dcterms:hasPart [dcterms:type field:evidence-availability; rdf:value ?availability] }\r\n OPTIONAL { ?sourceRecord dcterms:hasPart [dcterms:type field:evidence-adequacy; rdf:value ?adequacy] }\r\n OPTIONAL { ?finding ficr:supportedByEvidence ?evidence .\r\n  OPTIONAL { ?evidence a ?evidenceType . FILTER(?evidenceType IN (ficr:CertificateEvidence,ficr:DrawingEvidence,ficr:ObservedEvidence,ficr:InspectionReportEvidence)) }\r\n  OPTIONAL { ?evidence ficr:documentTitle ?title } OPTIONAL { ?evidence ficr:documentURI ?locator }\r\n  OPTIONAL { ?evidence dcterms:date ?evidenceDate }\r\n  OPTIONAL { ?evidence prov:wasDerivedFrom/dcterms:hasPart [dcterms:type field:physical-file-exists; rdf:value ?physicalFileExists] }\r\n }\r\n} ORDER BY ?finding ?evidence",
+    "title": "Inspection evidence",
+    "description": "Source records and evidence supporting equipment and door inspection findings."
+  },
+  {
+    "id": "E3",
+    "group": "E",
+    "module": "E",
+    "type": "SELECT",
+    "inference": "yes",
+    "text": "PREFIX ficr: <https://w3id.org/ficr#>\r\nPREFIX bot: <https://w3id.org/bot#>\r\nPREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>\r\nPREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>\r\nPREFIX dcterms: <http://purl.org/dc/terms/>\r\nPREFIX prov: <http://www.w3.org/ns/prov#>\r\nPREFIX field: <urn:ficr:record-field:>\r\nPREFIX outcome: <urn:ficr:inspection-outcome:>\r\n\r\nSELECT ?assessment (COUNT(DISTINCT ?device) AS ?devices) (COUNT(DISTINCT ?finding) AS ?checks)\r\n (SUM(IF(?outcome=outcome:pass,1,0)) AS ?passedChecks)\r\n (SUM(IF(?outcome=outcome:deficiency,1,0)) AS ?deficientChecks)\r\n (SUM(IF(?outcome=outcome:unresolved,1,0)) AS ?unresolvedChecks)\r\n (COUNT(DISTINCT ?badDevice) AS ?devicesWithDeficiency)\r\n (COUNT(DISTINCT ?unknownDevice) AS ?devicesWithUnresolvedChecks) WHERE {\r\n ?assessment a ficr:InspectionAssessment; ficr:producesFinding ?finding .\r\n ?finding a ficr:InspectionFinding; ficr:concernsElement ?device; dcterms:type ?outcome .\r\n ?device a ficr:FireProtectionEquipment .\r\n BIND(IF(?outcome=outcome:deficiency,?device,1/0) AS ?badDevice)\r\n BIND(IF(?outcome=outcome:unresolved,?device,1/0) AS ?unknownDevice)\r\n} GROUP BY ?assessment ORDER BY ?assessment",
+    "title": "Equipment inspection summary",
+    "description": "Separate totals for devices, selected checks, deficient checks and affected devices."
   }
 ]

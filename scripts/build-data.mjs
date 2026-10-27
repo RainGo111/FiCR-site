@@ -5,47 +5,24 @@ import { fileURLToPath } from 'node:url';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SITE_ROOT = path.resolve(__dirname, '..');
 const DATA_ROOT = path.join(SITE_ROOT, 'data');
+const RESEARCH_ROOT = path.join(SITE_ROOT, 'public/research');
 
 export function parseQueries(text) {
-  const starts = [...text.matchAll(/^#\s+([A-Z][0-9][A-Za-z0-9_]*\.rq)\s*$/gm)].map((match) => match.index);
-  return starts.map((start, index) => {
-    const block = text.slice(start, starts[index + 1] ?? text.length).trim();
-    const filename = block.match(/^#\s+([A-Z][0-9][A-Za-z0-9_]*\.rq)\s*$/m)?.[1] ?? '';
+  return [...text.matchAll(/^# BEGIN QUERY ([A-Z]\d+)\r?\n([\s\S]*?)^# END QUERY \1\s*$/gm)].map((match) => {
+    const block = match[2].trim();
     const cq = block.match(/^# CQ:\s*([^|]+)\|\s*Module:\s*([^|]+)\|\s*Type:\s*([^\n]+)$/m);
     const inference = block.match(/^# Inference:\s*(yes|no)\s*\|/m)?.[1] ?? 'no';
     const queryStart = block.indexOf('PREFIX ');
-    const beforeQuery = block.slice(0, queryStart);
-    const description = beforeQuery
-      .split('\n')
-      .map((line) => line.trim())
-      .filter((line) => line.startsWith('# '))
-      .map((line) => line.slice(2).trim())
-      .filter((line) => line && !line.startsWith('---') && !line.endsWith('.rq'))
-      .filter((line) => !/^(CQ|Inference|Migrated-from):/.test(line))
-      .at(-1);
-
+    if (!cq || queryStart < 0 || cq[1].trim() !== match[1]) throw new Error(`Invalid query block ${match[1]}`);
     return {
-      id: cq?.[1]?.trim() ?? filename.replace('.rq', ''),
-      title: titleFromFilename(filename),
-      group: (cq?.[1]?.trim() ?? filename).slice(0, 1),
-      module: cq?.[2]?.trim() ?? '',
-      type: cq?.[3]?.trim() ?? '',
-      file: filename,
+      id: match[1],
+      group: match[1][0],
+      module: cq[2].trim(),
+      type: cq[3].trim(),
       inference,
-      description: description ?? '',
-      text: queryStart >= 0 ? block.slice(queryStart).trim() : '',
+      text: block.slice(queryStart).trim(),
     };
   });
-}
-
-function titleFromFilename(filename) {
-  const stem = filename.replace(/\.rq$/, '');
-  const titlePart = stem.replace(/^[A-Z][0-9]_?/, '');
-  return titlePart
-    .split('_')
-    .filter(Boolean)
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
 }
 
 async function readJson(root, relativePath) {
@@ -118,12 +95,11 @@ export async function buildContent(root = DATA_ROOT) {
   const memoReport = applyPresentationTerminology(await readFile(path.join(root, 'memo/survey-to-report.md'), 'utf8'));
   const ifcReadiness = await readJson(root, 'ifc/frozen_fixture/readiness_report.json');
   const ifcGate = await readJson(root, 'ifc/frozen_fixture/gate_report.json');
-  const queryDefs = parseQueries(await readFile(path.join(root, 'all_queries.sparql'), 'utf8'));
 
   return {
     home: {
       overview:
-        'FiCR, Fire Compliance Checking and Risk Analysis, is a fire-compartmentation-and-risk ontology for AEC/FM digital-twin records. It models building elements, compartment and risk-unit boundaries, fire-resistance evidence, boundary assumptions, regulatory requirements, compliance findings, and inspection workflow records for researchers and practitioners who need traceable fire-safety assessment data.',
+        'FiCR is an ontology for fire compliance and risk analysis in existing buildings. It connects building elements, fire-protection equipment, inspection findings and supporting evidence, so assessment results can be queried and traced to their sources.',
     },
     ontology: {
       iri: 'https://w3id.org/ficr/',
@@ -150,16 +126,31 @@ export async function buildContent(root = DATA_ROOT) {
       },
     },
     roadmap: {
-      current: ['text / TTL / IFC input lanes', 'single building', 'single source per session', 'static site without live LLM or chatbot'],
-      nearTerm: ['richer input-format handling for existing text and TTL lanes', 'saved query sets and repeatable endpoint checks'],
-      vision: ['multimodal ingestion for point cloud, RGBD, and drawings via the same JSON/TTL contracts', 'cross-source entity resolution before merged assessment workflows'],
+      current: ['IFC-derived building identity and an editable inspection workbook', 'Three controlled information scenarios on one assessed date', 'OWL classification, 22 SPARQL queries and source-linked results', 'Complete typed reference comparison and reproducible builds'],
+      nearTerm: ['Apply the workflow to additional buildings and inspection records', 'Evaluate evidence adequacy with independent field observations', 'Compare findings with established assessment practice'],
+      vision: ['Link drawings, point clouds and RGBD observations to persistent building identities', 'Resolve evidence across sources and inspection dates', 'Study how evidence quality affects assessment decisions'],
     },
   };
 }
 
 async function main() {
-  const queries = parseQueries(await readFile(path.join(DATA_ROOT, 'all_queries.sparql'), 'utf8'));
+  const catalog = await readJson(DATA_ROOT, 'query-catalog.json');
+  const queries = parseQueries(await readFile(path.join(RESEARCH_ROOT, 'all_queries.rq'), 'utf8')).map(query => {
+    if (!catalog[query.id]) throw new Error(`Missing description for ${query.id}`);
+    return {...query, title: catalog[query.id][0], description: catalog[query.id][1]};
+  });
+  if (queries.length !== 22 || new Set(queries.map(q => q.id)).size !== 22) throw new Error('Expected 22 distinct canonical queries');
   const content = await buildContent(DATA_ROOT);
+  const verification = await readJson(RESEARCH_ROOT, 'verification.json');
+  const results = await readJson(RESEARCH_ROOT, 'results.json');
+  if (!verification.summary.passed || !verification.summary.reproducible) throw new Error('Research results must pass verification and reproducibility');
+  content.research = {
+    revision: verification.environment.revision,
+    assessedDate: verification.environment.assessed_date,
+    summary: verification.summary,
+    priorities: Object.fromEntries(Object.entries(results).map(([sid, frames]) => [sid, frames.C4.rows.map(row => Object.fromEntries(Object.entries(row).map(([key, term]) => [key, term?.value ?? null])))])),
+    equipment: Object.fromEntries(Object.entries(results.S1.E3.rows[0]).map(([key, term]) => [key, term?.value ?? null])),
+  };
   const outDir = path.join(SITE_ROOT, 'src/generated');
   await mkdir(outDir, { recursive: true });
   await writeFile(path.join(outDir, 'queries.json'), `${JSON.stringify(queries, null, 2)}\n`, 'utf8');

@@ -1,0 +1,508 @@
+# Canonical FiCR queries. Target: one materialised scenario graph per execution.
+# Split at BEGIN QUERY / END QUERY. Never execute this container as one request.
+# A5 reports overlapping memberships in a declared class list. C4 uses P=U+C+G.
+
+# BEGIN QUERY A1
+# A1_query.rq
+# CQ: A1 | Module: A | Type: SELECT
+# Inference: yes | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?building ?buildingType ?purposeGroup (COUNT(DISTINCT ?storey) AS ?storeys) (COUNT(DISTINCT ?space) AS ?spaces)
+WHERE {
+ ?building a bot:Building .
+ OPTIONAL { ?building a ?buildingType . FILTER(?buildingType IN (ficr:MultiStoreyBuilding,ficr:SingleStoreyBuilding)) }
+ OPTIONAL { ?building ficr:hasPurposeGroup ?purposeGroup }
+ OPTIONAL { ?building bot:hasStorey ?storey }
+ OPTIONAL { ?building bot:hasStorey/bot:hasSpace ?space }
+} GROUP BY ?building ?buildingType ?purposeGroup ORDER BY ?building ?buildingType ?purposeGroup
+# END QUERY A1
+
+# BEGIN QUERY A2
+# A2_query.rq
+# CQ: A2 | Module: A | Type: SELECT
+# Inference: yes | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?building ?storey ?kind ?label ?elevation (COUNT(DISTINCT ?space) AS ?spaces)
+WHERE {
+ ?building a bot:Building; bot:hasStorey ?storey .
+ OPTIONAL { ?storey a ?kind . FILTER(?kind IN (ficr:BasementStorey,ficr:GroundAndAboveStorey)) }
+ OPTIONAL { ?storey rdfs:label ?label } OPTIONAL { ?storey ficr:hasElevation ?elevation }
+ OPTIONAL { ?storey bot:hasSpace ?space }
+} GROUP BY ?building ?storey ?kind ?label ?elevation ORDER BY ?building ?storey
+# END QUERY A2
+
+# BEGIN QUERY A3
+# A3_query.rq
+# CQ: A3 | Module: A | Type: SELECT
+# Inference: yes | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?building ?storey ?space ?label ?usage ?area WHERE {
+ ?building a bot:Building; bot:hasStorey ?storey . ?storey bot:hasSpace ?space .
+ OPTIONAL { ?space rdfs:label ?label } OPTIONAL { ?space ficr:hasSpaceUsage ?usage }
+ OPTIONAL { ?space ficr:hasArea ?area }
+} ORDER BY ?building ?storey ?space
+# END QUERY A3
+
+# BEGIN QUERY A4
+# A4_query.rq
+# CQ: A4 | Module: A | Type: SELECT
+# Inference: yes | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?building ?usage (COUNT(DISTINCT ?space) AS ?count) WHERE {
+ ?building a bot:Building; bot:hasStorey/bot:hasSpace ?space .
+ OPTIONAL { ?space ficr:hasSpaceUsage ?usage }
+} GROUP BY ?building ?usage ORDER BY ?building ?usage
+# END QUERY A4
+
+# BEGIN QUERY A5
+# A5_query.rq
+# CQ: A5 | Module: A | Type: SELECT
+# Inference: yes | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?elementType (COUNT(DISTINCT ?element) AS ?count) WHERE {
+ VALUES ?elementType { ficr:Wall ficr:ExternalWall ficr:FloorSlab ficr:RoofSlab ficr:Doorset
+ ficr:Window ficr:Opening ficr:Beam ficr:Ceiling ficr:Railing ficr:Stair ficr:StairFlight
+ ficr:WallFoundation ficr:Furnishings ficr:FireExtinguisher ficr:Alarm }
+ ?element a ?elementType .
+} GROUP BY ?elementType ORDER BY ?elementType
+# END QUERY A5
+
+# BEGIN QUERY A6
+# A6_query.rq
+# CQ: A6 | Module: A | Type: SELECT
+# Inference: yes | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT DISTINCT ?building ?space ?item ?relationship ?spaceLabel ?itemKind WHERE {
+ ?building a bot:Building; bot:hasStorey/bot:hasSpace ?space .
+ OPTIONAL { ?space rdfs:label ?spaceLabel }
+ { VALUES ?relationship { bot:containsElement bot:adjacentElement }
+   ?space ?relationship ?item . ?item a ?class .
+   FILTER(?class IN (ficr:Wall,ficr:FloorSlab,ficr:Doorset)) BIND("fabric" AS ?itemKind)
+ } UNION {
+   ?item a ficr:FireProtectionEquipment; ficr:isLocatedIn ?space .
+   BIND(ficr:isLocatedIn AS ?relationship) BIND("equipment" AS ?itemKind)
+ }
+} ORDER BY ?building ?space ?item ?relationship
+# END QUERY A6
+
+# BEGIN QUERY B1
+# B1_query.rq
+# CQ: B1 | Module: B | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?result (COUNT(DISTINCT ?finding) AS ?count) WHERE {
+ ?finding a ficr:ComplianceFinding; ficr:hasComplianceResult ?result; ficr:concernsElement ?element .
+} GROUP BY ?result ORDER BY ?result
+# END QUERY B1
+
+# BEGIN QUERY B2
+# B2_query.rq
+# CQ: B2 | Module: B | Type: SELECT
+# Inference: yes | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?finding ?element ?requirement ?category ?actualREI ?requiredREI ?result WHERE {
+ ?finding a ficr:ComplianceFinding; ficr:concernsElement ?element; ficr:checksRequirement ?requirement; ficr:hasComplianceResult ?result .
+ OPTIONAL { ?element ficr:hasActualREI ?actualREI }
+ ?requirement ficr:hasRequiredREI ?requiredREI .
+ BIND(IF(EXISTS { ?element a ficr:CompartmentWall },"CompartmentWall","Other element") AS ?category)
+} ORDER BY ?finding
+# END QUERY B2
+
+# BEGIN QUERY B3
+# B3_query.rq
+# CQ: B3 | Module: B | Type: SELECT
+# Inference: yes | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT DISTINCT ?element ?assignedRole ?inferredClass ?retainsExternalWall WHERE {
+ VALUES (?assignedRole ?inferredClass) { (ficr:FireSeparatingRole ficr:CompartmentWall) }
+ ?element ficr:hasPhysicalObjectFireSafetyRole ?assignedRole; a ?inferredClass; a ficr:Wall .
+ BIND(EXISTS { ?element a ficr:ExternalWall } AS ?retainsExternalWall)
+} ORDER BY ?element
+# END QUERY B3
+
+# BEGIN QUERY B4
+# B4_query.rq
+# CQ: B4 | Module: B | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?finding ?element ?requirement ?actualREI ?requiredREI ?result ?evidenceStatus ?clause ?source WHERE {
+ ?finding a ficr:ComplianceFinding; ficr:concernsElement ?element; ficr:checksRequirement ?requirement; ficr:hasComplianceResult ?result .
+ OPTIONAL { ?finding ficr:hasEvidenceStatus ?evidenceStatus }
+ OPTIONAL { ?element ficr:hasActualREI ?actualREI }
+ ?requirement ficr:hasRequiredREI ?requiredREI; ficr:hasClauseReference ?clause; ficr:derivedFromRegulatorySource ?source .
+} ORDER BY ?finding
+# END QUERY B4
+
+# BEGIN QUERY C1
+# C1_query.rq
+# CQ: C1 | Module: C | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?unit ?label ?installation (COUNT(DISTINCT ?space) AS ?coveredSpaces) WHERE {
+ ?unit a ficr:RiskUnit . OPTIONAL { ?unit rdfs:label ?label }
+ OPTIONAL { ?unit ficr:hasInstallationStatus ?installation }
+ OPTIONAL { ?unit ficr:coversSpatialZone ?space }
+} GROUP BY ?unit ?label ?installation ORDER BY ?unit
+# END QUERY C1
+
+# BEGIN QUERY C2
+# C2_query.rq
+# CQ: C2 | Module: C | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?unit ?conditionState (COUNT(DISTINCT ?boundary) AS ?count) WHERE {
+ ?boundary a ficr:BoundaryAssumption; ficr:appliesToRiskUnit ?unit; ficr:hasConditionState ?conditionState .
+} GROUP BY ?unit ?conditionState ORDER BY ?unit ?conditionState
+# END QUERY C2
+
+# BEGIN QUERY C3
+# C3_query.rq
+# CQ: C3 | Module: C | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?boundary ?evidence ?unit ?aspect ?conditionState ?evidenceStatus ?evidenceType ?title ?adequacy ?gap WHERE {
+ ?boundary a ficr:BoundaryAssumption; ficr:appliesToRiskUnit ?unit; ficr:hasBoundaryPerformanceAspect ?aspect; ficr:hasConditionState ?conditionState .
+ OPTIONAL { ?boundary ficr:hasEvidenceStatus ?evidenceStatus }
+ OPTIONAL { ?boundary prov:wasDerivedFrom ?record .
+   ?record dcterms:hasPart [ dcterms:type field:evidence-adequacy; rdf:value ?adequacy ] }
+ OPTIONAL { ?boundary ficr:supportedByEvidence ?evidence .
+   OPTIONAL { ?evidence a ?evidenceType . FILTER(?evidenceType IN (ficr:CertificateEvidence,ficr:DrawingEvidence,ficr:ObservedEvidence,ficr:InspectionReportEvidence)) }
+   OPTIONAL { ?evidence ficr:documentTitle ?title }
+ }
+ BIND(?conditionState=ficr:Unknown && NOT EXISTS { ?boundary ficr:supportedByEvidence ?anyEvidence } AS ?gap)
+} ORDER BY ?unit ?boundary ?evidence
+# END QUERY C3
+
+# BEGIN QUERY C4
+# C4_query.rq
+# CQ: C4 | Module: C | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?unit (COUNT(DISTINCT ?boundary) AS ?totalAssumptions)
+ (SUM(?unknown) AS ?unknownCount) (SUM(?compromised) AS ?compromisedCount)
+ (SUM(?gap) AS ?evidenceGapCount) (SUM(?unknown+?compromised+?gap) AS ?priorityScore) WHERE {
+ ?boundary a ficr:BoundaryAssumption; ficr:appliesToRiskUnit ?unit; ficr:hasConditionState ?state .
+ BIND(IF(?state=ficr:Unknown,1,0) AS ?unknown)
+ BIND(IF(?state=ficr:Compromised,1,0) AS ?compromised)
+ BIND(IF(?state=ficr:Unknown && NOT EXISTS { ?boundary ficr:supportedByEvidence ?evidence },1,0) AS ?gap)
+} GROUP BY ?unit ORDER BY DESC(?priorityScore) DESC(?compromisedCount) ?unit
+# END QUERY C4
+
+# BEGIN QUERY C5
+# C5_query.rq
+# CQ: C5 | Module: C | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?boundary ?issueCode ?evidenceStatus ?hasEvidence WHERE {
+ { SELECT ?boundary (COUNT(DISTINCT ?state) AS ?states) (COUNT(DISTINCT ?status) AS ?statuses)
+   (COUNT(DISTINCT ?unit) AS ?units) (SAMPLE(?status) AS ?onlyStatus) WHERE {
+     ?boundary a ficr:BoundaryAssumption .
+     OPTIONAL { ?boundary ficr:hasConditionState ?state }
+     OPTIONAL { ?boundary ficr:hasEvidenceStatus ?status }
+     OPTIONAL { ?boundary ficr:appliesToRiskUnit ?unit }
+   } GROUP BY ?boundary }
+ BIND(IF(?statuses=1,?onlyStatus,1/0) AS ?evidenceStatus)
+ BIND(EXISTS { ?boundary ficr:supportedByEvidence ?ev } AS ?hasEvidence)
+ VALUES ?issueCode { "missing-condition" "conflicting-condition" "missing-status" "conflicting-status" "missing-unit" "conflicting-unit" "link-status-conflict" }
+ FILTER((?issueCode="missing-condition" && ?states=0) || (?issueCode="conflicting-condition" && ?states>1) ||
+ (?issueCode="missing-status" && ?statuses=0) || (?issueCode="conflicting-status" && ?statuses>1) ||
+ (?issueCode="missing-unit" && ?units=0) || (?issueCode="conflicting-unit" && ?units>1) ||
+ (?issueCode="link-status-conflict" && ((?evidenceStatus=ficr:EvidenceMissing && ?hasEvidence) ||
+ (?evidenceStatus IN (ficr:EvidenceAvailable,ficr:EvidenceInsufficient) && !?hasEvidence))))
+} ORDER BY ?boundary ?issueCode
+# END QUERY C5
+
+# BEGIN QUERY C6
+# C6_query.rq
+# CQ: C6 | Module: C | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?finding ?fireScenario ?boundary ?evidence ?unit ?conditionState ?evidenceStatus WHERE {
+ ?finding a ficr:RiskFinding; ficr:concernsRiskUnit ?unit; ficr:derivedFromScenario ?fireScenario .
+ ?fireScenario ficr:dependsOnBoundaryCondition ?boundary .
+ ?boundary ficr:appliesToRiskUnit ?unit; ficr:hasConditionState ?conditionState .
+ OPTIONAL { ?boundary ficr:hasEvidenceStatus ?evidenceStatus }
+ OPTIONAL { ?boundary ficr:supportedByEvidence ?evidence }
+} ORDER BY ?unit ?boundary ?evidence
+# END QUERY C6
+
+# BEGIN QUERY D1
+# D1_query.rq
+# CQ: D1 | Module: D | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT DISTINCT ?event ?task ?assessment ?taskLabel ?plannedStart ?plannedEnd ?actualStart WHERE {
+ ?event ficr:triggersTask ?task .
+ OPTIONAL { ?task rdfs:label ?taskLabel }
+ OPTIONAL { ?task ficr:plannedStartTime ?plannedStart }
+ OPTIONAL { ?task ficr:plannedEndTime ?plannedEnd }
+ OPTIONAL { ?task ficr:producesAssessment ?assessment . OPTIONAL { ?assessment prov:startedAtTime ?actualStart } }
+} ORDER BY ?task
+# END QUERY D1
+
+# BEGIN QUERY D2
+# D2_query.rq
+# CQ: D2 | Module: D | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?assessment ?finding ?requirement ?element ?result ?requiredREI ?clause ?source WHERE {
+ ?assessment a ficr:ComplianceChecking; ficr:producesFinding ?finding .
+ ?finding a ficr:ComplianceFinding; ficr:concernsElement ?element; ficr:hasComplianceResult ?result; ficr:checksRequirement ?requirement .
+ ?requirement ficr:hasRequiredREI ?requiredREI; ficr:hasClauseReference ?clause; ficr:derivedFromRegulatorySource ?source .
+} ORDER BY ?finding
+# END QUERY D2
+
+# BEGIN QUERY D3
+# D3_query.rq
+# CQ: D3 | Module: D | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT DISTINCT ?assessment ?sourceRecord ?inspectionID ?assessedDate ?actualStart ?workbookIdentifier ?revision ?sheet ?recordID WHERE {
+ ?assessment a ficr:InspectionAssessment; dcterms:date ?assessedDate; prov:wasDerivedFrom ?inspectionRecord .
+ ?inspectionRecord dcterms:hasPart [ dcterms:type field:inspection-id; rdf:value ?inspectionID ] .
+ { ?assessment prov:wasDerivedFrom ?sourceRecord } UNION { ?assessment ficr:producesFinding/prov:wasDerivedFrom ?sourceRecord }
+ ?sourceRecord dcterms:isPartOf ?workbook; dcterms:identifier ?recordID;
+   dcterms:hasPart [ dcterms:type field:source-sheet; rdf:value ?sheet ] .
+ FILTER(STR(?sheet) IN ("Inspection","Observations"))
+ ?workbook dcterms:identifier ?workbookIdentifier; dcterms:hasVersion ?revision .
+ OPTIONAL { ?assessment prov:startedAtTime ?actualStart }
+} ORDER BY ?sourceRecord
+# END QUERY D3
+
+# BEGIN QUERY E1
+# E1_query.rq
+# CQ: E1 | Module: E | Type: SELECT
+# Inference: yes | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?assessment ?device ?finding ?criterion ?room ?location ?observationID ?assessedDate ?actualStart ?serviceDue ?damage ?functionalTest ?impairment ?outcome ?statement WHERE {
+ ?assessment a ficr:InspectionAssessment; ficr:producesFinding ?finding; dcterms:date ?assessedDate .
+ ?finding a ficr:InspectionFinding; ficr:concernsElement ?device; dcterms:subject ?criterion;
+  dcterms:type ?outcome; ficr:hasFindingStatement ?statement; prov:wasDerivedFrom ?record .
+ ?device a ficr:FireProtectionEquipment .
+ ?record dcterms:identifier ?observationID; dcterms:hasPart [dcterms:type field:source-sheet; rdf:value "Observations"^^<http://www.w3.org/2001/XMLSchema#string>] .
+ OPTIONAL { ?device ficr:isLocatedIn ?location . OPTIONAL { ?location rdfs:label ?room } }
+ OPTIONAL { ?device ficr:hasImpairmentState ?impairment }
+ OPTIONAL { ?record dcterms:hasPart [dcterms:type field:service-due; rdf:value ?serviceDue] }
+ OPTIONAL { ?record dcterms:hasPart [dcterms:type field:observed-damage; rdf:value ?damage] }
+ OPTIONAL { ?record dcterms:hasPart [dcterms:type field:functional-test; rdf:value ?functionalTest] }
+ OPTIONAL { ?assessment prov:startedAtTime ?actualStart }
+} ORDER BY ?device ?criterion
+# END QUERY E1
+
+# BEGIN QUERY E2
+# E2_query.rq
+# CQ: E2 | Module: E | Type: SELECT
+# Inference: no | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?finding ?sourceRecord ?evidence ?observationID ?criterion ?evidenceType ?title ?locator ?evidenceDate ?availability ?adequacy ?physicalFileExists ?workbookIdentifier ?revision WHERE {
+ ?assessment a ficr:InspectionAssessment; ficr:producesFinding ?finding .
+ ?finding a ficr:InspectionFinding; dcterms:subject ?criterion; prov:wasDerivedFrom ?sourceRecord .
+ ?sourceRecord dcterms:identifier ?observationID; dcterms:isPartOf ?workbook;
+   dcterms:hasPart [dcterms:type field:source-sheet; rdf:value "Observations"^^<http://www.w3.org/2001/XMLSchema#string>] .
+ ?workbook dcterms:identifier ?workbookIdentifier; dcterms:hasVersion ?revision .
+ OPTIONAL { ?sourceRecord dcterms:hasPart [dcterms:type field:evidence-availability; rdf:value ?availability] }
+ OPTIONAL { ?sourceRecord dcterms:hasPart [dcterms:type field:evidence-adequacy; rdf:value ?adequacy] }
+ OPTIONAL { ?finding ficr:supportedByEvidence ?evidence .
+  OPTIONAL { ?evidence a ?evidenceType . FILTER(?evidenceType IN (ficr:CertificateEvidence,ficr:DrawingEvidence,ficr:ObservedEvidence,ficr:InspectionReportEvidence)) }
+  OPTIONAL { ?evidence ficr:documentTitle ?title } OPTIONAL { ?evidence ficr:documentURI ?locator }
+  OPTIONAL { ?evidence dcterms:date ?evidenceDate }
+  OPTIONAL { ?evidence prov:wasDerivedFrom/dcterms:hasPart [dcterms:type field:physical-file-exists; rdf:value ?physicalFileExists] }
+ }
+} ORDER BY ?finding ?evidence
+# END QUERY E2
+
+# BEGIN QUERY E3
+# E3_query.rq
+# CQ: E3 | Module: E | Type: SELECT
+# Inference: yes | Features: SPARQL 1.1
+PREFIX ficr: <https://w3id.org/ficr#>
+PREFIX bot: <https://w3id.org/bot#>
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+PREFIX dcterms: <http://purl.org/dc/terms/>
+PREFIX prov: <http://www.w3.org/ns/prov#>
+PREFIX field: <urn:ficr:record-field:>
+PREFIX outcome: <urn:ficr:inspection-outcome:>
+
+SELECT ?assessment (COUNT(DISTINCT ?device) AS ?devices) (COUNT(DISTINCT ?finding) AS ?checks)
+ (SUM(IF(?outcome=outcome:pass,1,0)) AS ?passedChecks)
+ (SUM(IF(?outcome=outcome:deficiency,1,0)) AS ?deficientChecks)
+ (SUM(IF(?outcome=outcome:unresolved,1,0)) AS ?unresolvedChecks)
+ (COUNT(DISTINCT ?badDevice) AS ?devicesWithDeficiency)
+ (COUNT(DISTINCT ?unknownDevice) AS ?devicesWithUnresolvedChecks) WHERE {
+ ?assessment a ficr:InspectionAssessment; ficr:producesFinding ?finding .
+ ?finding a ficr:InspectionFinding; ficr:concernsElement ?device; dcterms:type ?outcome .
+ ?device a ficr:FireProtectionEquipment .
+ BIND(IF(?outcome=outcome:deficiency,?device,1/0) AS ?badDevice)
+ BIND(IF(?outcome=outcome:unresolved,?device,1/0) AS ?unknownDevice)
+} GROUP BY ?assessment ORDER BY ?assessment
+# END QUERY E3
+

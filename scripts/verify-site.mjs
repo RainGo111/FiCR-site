@@ -1,97 +1,91 @@
 import assert from 'node:assert/strict';
-import { readdir, readFile, stat } from 'node:fs/promises';
+import { readFile, readdir, stat } from 'node:fs/promises';
 import path from 'node:path';
-import queries from '../src/generated/queries.json' with { type: 'json' };
-import content from '../src/generated/content.json' with { type: 'json' };
+import { parseQueries } from './build-data.mjs';
 
-const endpoint = 'https://api.triplydb.com/datasets/Raincheung111/FiCRquery/sparql';
-const siteRoot = path.resolve(import.meta.dirname, '..');
-const distRoot = path.join(siteRoot, 'dist');
-
-async function fileExists(filePath) {
-  return (await stat(filePath)).isFile();
-}
-
-async function main() {
-  assert.equal(await fileExists(path.join(distRoot, 'index.html')), true);
-  const assets = await readdir(path.join(distRoot, 'assets'));
-  const jsAsset = assets.find((name) => name.endsWith('.js'));
-  assert.ok(jsAsset);
-  const js = await readFile(path.join(distRoot, 'assets', jsAsset), 'utf8');
-  for (const marker of ['FiCR', 'Ontology', 'Competency Queries', 'FiCR Assistant Skill', 'Roadmap']) {
-    assert.ok(js.includes(marker), `bundle missing ${marker}`);
-  }
-  for (const marker of ['module-nav', 'Storey Inventory', 'pipeline-narrative', 'flow-stage', 'input-lanes-row', 'planned-lane', 'sample-report', 'report-markdown', 'Advisory Notes', 'Near-term', 'Vision']) {
-    assert.ok(js.includes(marker), `bundle missing site marker ${marker}`);
-  }
-  assert.equal(js.includes('Inference:'), false);
-  assert.equal(/<section class="card featured">\s*<h2>Current<\/h2>/.test(js), false);
-  const forbiddenMarkers = [
-    ['FiCR', 'Assistant'].join('_'),
-    ['_', 'staging'].join(''),
-    ['tests', 'session_artifacts'].join('/'),
-    ['D:', 'CodingProjects'].join('\\'),
-    ['skill', 'ficr-abox-builder'].join('/'),
-  ];
-  for (const marker of forbiddenMarkers) {
-    assert.equal(js.includes(marker), false, `bundle includes external marker ${marker}`);
-  }
-
-  assert.equal(queries.length, 18);
-  assert.equal(queries.find((item) => item.id === 'A2')?.title, 'Storey Inventory');
-  assert.equal(queries.find((item) => item.id === 'B2')?.title, 'Element Rei Detail');
-  assert.equal(content.home.overview.includes('LLM proposes'), false);
-  assert.equal(queries.find((item) => item.id === 'A1')?.text.includes('SELECT ?buildingType ?purposeGroup'), true);
-  assert.equal(queries.find((item) => item.id === 'B3')?.text.includes('hasPhysicalObjectFireSafetyRole'), true);
-  assert.equal(queries.find((item) => item.id === 'B3')?.text.includes('GROUP BY'), false);
-  assert.equal(content.skill.memo.informationAvailability.available, 15);
-  assert.equal(content.skill.memo.informationAvailability.unavailable, 3);
-  assert.deepEqual(content.skill.memo.priorityScores.map((item) => item.score), [7, 7]);
-  assert.match(content.skill.sampleReport.markdown, /# FiCR Assistant . Session Report/);
-  assert.match(content.skill.sampleReport.markdown, /Information availability.*15 of 18 available/);
-  assert.match(content.skill.sampleReport.markdown, /FiCR controlled vocabulary/);
-  assert.equal((content.skill.sampleReport.markdown.match(/^### \[P/gm) ?? []).length, 5);
-  assert.match(content.skill.sampleReport.markdown, /BS EN 1366-3/);
-  assert.equal(content.skill.ifc.informationAvailability.available, 6);
-  assert.equal(content.skill.ifc.informationAvailability.unavailable, 12);
-  assert.deepEqual(
-    content.skill.ifc.unavailableQueries.find((query) => query.queryId === 'B3')?.missingTerms,
-    ['hasPhysicalObjectFireSafetyRole'],
-  );
-  assert.equal(content.roadmap.nearTerm.length > 0, true);
-
-  for (const id of ['A1', 'B2', 'B3', 'C1', 'D1']) {
-    const query = queries.find((item) => item.id === id);
-    const response = await fetch(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/sparql-query',
-        Accept: 'application/sparql-results+json',
-      },
-      body: query.text,
-    });
-    assert.equal(response.ok, true, `${id} HTTP ${response.status}`);
-    assert.equal(response.headers.get('access-control-allow-origin'), '*');
-    const json = await response.json();
-    const rows = json.results?.bindings?.length ?? 0;
-    assert.ok(rows > 0, `${id} returned no rows`);
-    if (id === 'A1') {
-      assert.deepEqual(json.head.vars, ['buildingType', 'purposeGroup', 'storeys', 'spaces']);
-      assert.deepEqual(
-        json.results.bindings[0],
-        {
-          buildingType: { type: 'uri', value: 'https://w3id.org/ficr#MultiStoreyBuilding' },
-          purposeGroup: { type: 'uri', value: 'https://w3id.org/ficr#PurposeGroup1b' },
-          storeys: { datatype: 'http://www.w3.org/2001/XMLSchema#integer', type: 'literal', value: '4' },
-          spaces: { datatype: 'http://www.w3.org/2001/XMLSchema#integer', type: 'literal', value: '21' },
-        },
-      );
+const root = path.resolve(import.meta.dirname, '..');
+const readJson = async file => JSON.parse(await readFile(path.join(root, file), 'utf8'));
+const queries = await readJson('src/generated/queries.json');
+const content = await readJson('src/generated/content.json');
+const results = await readJson('public/research/results.json');
+const contracts = await readJson('public/research/binding_contract.json');
+const verification = await readJson('public/research/verification.json');
+const raw = await readFile(path.join(root, 'public/research/all_queries.rq'), 'utf8');
+const parsed = parseQueries(raw);
+assert.equal(queries.length, 22);
+assert.deepEqual(queries.map(q => q.id), Object.keys(contracts));
+assert.deepEqual(parsed.map(q => q.text), queries.map(q => q.text));
+assert.equal(new Set(queries.map(q => q.id)).size, 22);
+assert.ok(queries.every(q => q.title && q.description && q.text.startsWith('PREFIX ') && !q.text.includes('BEGIN QUERY')));
+assert.deepEqual([...new Set(queries.map(q => q.group))], ['A','B','C','D','E']);
+let frames = 0, rows = 0;
+for (const sid of ['S1','S2','S3']) {
+  assert.deepEqual(Object.keys(results[sid]), queries.map(q => q.id));
+  for (const query of queries) {
+    const result = results[sid][query.id];
+    assert.equal(result.passed, true);
+    assert.deepEqual(result.errors, []);
+    assert.equal(result.actual_count, result.rows.length);
+    assert.equal(result.actual_count, result.expected_count);
+    for (const row of result.rows) {
+      assert.deepEqual(Object.keys(row), contracts[query.id].columns);
+      for (const [column, term] of Object.entries(row)) {
+        const contract = contracts[query.id].bindings[column];
+        if (term === null) { assert.equal(contract.nullable_in_main, true); continue; }
+        assert.equal(term.kind, contract.term_kind);
+        if (term.kind === 'literal') { assert.equal(term.datatype, contract.datatype); assert.equal(term.language, contract.language); }
+      }
     }
-    if (id === 'B3') assert.equal(rows, 4);
-    console.log(`${id} rows=${rows} vars=${json.head.vars.join(',')}`);
+    frames++; rows += result.rows.length;
   }
-
-  console.log('SITE_VERIFY_OK pages=5 queries=18 memo=15/18 priorities=7/7 ifc=6/18 B3=unavailable-for-roles');
+  assert.ok(Object.values(verification.reproducibility[sid]).every(Boolean));
 }
+assert.equal(frames, 66); assert.equal(rows, 1313);
+assert.deepEqual(verification.summary, {passed:true,scenarios:3,queries_per_scenario:22,query_frames:frames,typed_rows:rows,reproducible:true});
+assert.equal(content.research.revision, 'B1');
+assert.equal(content.research.assessedDate, '2025-03-17');
+assert.deepEqual(Object.values(content.research.priorities).map(list => [...list].sort((a,b)=>a.unit.localeCompare(b.unit)).map(r=>Number(r.priorityScore))), [[4,5],[8,7],[0,3]]);
+assert.deepEqual(['devices','checks','passedChecks','deficientChecks','unresolvedChecks','devicesWithDeficiency'].map(k=>Number(content.research.equipment[k])), [8,20,17,3,0,3]);
+assert.deepEqual([content.skill.memo.informationAvailability.available,content.skill.memo.informationAvailability.unavailable], [15,3]);
+assert.deepEqual(content.skill.memo.priorityScores.map(r=>r.score), [7,7]);
+assert.deepEqual([content.skill.ifc.informationAvailability.available,content.skill.ifc.informationAvailability.unavailable], [6,12]);
+assert.match(content.skill.sampleReport.markdown, /Information availability.*15 of 18 available/);
+const required = ['all_queries.rq','inspection_records.xlsx','inspection_records.pdf','results.json','verification.json','binding_contract.json', ...['S1','S2','S3'].flatMap(s=>[`graphs/${s}_asserted.ttl`,`graphs/${s}_materialised.ttl`,`provenance/${s}.json`])];
+for (const file of required) {
+  assert.ok((await stat(path.join(root,'dist/research',file))).size > 0, `Missing download ${file}`);
+  assert.deepEqual(await readFile(path.join(root,'dist/research',file)), await readFile(path.join(root,'public/research',file)));
+}
+const assets = await readdir(path.join(root,'dist/assets'));
+const js = (await Promise.all(assets.filter(n=>n.endsWith('.js')).map(n=>readFile(path.join(root,'dist/assets',n),'utf8')))).join('\n');
+for (const marker of ['Fire safety records','Case study','Competency queries','FiCR Assistant Skill','Research outlook','Run public query','UNBOUND']) assert.ok(js.includes(marker), `Missing page marker: ${marker}`);
+for (const marker of ['D:\\CodingProjects','fire-compartmentation-and-risk ontology','live competency-query interface']) assert.equal(js.includes(marker),false);
 
-await main();
+function canonicalTerm(term) {
+  if (!term) return null;
+  const kind=term.kind ?? (term.type==='uri'?'IRI':term.type==='bnode'?'blank':'literal');
+  if (kind==='IRI') return [kind,term.value];
+  const language=term.language ?? term['xml:lang'] ?? null;
+  const datatype=term.datatype ?? (language?'http://www.w3.org/1999/02/22-rdf-syntax-ns#langString':'http://www.w3.org/2001/XMLSchema#string');
+  let value=term.value;
+  if (datatype.endsWith('#integer')) value=BigInt(value).toString();
+  if (datatype.endsWith('#decimal')) value=String(Number(value));
+  if (datatype.endsWith('#boolean')) value=(value==='true'||value==='1')?'true':'false';
+  return [kind,value,datatype,language];
+}
+function signatures(list,columns,ordered=false) {
+  const values=list.map(row=>JSON.stringify(columns.map(c=>canonicalTerm(row[c]))));
+  return ordered?values:values.sort();
+}
+if (process.argv.includes('--live')) {
+  for (const query of queries) {
+    const response=await fetch('https://api.triplydb.com/datasets/Raincheung111/FiCRquery/sparql', {method:'POST',headers:{'Content-Type':'application/sparql-query',Accept:'application/sparql-results+json'},body:query.text,signal:AbortSignal.timeout(30000)});
+    assert.equal(response.status,200,`${query.id}: HTTP ${response.status}`);
+    assert.equal(response.headers.get('access-control-allow-origin'),'*');
+    const data=await response.json();
+    const columns=contracts[query.id].columns;
+    assert.deepEqual(data.head.vars,columns,`${query.id}: projected columns differ`);
+    assert.deepEqual(signatures(data.results.bindings,columns,query.id==='C4'),signatures(results.S1[query.id].rows,columns,query.id==='C4'),`${query.id}: public dataset differs from verified S1`);
+    console.log(`LIVE ${query.id}: ${data.results.bindings.length} rows match S1`);
+  }
+}
+console.log(`SITE_VERIFY_OK queries=22 scenarios=3 frames=${frames} typed_rows=${rows} downloads=${required.length} skill=unchanged live=${process.argv.includes('--live')}`);
