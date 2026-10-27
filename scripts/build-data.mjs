@@ -99,7 +99,7 @@ export async function buildContent(root = DATA_ROOT) {
   return {
     home: {
       overview:
-        'FiCR is an ontology for fire compliance and risk analysis in existing buildings. It connects building elements, fire-protection equipment, inspection findings and supporting evidence, so assessment results can be queried and traced to their sources.',
+        'FiCR connects building elements, inspection findings and supporting evidence in a queryable ontology for fire compliance and risk analysis.',
     },
     ontology: {
       iri: 'https://w3id.org/ficr/',

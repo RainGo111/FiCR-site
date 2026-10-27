@@ -33,7 +33,7 @@ function footer() {
   return `<footer class="site-footer"><div><strong>FiCR</strong><span>Fire Compliance and Risk Analysis Ontology</span></div><div><a href="https://w3id.org/ficr/" target="_blank" rel="noreferrer">Ontology reference ↗</a><a href="https://github.com/RainGo111/FiCR-site" target="_blank" rel="noreferrer">Repository ↗</a></div></footer>`;
 }
 function page(title,active,body,eyebrow=active) {
-  return `${nav(active)}<main id="main-content" tabindex="-1" class="${active==='skill'?'':'research-page'}">${sectionLabel(eyebrow)}<h1>${title}</h1>${body}</main>${footer()}`;
+  return `${nav(active)}<main id="main-content" tabindex="-1" class="research-page${active==='skill'?' skill-page':''}">${sectionLabel(eyebrow)}<h1>${title}</h1>${body}</main>${footer()}`;
 }
 function compactList(items) { return `<ul>${items.map(item=>`<li>${escapeHtml(item)}</li>`).join('')}</ul>`; }
 function sectionHeading(index,title,note='') {
@@ -41,20 +41,8 @@ function sectionHeading(index,title,note='') {
 }
 function renderHome() {
   app.innerHTML = `${nav('home')}<main id="main-content" tabindex="-1" class="research-page home-page">
-    <div class="hero-grid"><div class="hero-copy"><p class="eyebrow">An ontology for building fire safety</p><h1>Fire safety records,<br><em>connected by evidence.</em></h1><p class="lede">${escapeHtml(content.home.overview)}</p>
-    <div class="actions"><a class="action primary" href="#/study">Explore the case study <span aria-hidden="true">↗</span></a><a class="text-link" href="#/ontology">Read the ontology</a></div></div>
-    <div class="evidence-map" role="img" aria-label="Building model and inspection records feed a FiCR graph that links requirements, findings and evidence to query results.">
-      <div class="map-topline"><span>THE ASSESSMENT RECORD</span><span>01 / FiCR</span></div>
-      <div class="map-inputs"><span>Building model<small>IFC-derived identity</small></span><span>Inspection records<small>Observations &amp; evidence</small></span></div>
-      <div class="map-connector" aria-hidden="true"></div><div class="map-core"><span class="map-orbit" aria-hidden="true"></span><strong>FiCR</strong><small>Knowledge graph</small></div>
-      <div class="map-branches"><span>Requirements</span><span>Findings</span><span>Evidence</span></div><div class="map-output"><span>Queryable, traceable results</span><span aria-hidden="true">↓</span></div>
-    </div></div>
-    <div class="facts-strip"><div><strong>03</strong><span>Information scenarios</span></div><div><strong>${content.research.summary.queries_per_scenario}</strong><span>Competency queries</span></div><div><strong>${content.research.summary.query_frames}</strong><span>Validated query runs</span></div><div><strong>${Number(content.research.summary.typed_rows).toLocaleString('en-GB')}</strong><span>Typed result rows</span></div></div>
-    <section>${sectionHeading('01','From source records to assessment results','The workflow keeps source observations, application rules and ontology inference explicit.')}
-      <div class="method-grid">${[['Record','Retain building identities and capture observations in an editable inspection workbook.'],['Connect','Map records into RDF with source identifiers, evidence links and declared requirements.'],['Reason','Classify objects with OWL, then query compliance, inspection and boundary conditions.'],['Verify','Compare every projected field with specification-derived reference answers.']].map(([t,d],i)=>`<article><span class="step-number">0${i+1}</span><h3>${t}</h3><p>${d}</p></article>`).join('')}</div>
-    </section>
-    <section class="research-link-row"><div><p class="eyebrow">Duplex A · Revision ${content.research.revision}</p><h2>One building.<br>Three information conditions.</h2></div><div><p>The S1, S2 and S3 scenarios hold the building and inspection date constant while changing boundary evidence. Additional evidence can confirm a defect as well as resolve an unknown.</p><a class="text-link" href="#/study">Compare the scenarios <span aria-hidden="true">↗</span></a></div></section>
-    <section class="resource-grid"><a href="#/ontology"><span class="index-label">VOCABULARY</span><h3>Explore the ontology</h3><p>Objects, roles, findings and their relationships.</p><span aria-hidden="true">↗</span></a><a href="#/queries"><span class="index-label">QUERY EXPLORER</span><h3>Inspect the results</h3><p>Browse 22 queries across five modules and three scenarios.</p><span aria-hidden="true">↗</span></a><a href="/research/inspection_records.pdf" target="_blank" rel="noreferrer"><span class="index-label">SOURCE RECORDS</span><h3>Read the inspection record</h3><p>The review copy of the editable workbook.</p><span aria-hidden="true">↗</span></a></section>
+    <div class="home-intro"><p class="eyebrow">An ontology for building fire safety</p><h1>Fire safety records,<br><em>connected by evidence.</em></h1><p class="lede">${escapeHtml(content.home.overview)}</p></div>
+    <section class="resource-grid" aria-label="Explore FiCR"><a href="#/ontology"><span class="index-label">ONTOLOGY</span><h2>Explore the vocabulary</h2><p>Building elements, fire-safety roles, findings and evidence.</p><span aria-hidden="true">↗</span></a><a href="#/study"><span class="index-label">CASE STUDY</span><h2>Follow the evidence</h2><p>One building, three information scenarios and traceable assessment records.</p><span aria-hidden="true">↗</span></a><a href="#/queries"><span class="index-label">QUERY EXPLORER</span><h2>Inspect the results</h2><p>22 competency queries with verified results and public query access.</p><span aria-hidden="true">↗</span></a></section>
   </main>${footer()}`;
 }
 function renderOntology() {
