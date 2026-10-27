@@ -3,7 +3,7 @@ import content from './generated/content.json';
 import './styles.css';
 import './research.css';
 
-const SPARQL_ENDPOINT = 'https://api.triplydb.com/datasets/Raincheung111/FiCRquery/sparql';
+const SPARQL_ENDPOINT = 'https://api.triplydb.com/datasets/Raincheung111/FiCR-Query-S1/sparql';
 const app = document.querySelector('#app');
 const modules = [
   ['A', 'Building inventory'], ['B', 'REI compliance'], ['C', 'Risk-unit boundaries'],
@@ -114,7 +114,7 @@ async function showQuery(id,sid) {
     <div class="result-heading"><h3>Verified result</h3><span class="result-badge" id="row-count">Loading</span></div><p class="figure-note">Saved results from the materialised ${sid} graph, compared field by field with the reference answers. Full terms and datatypes are retained in the JSON download.</p>
     <div id="saved-result" aria-live="polite"><p class="muted">Loading result records…</p></div>
     <div class="query-actions"><button class="action secondary" type="button" id="download-result" disabled>Download result JSON</button><button class="action primary" type="button" id="run-live" ${sid!=='S1'?'disabled':''}>Run public query ↗</button></div>
-    <p class="figure-note">Public execution uses the TriplyDB baseline graph. S2 and S3 are available as verified results and downloadable graphs.</p><div id="live-result" aria-live="polite"></div>`;
+    <p class="figure-note">Public execution uses <a href="https://triplydb.com/Raincheung111/FiCR-Query-S1/sparql" target="_blank" rel="noreferrer">FiCR-Query-S1 on TriplyDB</a>. S2 and S3 are available as verified results and downloadable graphs.</p><div id="live-result" aria-live="polite"></div>`;
   panel.querySelector('#copy-query').addEventListener('click',async()=>{
     try { await navigator.clipboard.writeText(query.text);panel.querySelector('#copy-status').textContent='Copied.'; }
     catch { panel.querySelector('#copy-status').textContent='Copy unavailable. Select the query text above.'; }

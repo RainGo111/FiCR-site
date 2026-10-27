@@ -6,7 +6,7 @@ Live: [https://ficr-site.vercel.app](https://ficr-site.vercel.app)
 
 The site presents the ontology, the Duplex A enrichment study, and 22 competency queries across building inventory, REI compliance, boundary evidence, assessment workflow and equipment inspection. The study includes three controlled information scenarios, assessed on 17 March 2025. All 66 query/scenario frames and 1,313 typed result rows passed reference comparison.
 
-The query explorer displays verified scenario results and supports live execution against the public TriplyDB baseline. Public results are labelled separately from the saved scenario results. The existing Skill showcase is retained without changes to its content or data.
+The query explorer displays verified scenario results and supports live execution against [FiCR-Query-S1 on TriplyDB](https://triplydb.com/Raincheung111/FiCR-Query-S1/sparql). Browser requests use `https://api.triplydb.com/datasets/Raincheung111/FiCR-Query-S1/sparql`. Public results are labelled separately from the saved scenario results. The existing Skill showcase is retained without changes to its content or data.
 
 ## Development
 

@@ -78,7 +78,7 @@ function signatures(list,columns,ordered=false) {
 }
 if (process.argv.includes('--live')) {
   for (const query of queries) {
-    const response=await fetch('https://api.triplydb.com/datasets/Raincheung111/FiCRquery/sparql', {method:'POST',headers:{'Content-Type':'application/sparql-query',Accept:'application/sparql-results+json'},body:query.text,signal:AbortSignal.timeout(30000)});
+    const response=await fetch('https://api.triplydb.com/datasets/Raincheung111/FiCR-Query-S1/sparql', {method:'POST',headers:{'Content-Type':'application/sparql-query',Accept:'application/sparql-results+json'},body:query.text,signal:AbortSignal.timeout(30000)});
     assert.equal(response.status,200,`${query.id}: HTTP ${response.status}`);
     assert.equal(response.headers.get('access-control-allow-origin'),'*');
     const data=await response.json();
