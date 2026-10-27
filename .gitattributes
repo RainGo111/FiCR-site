@@ -1,0 +1,7 @@
+# Preserve document bytes, including PDF cross-reference offsets.
+*.pdf binary
+*.xlsx binary
+
+# Published query and RDF literals retain their accepted source formatting.
+public/research/*.rq -whitespace
+public/research/graphs/*.ttl -whitespace
