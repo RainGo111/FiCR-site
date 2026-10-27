@@ -1,24 +1,16 @@
-# FiCR Site
+# FiCR
 
-FiCR is an ontology for fire compliance and risk analysis in existing buildings. It connects building elements, fire-protection equipment, inspection findings and supporting evidence so assessment results can be queried and traced to their sources.
+FiCR is an ontology for fire compliance checking and risk analysis in buildings. It connects building spaces, elements, fire-protection equipment, inspection findings and supporting evidence.
 
-Live: [https://ficr-site.vercel.app](https://ficr-site.vercel.app)
+[Visit the website](https://ficr-site.vercel.app)
 
-The site presents the ontology, the Duplex A enrichment study, and 22 competency queries across building inventory, REI compliance, boundary evidence, assessment workflow and equipment inspection. The study includes three controlled information scenarios, assessed on 17 March 2025. All 66 query/scenario frames and 1,313 typed result rows passed reference comparison.
+The site includes:
 
-The query explorer displays verified scenario results and supports live execution against [FiCR-Query-S1 on TriplyDB](https://triplydb.com/Raincheung111/FiCR-Query-S1/sparql). Browser requests use `https://api.triplydb.com/datasets/Raincheung111/FiCR-Query-S1/sparql`. Public results are labelled separately from the saved scenario results. The existing Skill showcase is retained without changes to its content or data.
+- An ontology overview and documentation.
+- The Duplex A case study with three scenarios: S1, S2 and S3.
+- A query explorer with 22 SPARQL queries, saved scenario results and live S1 queries.
+- The FiCR Skill showcase.
 
-## Development
+[Ontology documentation](https://w3id.org/ficr/) · [S1 dataset on TriplyDB](https://triplydb.com/Raincheung111/FiCR-Query-S1/sparql)
 
-```bash
-npm ci
-npm run dev
-npm run build
-npm run verify
-```
-
-`public/research/` contains the published B1 workbook, PDF, canonical query bundle, typed results, binding contracts, verification summary, scenario graphs and provenance. It is a distribution of the accepted enrichment experiment, not a separate editable input source. `scripts/build-data.mjs` derives the site query catalogue and study summary from these records. Builds do not need the parent workspace or a private filesystem path.
-
-To check the live baseline as well as the local distribution, run `npm run verify -- --live`. The live check compares every projected binding with S1. Endpoint failures and mismatches produce a nonzero exit status.
-
-The case uses simulated inspection and evidence records. Its illustrative boundary priority score is not a calibrated fire-risk probability, and its authored requirements do not establish current regulatory applicability.
+The case study uses simulated inspection and evidence records for research demonstration.
